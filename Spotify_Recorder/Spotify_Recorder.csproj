@@ -41,7 +41,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>copy "$(SolutionDir)README.md" "$(TargetDir)README.md"
-copy "$(SolutionDir)CHANGELOG.md" "$(TargetDir)CHANGELOG.md"</PostBuildEvent>
+copy "$(SolutionDir)CHANGELOG.md" "$(TargetDir)CHANGELOG.md"
+copy "$(SolutionDir)References\lame.exe" "$(TargetDir)lame.exe"
+copy "$(SolutionDir)References\normalize.exe" "$(TargetDir)normalize.exe"</PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AssemblyInfoHelper">
