@@ -4,6 +4,8 @@ Project: Spotify_Recorder
 
 ## [%version%] - %date%
 
+- AssemblyInfoHelper added
+- GUI improvements
 
 ## [v1.1] - 14.09.2018 20:35
 

@@ -17,6 +17,7 @@
   </VersionFiles>
   <BinaryObjects>
     <BinaryObject xsi:type="BinaryFolder">
+      <RemoveWhileBuilding>true</RemoveWhileBuilding>
       <SourcePath>\Spotify_Recorder\bin\Release</SourcePath>
       <DestinationPath>/bin_Spotify_Recorder</DestinationPath>
       <FileExcludeFilters>
@@ -28,6 +29,7 @@
       </FileExcludeFilters>
     </BinaryObject>
     <BinaryObject xsi:type="BinaryFolder">
+      <RemoveWhileBuilding>false</RemoveWhileBuilding>
       <SourcePath>\Setup_Spotify_Recorder\Debug</SourcePath>
       <DestinationPath>/bin_Setup_Spotify_Recorder</DestinationPath>
       <FileExcludeFilters />

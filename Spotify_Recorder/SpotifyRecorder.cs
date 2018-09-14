@@ -824,9 +824,8 @@ namespace Spotify_Recorder
 
         private void hilfeToolStripButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This program can be used to record songs from Spotify.\n\n" +
-                            "Last build of this program:\n" +
-                            System.Reflection.Assembly.GetExecutingAssembly().GetLinkerTime().ToString(), "Help");
+            AssemblyInfoHelper.FormAssemblyInfo formAssemblyInfo = new AssemblyInfoHelper.FormAssemblyInfo();
+            formAssemblyInfo.ShowDialog();
         }
     }
 }

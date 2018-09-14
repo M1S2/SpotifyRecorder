@@ -77,15 +77,15 @@
             this.toolStripButton_sp_previous = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton_sp_update_infos = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.hilfeToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.logBox1 = new Spotify_Recorder.LogBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.logBox1 = new Spotify_Recorder.LogBox();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.hilfeToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_album_art)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -517,7 +517,6 @@
             this.lbl_record_file_path.Size = new System.Drawing.Size(726, 17);
             this.lbl_record_file_path.TabIndex = 58;
             this.lbl_record_file_path.Text = "---";
-            this.toolTip1.SetToolTip(this.lbl_record_file_path, "Record file path");
             // 
             // label11
             // 
@@ -578,6 +577,7 @@
             this.toolStripButton_recorder_start_manually.Name = "toolStripButton_recorder_start_manually";
             this.toolStripButton_recorder_start_manually.Size = new System.Drawing.Size(211, 36);
             this.toolStripButton_recorder_start_manually.Text = "Start recorder manually";
+            this.toolStripButton_recorder_start_manually.ToolTipText = "Start the recorder manually.";
             this.toolStripButton_recorder_start_manually.Click += new System.EventHandler(this.toolStripButton_recorder_start_manually_Click);
             // 
             // toolStripButton_recorder_stop_manually
@@ -587,6 +587,7 @@
             this.toolStripButton_recorder_stop_manually.Name = "toolStripButton_recorder_stop_manually";
             this.toolStripButton_recorder_stop_manually.Size = new System.Drawing.Size(211, 36);
             this.toolStripButton_recorder_stop_manually.Text = "Stop recorder manually";
+            this.toolStripButton_recorder_stop_manually.ToolTipText = "Stop the recorder manually.";
             this.toolStripButton_recorder_stop_manually.Click += new System.EventHandler(this.toolStripButton_recorder_stop_manually_Click);
             // 
             // toolStripSeparator4
@@ -614,8 +615,9 @@
             this.toolStripButton_sp_start.Image = global::Spotify_Recorder.Properties.Resources.Play;
             this.toolStripButton_sp_start.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton_sp_start.Name = "toolStripButton_sp_start";
-            this.toolStripButton_sp_start.Size = new System.Drawing.Size(194, 36);
+            this.toolStripButton_sp_start.Size = new System.Drawing.Size(173, 36);
             this.toolStripButton_sp_start.Text = "Spotify Start";
+            this.toolStripButton_sp_start.ToolTipText = "Start Spotify playback";
             this.toolStripButton_sp_start.Click += new System.EventHandler(this.toolStripButton_sp_start_Click);
             // 
             // toolStripButton_sp_pause
@@ -623,8 +625,9 @@
             this.toolStripButton_sp_pause.Image = global::Spotify_Recorder.Properties.Resources.Pause;
             this.toolStripButton_sp_pause.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton_sp_pause.Name = "toolStripButton_sp_pause";
-            this.toolStripButton_sp_pause.Size = new System.Drawing.Size(194, 36);
+            this.toolStripButton_sp_pause.Size = new System.Drawing.Size(173, 36);
             this.toolStripButton_sp_pause.Text = "Spotify Pause";
+            this.toolStripButton_sp_pause.ToolTipText = "Pause Spotify playback";
             this.toolStripButton_sp_pause.Click += new System.EventHandler(this.toolStripButton_sp_pause_Click);
             // 
             // toolStripButton_sp_skip
@@ -632,8 +635,9 @@
             this.toolStripButton_sp_skip.Image = global::Spotify_Recorder.Properties.Resources.Skip;
             this.toolStripButton_sp_skip.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton_sp_skip.Name = "toolStripButton_sp_skip";
-            this.toolStripButton_sp_skip.Size = new System.Drawing.Size(194, 36);
+            this.toolStripButton_sp_skip.Size = new System.Drawing.Size(173, 36);
             this.toolStripButton_sp_skip.Text = "Spotify Skip";
+            this.toolStripButton_sp_skip.ToolTipText = "Skip Spotify track";
             this.toolStripButton_sp_skip.Click += new System.EventHandler(this.toolStripButton_sp_skip_Click);
             // 
             // toolStripButton_sp_previous
@@ -641,23 +645,41 @@
             this.toolStripButton_sp_previous.Image = global::Spotify_Recorder.Properties.Resources.Previous;
             this.toolStripButton_sp_previous.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton_sp_previous.Name = "toolStripButton_sp_previous";
-            this.toolStripButton_sp_previous.Size = new System.Drawing.Size(194, 36);
+            this.toolStripButton_sp_previous.Size = new System.Drawing.Size(173, 36);
             this.toolStripButton_sp_previous.Text = "Spotify Previous";
+            this.toolStripButton_sp_previous.ToolTipText = "Go to previous Spotify track";
             this.toolStripButton_sp_previous.Click += new System.EventHandler(this.toolStripButton_sp_previous_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(191, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(170, 6);
             // 
             // toolStripButton_sp_update_infos
             // 
             this.toolStripButton_sp_update_infos.Image = global::Spotify_Recorder.Properties.Resources.Update;
             this.toolStripButton_sp_update_infos.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton_sp_update_infos.Name = "toolStripButton_sp_update_infos";
-            this.toolStripButton_sp_update_infos.Size = new System.Drawing.Size(194, 36);
+            this.toolStripButton_sp_update_infos.Size = new System.Drawing.Size(173, 36);
             this.toolStripButton_sp_update_infos.Text = "Update Infos";
+            this.toolStripButton_sp_update_infos.ToolTipText = "Update Spotify infos";
             this.toolStripButton_sp_update_infos.Click += new System.EventHandler(this.toolStripButton_sp_update_infos_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // hilfeToolStripButton
+            // 
+            this.hilfeToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.hilfeToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("hilfeToolStripButton.Image")));
+            this.hilfeToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.hilfeToolStripButton.Name = "hilfeToolStripButton";
+            this.hilfeToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.hilfeToolStripButton.Text = "Hi&lfe";
+            this.hilfeToolStripButton.ToolTipText = "Help";
+            this.hilfeToolStripButton.Click += new System.EventHandler(this.hilfeToolStripButton_Click);
             // 
             // toolStripSeparator1
             // 
@@ -687,6 +709,20 @@
             this.groupBox3.TabIndex = 49;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Log";
+            // 
+            // logBox1
+            // 
+            this.logBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.logBox1.Location = new System.Drawing.Point(1, 23);
+            this.logBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.logBox1.Name = "logBox1";
+            this.logBox1.ShowErrors = true;
+            this.logBox1.ShowInfos = true;
+            this.logBox1.ShowWarnings = true;
+            this.logBox1.Size = new System.Drawing.Size(847, 182);
+            this.logBox1.TabIndex = 49;
             // 
             // splitContainer1
             // 
@@ -720,35 +756,6 @@
             this.toolTip1.InitialDelay = 500;
             this.toolTip1.IsBalloon = true;
             this.toolTip1.ReshowDelay = 100;
-            // 
-            // logBox1
-            // 
-            this.logBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.logBox1.Location = new System.Drawing.Point(1, 23);
-            this.logBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.logBox1.Name = "logBox1";
-            this.logBox1.ShowErrors = true;
-            this.logBox1.ShowInfos = true;
-            this.logBox1.ShowWarnings = true;
-            this.logBox1.Size = new System.Drawing.Size(847, 182);
-            this.logBox1.TabIndex = 49;
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
-            // 
-            // hilfeToolStripButton
-            // 
-            this.hilfeToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.hilfeToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("hilfeToolStripButton.Image")));
-            this.hilfeToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.hilfeToolStripButton.Name = "hilfeToolStripButton";
-            this.hilfeToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.hilfeToolStripButton.Text = "Hi&lfe";
-            this.hilfeToolStripButton.Click += new System.EventHandler(this.hilfeToolStripButton_Click);
             // 
             // SpotifyRecorder
             // 

@@ -44,6 +44,9 @@
 copy "$(SolutionDir)CHANGELOG.md" "$(TargetDir)CHANGELOG.md"</PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AssemblyInfoHelper">
+      <HintPath>..\AssemblyInfoProject\bin\AssemblyInfoHelper.dll</HintPath>
+    </Reference>
     <Reference Include="CSCore">
       <HintPath>.\CSCore.dll</HintPath>
     </Reference>
@@ -68,7 +71,6 @@ copy "$(SolutionDir)CHANGELOG.md" "$(TargetDir)CHANGELOG.md"</PostBuildEvent>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyBuildDetails.cs" />
     <Compile Include="PictureDisplay.cs">
       <SubType>Form</SubType>
     </Compile>
