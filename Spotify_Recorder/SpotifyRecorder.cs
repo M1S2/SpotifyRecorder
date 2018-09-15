@@ -54,6 +54,7 @@ namespace Spotify_Recorder
 
             logBox1.LogEvent(LogTypes.INFO, "SpotifyRecorder loaded.");
 
+            StartAudioRouter();
             InitGUI();
             SpotifyConnect();
 
@@ -157,6 +158,59 @@ namespace Spotify_Recorder
             Properties.Settings.Default.WindowLocation = this.Location;
             Properties.Settings.Default.WindowState = this.WindowState;
             Properties.Settings.Default.Save();
+
+            ProcessHelper.StopProcess("Audio Router");          //Close the AudioRouter
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        /// <summary>
+        /// Start the AudioRouter and make sure that it was open before spotify was open. If the audio router couldn't be started, close the application.
+        /// </summary>
+        private void StartAudioRouter()
+        {
+            bool isAudioRouterRunning = ProcessHelper.IsProcessOpen("Audio Router");
+            bool isSpotifyRunning = SpotifyLocalAPI.IsSpotifyRunning();
+            bool audioRouterStartSuccess = false;
+
+            if (!isAudioRouterRunning && !isSpotifyRunning)         //Only start the AudioRouter
+            {
+                audioRouterStartSuccess = ProcessHelper.StartProcess(Path.Combine(Application.StartupPath, @"Audio-router-v0.10.5\Audio Router.exe"), "/min");
+                if(!audioRouterStartSuccess)
+                {
+                    MessageBox.Show("The Audio Router couldn't be started. The application closes now because the router is needed for correct operation.", "Audio Router not started.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit();
+                }
+            }
+            else if(!isAudioRouterRunning && isSpotifyRunning)      //Close spotify, start the audio router, reopen spotify
+            {
+                ProcessHelper.StopProcess("Spotify");
+                audioRouterStartSuccess = ProcessHelper.StartProcess(Path.Combine(Application.StartupPath, @"Audio-router-v0.10.5\Audio Router.exe"), "/min");
+                if (!audioRouterStartSuccess)
+                {
+                    MessageBox.Show("The Audio Router couldn't be started. The application closes now because the router is needed for correct operation.", "Audio Router not started.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit();
+                }
+                //StartSpotify();
+            }
+            else if(isAudioRouterRunning)           //Close audio router and call StartAudioRouter again, because it's not clear what was opened first (AudioRouter or Spotify)
+            {
+                ProcessHelper.StopProcess("Audio Router"); 
+                StartAudioRouter();
+            }
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        /// <summary>
+        /// Start spotify
+        /// </summary>
+        private void StartSpotify()
+        {
+#warning when opening spotify with this code snippet, the saved routings aren't applied correctly. Opening the same path manually works ?!
+
+            //ProcessHelper.StartProcess(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Spotify\SpotifyLauncher.exe"));
+            ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe");     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -253,10 +307,14 @@ namespace Spotify_Recorder
                 {
                     StartRecord();
                 }
-                _lastTrack = status.Track;
+                _lastTrack = status?.Track;
             }
             catch(ObjectDisposedException)
             { }
+            catch(Exception ex)
+            {
+                logBox1.LogEvent(LogTypes.ERROR, "OnTrackTimeChange event: " + ex.Message);
+            }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -593,9 +651,15 @@ namespace Spotify_Recorder
             logBox1.LogEvent(LogTypes.INFO, "Try to connect to Spotify.");
             if (!SpotifyLocalAPI.IsSpotifyRunning())
             {
-                logBox1.LogEvent(LogTypes.WARNING, "Spotify isn't running! Please open Spotify first.");
-                MessageBox.Show("Spotify isn't running! Please open Spotify first.", "Spotify not running!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                //if (MessageBox.Show("Spotify isn't running. Open Spotify?", "Open Spotify?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                //{
+                //    StartSpotify();
+                //}
+                //else
+                //{
+                    logBox1.LogEvent(LogTypes.WARNING, "Spotify isn't running! Please open Spotify first.");
+                    return;
+                //}
             }
             if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
             {
@@ -799,15 +863,15 @@ namespace Spotify_Recorder
 
         private void Prog_track_time_MouseClick(object sender, MouseEventArgs e)
         {
-            decimal pos = 0;
-            pos = ((decimal)e.X / (decimal)prog_track_time.Width) * prog_track_time.Maximum;
+            //decimal pos = 0;
+            //pos = ((decimal)e.X / (decimal)prog_track_time.Width) * prog_track_time.Maximum;
 
-            if (pos >= prog_track_time.Minimum && pos <= prog_track_time.Maximum)
-            {
-                prog_track_time.Value = (int)pos;
-                StatusResponse _status = _spotify.GetStatus();
-                _status.PlayingPosition = (double)pos;
-            }
+            //if (pos >= prog_track_time.Minimum && pos <= prog_track_time.Maximum)
+            //{
+            //    prog_track_time.Value = (int)pos;
+            //    StatusResponse _status = _spotify.GetStatus();
+            //    _status.PlayingPosition = (double)pos;
+            //}
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -822,10 +886,13 @@ namespace Spotify_Recorder
 
         //***********************************************************************************************************************************************************************************************************
 
+        /// <summary>
+        /// Show a help form.
+        /// </summary>
         private void hilfeToolStripButton_Click(object sender, EventArgs e)
         {
-            AssemblyInfoHelper.FormAssemblyInfo formAssemblyInfo = new AssemblyInfoHelper.FormAssemblyInfo();
-            formAssemblyInfo.ShowDialog();
+            AssemblyInfoHelper.FormAssemblyInfo infoForm = new AssemblyInfoHelper.FormAssemblyInfo();
+            infoForm.ShowDialog();
         }
     }
 }

@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("Spotify_Recorder")]
 [assembly: AssemblyDescription("This application can be used to record songs from Spotify.")]
-[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Markus Scheich")]
 [assembly: AssemblyProduct("Spotify_Recorder")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]

@@ -39,14 +39,9 @@
   <PropertyGroup>
     <ApplicationIcon>spotify_recorder_icon.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup>
-    <PostBuildEvent>copy "$(SolutionDir)README.md" "$(TargetDir)README.md"
-copy "$(SolutionDir)CHANGELOG.md" "$(TargetDir)CHANGELOG.md"
-copy "$(SolutionDir)References\lame.exe" "$(TargetDir)lame.exe"
-copy "$(SolutionDir)References\normalize.exe" "$(TargetDir)normalize.exe"</PostBuildEvent>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AssemblyInfoHelper">
+    <Reference Include="AssemblyInfoHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\AssemblyInfoProject\bin\AssemblyInfoHelper.dll</HintPath>
     </Reference>
     <Reference Include="CSCore">
@@ -88,6 +83,7 @@ copy "$(SolutionDir)References\normalize.exe" "$(TargetDir)normalize.exe"</PostB
     </Compile>
     <Compile Include="Logging\LogEvent.cs" />
     <Compile Include="Logging\LogTypes.cs" />
+    <Compile Include="ProcessHelper.cs" />
     <Compile Include="Recorder\DirectoryManager.cs" />
     <Compile Include="FileNameSubFolderCreator.cs">
       <SubType>Form</SubType>
@@ -183,6 +179,13 @@ copy "$(SolutionDir)References\normalize.exe" "$(TargetDir)normalize.exe"</PostB
     <Content Include="spotify_recorder_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(SolutionDir)README.md" "$(TargetDir)README.md"
+copy "$(SolutionDir)CHANGELOG.md" "$(TargetDir)CHANGELOG.md"
+copy "$(SolutionDir)Supplies\lame.exe" "$(TargetDir)lame.exe"
+copy "$(SolutionDir)Supplies\normalize.exe" "$(TargetDir)normalize.exe"
+if not exist "$(TargetDir)Audio-router-v0.10.5"  xcopy "$(SolutionDir)Supplies\audio-router-0.10.5\audio-router-v0.10.5-x64" "$(TargetDir)Audio-router-v0.10.5" /i</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -413,11 +413,20 @@ namespace Spotify_Recorder
             _silenceOut.Play();         //Play silence because otherwise silent parts aren't recorded
 
             _capture = new WasapiLoopbackCapture();
-            _capture.Initialize();            
 
             MMDeviceEnumerator devEnumerator = new MMDeviceEnumerator();
-            MMDevice dev = devEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+            MMDeviceCollection mMDevices = devEnumerator.EnumAudioEndpoints(DataFlow.All, DeviceState.All);
+            MMDevice dev = mMDevices.Where(d => d.FriendlyName.StartsWith("CABLE Input"))?.First();
+            if (dev == null)
+            {
+                LogEvent?.Invoke(new LogEvent(LogTypes.ERROR, DateTime.Now, "Record (\"" + Title + "\") not started, because device \"CABLE Input\" wasn't found. Make sure that \"VB Cable\" is installed correctly."));
+                return;
+            }
+
+            //MMDevice dev = devEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
             _capture.Device = dev;
+
+            _capture.Initialize();      // Important!!! First set the capture device, then call Initialize(); otherwise audio is captured from the previous device
 
             SoundInSource soundInSource = new SoundInSource(_capture);
             SampleToPcm16 soundInSourcePCM = new SampleToPcm16(soundInSource.ToSampleSource());     //Used to convert _capture to Pcm16 format
