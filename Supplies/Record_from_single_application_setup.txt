@@ -1,3 +1,0 @@
-1. VB Cable installieren
-2. Rechtsklick Lautsprechersymbol Taskleiste > Aufnahmegeräte > CABLE Output auswählen > Eigenschaften > Abhören > Dieses Gerät als Wiedergabequelle verwenden
-3. Audio Router > Spotify Spalte Dreieck > Route... > Route to CABLE Input

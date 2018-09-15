@@ -1,3 +1,0 @@
-Audio Router must be opened before Spotify is open, otherwise the save routings aren't applied.
---> 1. Open Audio router
---> 2. Open Spotify (-> saved routings are applied automatically)
