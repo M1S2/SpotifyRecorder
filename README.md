@@ -3,7 +3,7 @@
 |
 | ---------| -----------------------------------------|
 | Project: | Spotify_Recorder                   |
-| Version: | %version%                                |
+| Version: | v2.1                                |
 
 ## Purpose
 This application can be used to record songs from Spotify.
