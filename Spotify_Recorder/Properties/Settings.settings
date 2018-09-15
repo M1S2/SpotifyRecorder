@@ -11,9 +11,6 @@
     <Setting Name="RecordMP3" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="MuteAllApps" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="FileExistMode" Type="Spotify_Recorder.FileExistModes" Scope="User">
       <Value Profile="(Default)">SKIP</Value>
     </Setting>

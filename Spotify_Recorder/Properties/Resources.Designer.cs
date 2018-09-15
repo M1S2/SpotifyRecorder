@@ -91,12 +91,32 @@ namespace Spotify_Recorder.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Convert_Audio {
+            get {
+                object obj = ResourceManager.GetObject("Convert_Audio", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
         /// </summary>
         internal static System.Drawing.Icon Folder_icon {
             get {
                 object obj = ResourceManager.GetObject("Folder_icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Normalize {
+            get {
+                object obj = ResourceManager.GetObject("Normalize", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -186,6 +206,16 @@ namespace Spotify_Recorder.Properties {
         internal static System.Drawing.Bitmap Stop {
             get {
                 object obj = ResourceManager.GetObject("Stop", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Tag {
+            get {
+                object obj = ResourceManager.GetObject("Tag", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

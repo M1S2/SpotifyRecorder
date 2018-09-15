@@ -5,3 +5,6 @@ Clear: 		https://www.google.de/search?q=icon+clear+log&rlz=1C1CHZL_deDE729DE729&
 Folder: 	https://opengameart.org/content/flat-folder-icon
 Spotify: 	http://www.iconarchive.com/show/simply-styled-icons-by-dakirby309/Spotify-icon.html
 Connect: 	https://www.onlinewebfonts.com/icon/410957
+Tag: 		http://www.endlessicons.com/free-icons/price-tag-icon/
+Normalize:	https://www.iconfinder.com/icons/675322/arrows_expand_normalization_normalize_sound_wave_icon
+Convert_Audio:	httpswww.iconfinder.comicons170742audio_convert_converter_music_recycle_recycling_icon

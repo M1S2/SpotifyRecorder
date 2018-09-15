@@ -54,8 +54,8 @@
             this.lbl_isRecording = new System.Windows.Forms.Label();
             this.chk_output_wav = new System.Windows.Forms.CheckBox();
             this.chk_output_mp3 = new System.Windows.Forms.CheckBox();
-            this.chk_mute = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.pic_recordState = new System.Windows.Forms.PictureBox();
             this.label9 = new System.Windows.Forms.Label();
             this.cmb_fileExistMode = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -89,6 +89,7 @@
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_album_art)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pic_recordState)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -102,7 +103,7 @@
             this.lbl_track_duration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_track_duration.AutoSize = true;
             this.lbl_track_duration.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_track_duration.Location = new System.Drawing.Point(803, 315);
+            this.lbl_track_duration.Location = new System.Drawing.Point(803, 343);
             this.lbl_track_duration.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbl_track_duration.Name = "lbl_track_duration";
             this.lbl_track_duration.Size = new System.Drawing.Size(44, 17);
@@ -176,7 +177,7 @@
             this.btn_arm_disarm.BackColor = System.Drawing.SystemColors.Control;
             this.btn_arm_disarm.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_arm_disarm.ImageKey = "(Keine)";
-            this.btn_arm_disarm.Location = new System.Drawing.Point(714, 192);
+            this.btn_arm_disarm.Location = new System.Drawing.Point(714, 162);
             this.btn_arm_disarm.Margin = new System.Windows.Forms.Padding(2);
             this.btn_arm_disarm.Name = "btn_arm_disarm";
             this.btn_arm_disarm.Size = new System.Drawing.Size(133, 38);
@@ -217,10 +218,10 @@
             this.groupBox2.Controls.Add(this.pic_album_art);
             this.groupBox2.Controls.Add(this.prog_track_time);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(4, 249);
+            this.groupBox2.Location = new System.Drawing.Point(4, 221);
             this.groupBox2.MinimumSize = new System.Drawing.Size(286, 211);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(853, 338);
+            this.groupBox2.Size = new System.Drawing.Size(853, 366);
             this.groupBox2.TabIndex = 43;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Spotify Info / Control";
@@ -301,7 +302,7 @@
             this.lbl_track_time.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_track_time.AutoSize = true;
             this.lbl_track_time.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_track_time.Location = new System.Drawing.Point(5, 315);
+            this.lbl_track_time.Location = new System.Drawing.Point(5, 343);
             this.lbl_track_time.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbl_track_time.Name = "lbl_track_time";
             this.lbl_track_time.Size = new System.Drawing.Size(44, 17);
@@ -338,7 +339,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pic_album_art.Location = new System.Drawing.Point(261, 22);
             this.pic_album_art.Name = "pic_album_art";
-            this.pic_album_art.Size = new System.Drawing.Size(586, 281);
+            this.pic_album_art.Size = new System.Drawing.Size(586, 309);
             this.pic_album_art.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pic_album_art.TabIndex = 42;
             this.pic_album_art.TabStop = false;
@@ -349,7 +350,7 @@
             // 
             this.prog_track_time.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.prog_track_time.Location = new System.Drawing.Point(54, 309);
+            this.prog_track_time.Location = new System.Drawing.Point(54, 337);
             this.prog_track_time.Name = "prog_track_time";
             this.prog_track_time.Size = new System.Drawing.Size(744, 23);
             this.prog_track_time.TabIndex = 48;
@@ -370,7 +371,7 @@
             // 
             this.lbl_isRecording.AutoSize = true;
             this.lbl_isRecording.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_isRecording.Location = new System.Drawing.Point(121, 173);
+            this.lbl_isRecording.Location = new System.Drawing.Point(148, 173);
             this.lbl_isRecording.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbl_isRecording.Name = "lbl_isRecording";
             this.lbl_isRecording.Size = new System.Drawing.Size(23, 17);
@@ -405,24 +406,11 @@
             this.chk_output_mp3.UseVisualStyleBackColor = true;
             this.chk_output_mp3.CheckedChanged += new System.EventHandler(this.chk_output_mp3_CheckedChanged);
             // 
-            // chk_mute
-            // 
-            this.chk_mute.AutoSize = true;
-            this.chk_mute.Checked = true;
-            this.chk_mute.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chk_mute.Location = new System.Drawing.Point(8, 202);
-            this.chk_mute.Name = "chk_mute";
-            this.chk_mute.Size = new System.Drawing.Size(417, 21);
-            this.chk_mute.TabIndex = 51;
-            this.chk_mute.Text = "Mute all other applications and system sounds while recording";
-            this.chk_mute.UseVisualStyleBackColor = true;
-            this.chk_mute.Visible = false;
-            this.chk_mute.CheckedChanged += new System.EventHandler(this.chk_mute_CheckedChanged);
-            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.pic_recordState);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.cmb_fileExistMode);
             this.groupBox1.Controls.Add(this.label13);
@@ -434,7 +422,6 @@
             this.groupBox1.Controls.Add(this.chk_output_mp3);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.chk_mute);
             this.groupBox1.Controls.Add(this.btn_arm_disarm);
             this.groupBox1.Controls.Add(this.txt_output_path);
             this.groupBox1.Controls.Add(this.btn_change_output_path);
@@ -443,10 +430,19 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(4, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(853, 240);
+            this.groupBox1.Size = new System.Drawing.Size(853, 212);
             this.groupBox1.TabIndex = 52;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Recorder Control";
+            // 
+            // pic_recordState
+            // 
+            this.pic_recordState.Location = new System.Drawing.Point(103, 166);
+            this.pic_recordState.Name = "pic_recordState";
+            this.pic_recordState.Size = new System.Drawing.Size(40, 40);
+            this.pic_recordState.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pic_recordState.TabIndex = 64;
+            this.pic_recordState.TabStop = false;
             // 
             // label9
             // 
@@ -564,6 +560,7 @@
             this.toolStripDropDownButton_recorder_ctrl.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton_recorder_start_manually,
             this.toolStripButton_recorder_stop_manually});
+            this.toolStripDropDownButton_recorder_ctrl.Enabled = false;
             this.toolStripDropDownButton_recorder_ctrl.Image = global::Spotify_Recorder.Properties.Resources.Record;
             this.toolStripDropDownButton_recorder_ctrl.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton_recorder_ctrl.Name = "toolStripDropDownButton_recorder_ctrl";
@@ -604,6 +601,7 @@
             this.toolStripButton_sp_previous,
             this.toolStripMenuItem2,
             this.toolStripButton_sp_update_infos});
+            this.toolStripDropDownButton_spotify_ctrl.Enabled = false;
             this.toolStripDropDownButton_spotify_ctrl.Image = global::Spotify_Recorder.Properties.Resources.Spotify;
             this.toolStripDropDownButton_spotify_ctrl.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton_spotify_ctrl.Name = "toolStripDropDownButton_spotify_ctrl";
@@ -748,6 +746,7 @@
             this.splitContainer1.Size = new System.Drawing.Size(864, 820);
             this.splitContainer1.SplitterDistance = 594;
             this.splitContainer1.TabIndex = 54;
+            this.toolTip1.SetToolTip(this.splitContainer1, "Double click to reset log area size.");
             this.splitContainer1.DoubleClick += new System.EventHandler(this.splitContainer1_DoubleClick);
             // 
             // toolTip1
@@ -774,6 +773,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pic_album_art)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pic_recordState)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -807,7 +807,6 @@
         private System.Windows.Forms.Label lbl_isRecording;
         private System.Windows.Forms.CheckBox chk_output_wav;
         private System.Windows.Forms.CheckBox chk_output_mp3;
-        private System.Windows.Forms.CheckBox chk_mute;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.PictureBox pic_album_art;
         private System.Windows.Forms.Label lbl_record_file_path;
@@ -843,6 +842,7 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton hilfeToolStripButton;
+        private System.Windows.Forms.PictureBox pic_recordState;
     }
 }
 

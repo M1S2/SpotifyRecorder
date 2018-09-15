@@ -54,7 +54,6 @@ namespace Spotify_Recorder
 
             logBox1.LogEvent(LogTypes.INFO, "SpotifyRecorder loaded.");
 
-            StartAudioRouter();
             InitGUI();
             SpotifyConnect();
 
@@ -158,59 +157,6 @@ namespace Spotify_Recorder
             Properties.Settings.Default.WindowLocation = this.Location;
             Properties.Settings.Default.WindowState = this.WindowState;
             Properties.Settings.Default.Save();
-
-            ProcessHelper.StopProcess("Audio Router");          //Close the AudioRouter
-        }
-
-        //***********************************************************************************************************************************************************************************************************
-
-        /// <summary>
-        /// Start the AudioRouter and make sure that it was open before spotify was open. If the audio router couldn't be started, close the application.
-        /// </summary>
-        private void StartAudioRouter()
-        {
-            bool isAudioRouterRunning = ProcessHelper.IsProcessOpen("Audio Router");
-            bool isSpotifyRunning = SpotifyLocalAPI.IsSpotifyRunning();
-            bool audioRouterStartSuccess = false;
-
-            if (!isAudioRouterRunning && !isSpotifyRunning)         //Only start the AudioRouter
-            {
-                audioRouterStartSuccess = ProcessHelper.StartProcess(Path.Combine(Application.StartupPath, @"Audio-router-v0.10.5\Audio Router.exe"), "/min");
-                if(!audioRouterStartSuccess)
-                {
-                    MessageBox.Show("The Audio Router couldn't be started. The application closes now because the router is needed for correct operation.", "Audio Router not started.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Application.Exit();
-                }
-            }
-            else if(!isAudioRouterRunning && isSpotifyRunning)      //Close spotify, start the audio router, reopen spotify
-            {
-                ProcessHelper.StopProcess("Spotify");
-                audioRouterStartSuccess = ProcessHelper.StartProcess(Path.Combine(Application.StartupPath, @"Audio-router-v0.10.5\Audio Router.exe"), "/min");
-                if (!audioRouterStartSuccess)
-                {
-                    MessageBox.Show("The Audio Router couldn't be started. The application closes now because the router is needed for correct operation.", "Audio Router not started.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Application.Exit();
-                }
-                //StartSpotify();
-            }
-            else if(isAudioRouterRunning)           //Close audio router and call StartAudioRouter again, because it's not clear what was opened first (AudioRouter or Spotify)
-            {
-                ProcessHelper.StopProcess("Audio Router"); 
-                StartAudioRouter();
-            }
-        }
-
-        //***********************************************************************************************************************************************************************************************************
-
-        /// <summary>
-        /// Start spotify
-        /// </summary>
-        private void StartSpotify()
-        {
-#warning when opening spotify with this code snippet, the saved routings aren't applied correctly. Opening the same path manually works ?!
-
-            //ProcessHelper.StartProcess(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Spotify\SpotifyLauncher.exe"));
-            ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe");     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -258,8 +204,6 @@ namespace Spotify_Recorder
                 cmb_fileExistMode.Items.Add(fileExistMode);
             }
             cmb_fileExistMode.Text = Properties.Settings.Default.FileExistMode.ToString();
-
-            chk_mute.Checked = Properties.Settings.Default.MuteAllApps;
 
             txt_filename_prototype.Text = Properties.Settings.Default.FileNamePrototype;
             txt_filename_prototype_TextChanged(null, null);
@@ -335,8 +279,6 @@ namespace Spotify_Recorder
             if(spotifyPlaying) { _spotify.Play(); }
 
             StartRecord();
-
-            //if (!isRecorderArmed) { VolumeControl.RestoreMuteSettings(); }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -396,7 +338,6 @@ namespace Spotify_Recorder
 
             if (_currentTrack != null && !_currentTrack.IsAd())
             {
-                //if (chk_mute.Checked) { VolumeControl.MuteAllExcept("spotify"); }
                 block_onPlayStateChangeEvent = true;
 #warning PlayingPosition can't be set in this way (_spotify.GetStatus().PlayingPosition = 0)
                 _spotify.GetStatus().PlayingPosition = 0;       //Play track from beginning
@@ -415,7 +356,6 @@ namespace Spotify_Recorder
         //***********************************************************************************************************************************************************************************************************
         //********* F O R M   C O N T R O L S ***********************************************************************************************************************************************************************
         //***********************************************************************************************************************************************************************************************************
-
 
         private void toolStripButton_sp_connect_Click(object sender, EventArgs e)
         {
@@ -562,22 +502,6 @@ namespace Spotify_Recorder
 
         //***********************************************************************************************************************************************************************************************************
 
-        private void chk_mute_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chk_mute.Checked && (_recorder.RecordState == RecordStates.RECORDING || _recorder.RecordState == RecordStates.PAUSED)) 
-            { 
-                //VolumeControl.MuteAllExcept("spotify"); 
-            }
-            else if(!chk_mute.Checked)
-            {
-                //VolumeControl.RestoreMuteSettings();
-            }
-            Properties.Settings.Default.MuteAllApps = chk_mute.Checked;
-            Properties.Settings.Default.Save();
-        }
-
-        //***********************************************************************************************************************************************************************************************************
-
         private void cmb_fileExistMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(block_update) { return; }
@@ -603,8 +527,7 @@ namespace Spotify_Recorder
                     MessageBox.Show("No valid path selected", "Path error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-
-                //if (chk_mute.Checked) { VolumeControl.MuteAllExcept("spotify"); }
+                
                 UpdateTrackInformation();
                 logBox1.LogEvent(LogTypes.INFO, "SpotifyRecorder manually started.");
                 _recorder.StartRecord();
@@ -634,8 +557,6 @@ namespace Spotify_Recorder
                 }
                 logBox1.LogEvent(LogTypes.INFO, "SpotifyRecorder manually stopped.");
                 _recorder.StopRecord();
-                
-                //VolumeControl.RestoreMuteSettings();
             }
         }
 
@@ -644,23 +565,48 @@ namespace Spotify_Recorder
         //***********************************************************************************************************************************************************************************************************
 
         /// <summary>
-        /// Connect to a running spotify client
+        /// Start spotify with the "--enable-audio-graph" option. With this option the user is able to change the output device.
+        /// </summary>
+        private void StartSpotify()
+        {
+            ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", "--enable-audio-graph");     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify, use the --enable-audio-graph option to have the possibility to change the output device
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        /// <summary>
+        /// Connect to Spotify. Check if Spotify was started with the "--enable-audio-graph" option. If it isn't running ask the user to start Spotify.
         /// </summary>
         public void SpotifyConnect()
         {
             logBox1.LogEvent(LogTypes.INFO, "Try to connect to Spotify.");
             if (!SpotifyLocalAPI.IsSpotifyRunning())
             {
-                //if (MessageBox.Show("Spotify isn't running. Open Spotify?", "Open Spotify?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-                //{
-                //    StartSpotify();
-                //}
-                //else
-                //{
+                if (MessageBox.Show("Spotify isn't running. Open Spotify?\n\nMake sure that the output device is set to the virtual audio cable output (settings > advanced settings > playback device).", "Open Spotify?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    StartSpotify();
+                    System.Threading.Thread.Sleep(2000);        //Wait one second before connecting to spotify
+                }
+                else
+                {
                     logBox1.LogEvent(LogTypes.WARNING, "Spotify isn't running! Please open Spotify first.");
                     return;
-                //}
+                }
             }
+            else    //Spotify is running, make sure it was started with the "--enable-audio-graph" option
+            {
+                List<string> spotifyStartArguments = ProcessHelper.GetProcessStartArguments("Spotify");
+                if (!spotifyStartArguments.Any(str => str.Contains("--enable-audio-graph")))     // no process with the name "Spotify.exe" was started with the "--enable-audio-graph" option
+                {
+                    if(MessageBox.Show("Spotify was started without the \"--enable-audio-graph\" option.\nTo use this recorder, close Spotify and then click on \"OK\".\nYou can click on \"Cancel\" to close Spotify later. After starting it with the correct option, click on \"Connect to spotify\" in the menu.", "Spotify must run with \"--enable-audio-graph\" option.", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                    {
+                        SpotifyConnect();
+                        return;
+                    }
+                    else { return; }
+                }
+            }
+
             if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
             {
                 logBox1.LogEvent(LogTypes.WARNING, "SpotifyWebHelper isn't running!");
@@ -675,6 +621,9 @@ namespace Spotify_Recorder
             }
             catch (Exception) { /* Connect not successful. See the else path of the following if-else-construct. */ }
 
+            toolStripDropDownButton_recorder_ctrl.Enabled = successful;
+            toolStripDropDownButton_spotify_ctrl.Enabled = successful;
+
             if (successful)
             {
                 btn_arm_disarm.Enabled = true;
@@ -686,7 +635,7 @@ namespace Spotify_Recorder
                 UpdateSpotifyInformation();
                 UpdateTrackInformation();
                 _spotify.ListenForEvents = true;
-                Track track = _spotify.GetStatus().Track;
+                Track track = _spotify.GetStatus()?.Track;
                 logBox1.LogEvent(LogTypes.INFO, "Track \"" + track?.TrackResource.Name + "\" (" + track?.ArtistResource.Name + ") ");
             }
             else
@@ -847,15 +796,14 @@ namespace Spotify_Recorder
         private void RecorderRecordingStateChanged(RecordStates recordingState)
         {
             lbl_isRecording.Text = recordingState.ToString();
-            if(recordingState == RecordStates.RECORDING)
+            switch(recordingState)
             {
-                lbl_isRecording.Font = new Font(lbl_isRecording.Font, FontStyle.Bold);
-                lbl_isRecording.ForeColor = Color.Red;
-            }
-            else
-            {
-                lbl_isRecording.Font = new Font(lbl_isRecording.Font, FontStyle.Regular);
-                lbl_isRecording.ForeColor = Color.Black;
+                case RecordStates.RECORDING: pic_recordState.Image = Spotify_Recorder.Properties.Resources.Record; break;
+                case RecordStates.PAUSED: pic_recordState.Image = Spotify_Recorder.Properties.Resources.Pause; break;
+                case RecordStates.STOPPED: pic_recordState.Image = Spotify_Recorder.Properties.Resources.Stop; break;
+                case RecordStates.NORMALIZING_WAV: pic_recordState.Image = Spotify_Recorder.Properties.Resources.Normalize; break;
+                case RecordStates.CONVERTING_WAV_TO_MP3: pic_recordState.Image = Spotify_Recorder.Properties.Resources.Convert_Audio; break;
+                case RecordStates.ADDING_TAGS: pic_recordState.Image = Spotify_Recorder.Properties.Resources.Tag; break;
             }
         }
 
@@ -894,5 +842,6 @@ namespace Spotify_Recorder
             AssemblyInfoHelper.FormAssemblyInfo infoForm = new AssemblyInfoHelper.FormAssemblyInfo();
             infoForm.ShowDialog();
         }
+
     }
 }

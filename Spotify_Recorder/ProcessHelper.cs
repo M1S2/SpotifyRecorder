@@ -30,6 +30,8 @@ namespace Spotify_Recorder
             return processes;
         }
 
+        //***********************************************************************************************************************************************************************************************************
+
         /// <summary>
         /// Check if a process with the given name is open
         /// </summary>
@@ -40,6 +42,8 @@ namespace Spotify_Recorder
         {
             return (FindProcess(processName).Count > 0);
         }
+
+        //***********************************************************************************************************************************************************************************************************
 
         /// <summary>
         /// Start a process with the given path
@@ -60,6 +64,8 @@ namespace Spotify_Recorder
             }
         }
 
+        //***********************************************************************************************************************************************************************************************************
+
         /// <summary>
         /// Close the main window of the process with the given name
         /// </summary>
@@ -79,32 +85,28 @@ namespace Spotify_Recorder
             }
         }
 
-        ///// <summary>
-        ///// Get the path of the application with the given name
-        ///// </summary>
-        ///// <param name="applicationName">application name</param>
-        ///// <returns>path to the application or ""</returns>
-        ///// see: https://social.msdn.microsoft.com/Forums/windows/en-US/afb5012a-30f1-4b96-9931-a143fd76bab5/how-to-find-path-of-installed-programs-in-c?forum=winformssetup
-        //public static string GetApplicationPathByDisplayName(string applicationName)
-        //{
-        //    RegistryKey parentKey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall");
+        //***********************************************************************************************************************************************************************************************************
 
-        //    string[] nameList = parentKey.GetSubKeyNames();
-        //    List<string> displayNameList = new List<string>();
-        //    for (int i = 0; i < nameList.Length; i++)
-        //    {
-        //        RegistryKey regKey = parentKey.OpenSubKey(nameList[i]);
-        //        try
-        //        {
-        //            displayNameList.Add(regKey.GetValue("DisplayName").ToString());
-        //            if (regKey.GetValue("DisplayName").ToString() == applicationName)
-        //            {
-        //                return regKey.GetValue("InstallLocation").ToString();
-        //            }
-        //        }
-        //        catch { }
-        //    }
-        //    return "";
-        //}
+        /// <summary>
+        /// Find all processes with the given name and return the full process path (including the start arguments). If more processes were found, a list with all process paths is returned.
+        /// </summary>
+        /// <param name="processName">name of the process to find (without ".exe")</param>
+        /// <returns>list with full process paths (path including the start arguments)</returns>
+        /// see: https://social.msdn.microsoft.com/Forums/en-US/669eeaeb-e6fa-403b-86fd-302b24c569fb/how-to-get-the-command-line-arguments-of-running-processes?forum=netfxbcl
+        public static List<string> GetProcessStartArguments(string processName)
+        {
+            List<string> fullProcessPaths = new List<string>();
+
+            System.Management.ManagementClass managementClass = new System.Management.ManagementClass("Win32_Process");
+            foreach(System.Management.ManagementObject managementObject in managementClass.GetInstances())
+            {
+                string name = (string)managementObject["Name"];
+                if (name == processName + ".exe")
+                {
+                    fullProcessPaths.Add((string)managementObject["CommandLine"]);
+                }
+            }
+            return fullProcessPaths;
+        }
     }
 }

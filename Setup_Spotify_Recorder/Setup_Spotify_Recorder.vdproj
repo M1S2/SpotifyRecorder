@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_05DD9CB14CDAD2ECEBCDAF5941521CF4"
+        "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_0661C75B226043A6B46250ED585428AC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -81,24 +87,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3D9D1264EF67449CBBC86ECE5C7D6750"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_40204135AD244005AD921D9DBCA8AA62"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_40FAE3268FE7C4E819E91721202B8570"
-        "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_45CF1F979C3B4E6B95B554B769DF821B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -111,20 +99,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_57D511A922F54D4AB2448FB968FF148B"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_59B191DBF43C4DD6A453ABD62FF33555"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5BA15C75CC084578A12509DE502AB41E"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_58F5243CA4AEFA67EE5EF20C5D0136D2"
+        "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -135,26 +111,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_704A1CDCEC0548F68F88592BE2DCC11B"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_706C0524F47D4B87B8C18C50D27DBAF4"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_747EE38478030A53065743ADC8D18CC6"
+        "MsmKey" = "8:_71EC1CE0A523E1527B96A7D81A5F32E4"
         "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_75147E35331B4DAEBDE417D3035F3B96"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -171,19 +129,31 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_99BD7A2F24A24DB787DAFA4E26D31D39"
+        "MsmKey" = "8:_84C73D0D21036588F953F517BAEE9DF2"
+        "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8B44AFCD8D424A1CBAE6B33BC0116070"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9172D56E6ABF434896C79EDF65145152"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_91B516325B004972930FABA7EC8497C7"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_A19C6F0C79CB4547B8F96ABE810EE6B4"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A2A754006E1641BC9309C2C8279790A7"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -207,20 +177,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B45954FF9213418C81BE2AD8757652AA"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_B7696C8BFD4F4B22A3B0C724D8F4C9D9"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_BB4A88047743A9B1E954F4F16C2F14B7"
-        "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -267,12 +225,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E3E4AC7099B50F0F810F552C91A809A0"
-        "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_E486D1EA3C11459484016E4A99C6050C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -298,7 +250,7 @@
         "Entry"
         {
         "MsmKey" = "8:_E9158D397138DFE7AA46BE7AE3042C50"
-        "OwnerKey" = "8:_747EE38478030A53065743ADC8D18CC6"
+        "OwnerKey" = "8:_84C73D0D21036588F953F517BAEE9DF2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -309,14 +261,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_FA1AE01DA9CBF1AE57FBAF938BD72FEC"
+        "MsmKey" = "8:_FB7518C58E5BF18DDC3A0E1D146425F3"
         "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_FA1AE01DA9CBF1AE57FBAF938BD72FEC"
-        "OwnerKey" = "8:_747EE38478030A53065743ADC8D18CC6"
+        "MsmKey" = "8:_FB7518C58E5BF18DDC3A0E1D146425F3"
+        "OwnerKey" = "8:_84C73D0D21036588F953F517BAEE9DF2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -334,31 +286,31 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_40FAE3268FE7C4E819E91721202B8570"
+        "OwnerKey" = "8:_58F5243CA4AEFA67EE5EF20C5D0136D2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FA1AE01DA9CBF1AE57FBAF938BD72FEC"
+        "OwnerKey" = "8:_71EC1CE0A523E1527B96A7D81A5F32E4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_747EE38478030A53065743ADC8D18CC6"
+        "OwnerKey" = "8:_FB7518C58E5BF18DDC3A0E1D146425F3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_BB4A88047743A9B1E954F4F16C2F14B7"
+        "OwnerKey" = "8:_84C73D0D21036588F953F517BAEE9DF2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E3E4AC7099B50F0F810F552C91A809A0"
+        "OwnerKey" = "8:_05DD9CB14CDAD2ECEBCDAF5941521CF4"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -484,6 +436,32 @@
         }
         "File"
         {
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_05DD9CB14CDAD2ECEBCDAF5941521CF4"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:taglib-sharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                }
+            "SourcePath" = "8:taglib-sharp.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0661C75B226043A6B46250ED585428AC"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\VBCABLE_Setup.exe"
@@ -704,72 +682,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3D9D1264EF67449CBBC86ECE5C7D6750"
-            {
-            "SourcePath" = "8:Documents\\Restore_default_audio_device.rtf"
-            "TargetName" = "8:Restore_default_audio_device.rtf"
-            "Tag" = "8:"
-            "Folder" = "8:_C39C94F8D2F04B05A0B8D1EB52CD5243"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_40204135AD244005AD921D9DBCA8AA62"
-            {
-            "SourcePath" = "8:..\\Supplies\\audio-router-0.10.5\\audio-router-v0.10.5-x64\\do64.exe"
-            "TargetName" = "8:do64.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_744933B0B6344254A0F2B88DEFE5A9EF"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_40FAE3268FE7C4E819E91721202B8570"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CSCore, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                }
-            "SourcePath" = "8:CSCore.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_45CF1F979C3B4E6B95B554B769DF821B"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\vbaudio_cable_win7.sys"
@@ -810,12 +722,18 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_57D511A922F54D4AB2448FB968FF148B"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_58F5243CA4AEFA67EE5EF20C5D0136D2"
             {
-            "SourcePath" = "8:..\\Supplies\\audio-router-0.10.5\\audio-router-v0.10.5-x64\\do.exe"
-            "TargetName" = "8:do.exe"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:AssemblyInfoHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                }
+            "SourcePath" = "8:AssemblyInfoHelper.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_744933B0B6344254A0F2B88DEFE5A9EF"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -827,47 +745,7 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_59B191DBF43C4DD6A453ABD62FF33555"
-            {
-            "SourcePath" = "8:..\\Supplies\\audio-router-0.10.5\\audio-router-v0.10.5-x64\\bootstrapper.dll"
-            "TargetName" = "8:bootstrapper.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_744933B0B6344254A0F2B88DEFE5A9EF"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5BA15C75CC084578A12509DE502AB41E"
-            {
-            "SourcePath" = "8:..\\Supplies\\audio-router-0.10.5\\audio-router-v0.10.5-x64\\audio-router64.dll"
-            "TargetName" = "8:audio-router64.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_744933B0B6344254A0F2B88DEFE5A9EF"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_694837ABF6B049B5A798D5216D8C33CA"
@@ -890,55 +768,15 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_704A1CDCEC0548F68F88592BE2DCC11B"
-            {
-            "SourcePath" = "8:..\\Supplies\\audio-router-0.10.5\\audio-router-v0.10.5-x64\\audio-router.dll"
-            "TargetName" = "8:audio-router.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_744933B0B6344254A0F2B88DEFE5A9EF"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_706C0524F47D4B87B8C18C50D27DBAF4"
-            {
-            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\CHANGELOG.md"
-            "TargetName" = "8:CHANGELOG.md"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_747EE38478030A53065743ADC8D18CC6"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_71EC1CE0A523E1527B96A7D81A5F32E4"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SpotifyAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:CSCore, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                 }
-            "SourcePath" = "8:SpotifyAPI.dll"
+            "SourcePath" = "8:CSCore.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
@@ -954,26 +792,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_75147E35331B4DAEBDE417D3035F3B96"
-            {
-            "SourcePath" = "8:..\\Supplies\\audio-router-0.10.5\\audio-router-v0.10.5-x64\\Audio Router.exe"
-            "TargetName" = "8:Audio Router.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_744933B0B6344254A0F2B88DEFE5A9EF"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7B4C14317A6344E9BBAD259C8AD6DDCF"
@@ -1016,7 +834,53 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_99BD7A2F24A24DB787DAFA4E26D31D39"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_84C73D0D21036588F953F517BAEE9DF2"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:SpotifyAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                }
+            "SourcePath" = "8:SpotifyAPI.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8B44AFCD8D424A1CBAE6B33BC0116070"
+            {
+            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\README.md"
+            "TargetName" = "8:README.md"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9172D56E6ABF434896C79EDF65145152"
             {
             "SourcePath" = "8:Documents\\Restore_default_audio_device.rtf"
             "TargetName" = "8:Restore_default_audio_device.rtf"
@@ -1032,16 +896,16 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:TRUE"
+            "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A19C6F0C79CB4547B8F96ABE810EE6B4"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_91B516325B004972930FABA7EC8497C7"
             {
-            "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\VBCABLE_Setup_x64.exe"
-            "TargetName" = "8:VBCABLE_Setup_x64.exe"
+            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\CHANGELOG.md"
+            "TargetName" = "8:CHANGELOG.md"
             "Tag" = "8:"
-            "Folder" = "8:_11B4E949A83B4726A7E2A109FDFFB7F5"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1056,12 +920,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A2A754006E1641BC9309C2C8279790A7"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A19C6F0C79CB4547B8F96ABE810EE6B4"
             {
-            "SourcePath" = "8:..\\Supplies\\audio-router-0.10.5\\audio-router-v0.10.5-x64\\bootstrapper64.dll"
-            "TargetName" = "8:bootstrapper64.dll"
+            "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\VBCABLE_Setup_x64.exe"
+            "TargetName" = "8:VBCABLE_Setup_x64.exe"
             "Tag" = "8:"
-            "Folder" = "8:_744933B0B6344254A0F2B88DEFE5A9EF"
+            "Folder" = "8:_11B4E949A83B4726A7E2A109FDFFB7F5"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1136,26 +1000,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B45954FF9213418C81BE2AD8757652AA"
-            {
-            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\README.md"
-            "TargetName" = "8:README.md"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B7696C8BFD4F4B22A3B0C724D8F4C9D9"
             {
             "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\normalize.exe"
@@ -1174,32 +1018,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BB4A88047743A9B1E954F4F16C2F14B7"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:taglib-sharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                }
-            "SourcePath" = "8:taglib-sharp.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BDB01C75FF3E4CBEA6BB97802A9C5C42"
@@ -1322,32 +1140,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E3E4AC7099B50F0F810F552C91A809A0"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AssemblyInfoHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                }
-            "SourcePath" = "8:AssemblyInfoHelper.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E486D1EA3C11459484016E4A99C6050C"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\vbaudio_cable_vista.cat"
@@ -1454,7 +1246,7 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FA1AE01DA9CBF1AE57FBAF938BD72FEC"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FB7518C58E5BF18DDC3A0E1D146425F3"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
@@ -1551,17 +1343,6 @@
                         {
                         }
                     }
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_744933B0B6344254A0F2B88DEFE5A9EF"
-                    {
-                    "Name" = "8:Audio-router-v0.10.5"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_0083602DA8C34A32935DBAE866934BA8"
-                        "Folders"
-                        {
-                        }
-                    }
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_C39C94F8D2F04B05A0B8D1EB52CD5243"
                     {
                     "Name" = "8:Installer_Documents"
@@ -1591,15 +1372,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SpotifyRecorder"
-        "ProductCode" = "8:{A83FA6DA-73FC-43F8-A9F9-81816A7440B0}"
-        "PackageCode" = "8:{FEB083BE-2040-4F61-8A12-C00EAC7795C1}"
+        "ProductCode" = "8:{94B05966-803C-4C4E-9FFF-F278FA3D4309}"
+        "PackageCode" = "8:{E87FDDF5-DB83-4112-B1D7-A60D7344B69D}"
         "UpgradeCode" = "8:{D4D50909-FF05-4D6E-B283-F2F6E3080CDE}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.1.0"
+        "ProductVersion" = "8:2.2.0"
         "Manufacturer" = "8:Markus Scheich"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1607,7 +1388,7 @@
         "Subject" = "8:"
         "ARPCONTACT" = "8:Markus Scheich"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:Applikation to record track from Spotify."
+        "ARPCOMMENTS" = "8:Application to record track from Spotify."
         "ARPURLINFOABOUT" = "8:"
         "ARPPRODUCTICON" = "8:_7E780DA5CE694EE6A8E9EA15990071A3"
         "ARPIconIndex" = "3:0"
@@ -1938,7 +1719,7 @@
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
                             "Setting" = "3:2"
-                            "Value" = "8:_99BD7A2F24A24DB787DAFA4E26D31D39"
+                            "Value" = "8:_9172D56E6ABF434896C79EDF65145152"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "Sunken"

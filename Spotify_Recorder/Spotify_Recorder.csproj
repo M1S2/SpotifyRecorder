@@ -53,6 +53,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -176,6 +177,9 @@
     <None Include="Resources\Folder_icon.ico" />
     <None Include="Resources\Spotify.png" />
     <None Include="Resources\Connect.png" />
+    <None Include="Resources\Tag.png" />
+    <None Include="Resources\Normalize.png" />
+    <None Include="Resources\Convert_Audio.png" />
     <Content Include="spotify_recorder_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -183,8 +187,7 @@
     <PostBuildEvent>copy "$(SolutionDir)README.md" "$(TargetDir)README.md"
 copy "$(SolutionDir)CHANGELOG.md" "$(TargetDir)CHANGELOG.md"
 copy "$(SolutionDir)Supplies\lame.exe" "$(TargetDir)lame.exe"
-copy "$(SolutionDir)Supplies\normalize.exe" "$(TargetDir)normalize.exe"
-if not exist "$(TargetDir)Audio-router-v0.10.5"  xcopy "$(SolutionDir)Supplies\audio-router-0.10.5\audio-router-v0.10.5-x64" "$(TargetDir)Audio-router-v0.10.5" /i</PostBuildEvent>
+copy "$(SolutionDir)Supplies\normalize.exe" "$(TargetDir)normalize.exe"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
