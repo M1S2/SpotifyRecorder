@@ -17,7 +17,7 @@ namespace Spotify_Recorder
         /// <summary>
         /// Where should the fade begin in ms
         /// </summary>
-        public double FadeStartTime_ms { get; protected set; }
+        public double FadeStartTime_ms { get; set; }
 
         /// <summary>
         /// How long should the fade last in ms
@@ -159,6 +159,14 @@ namespace Spotify_Recorder
                 TextWriter textWriter = new StreamWriter(fadePointsFile);
                 serializer.Serialize(textWriter, FadePoints);
                 textWriter.Close();
+
+                /*StreamWriter writer = new StreamWriter(fadePointsFile.Replace(".xml", "") + "_2.txt");        //Save the points to a text file with the format "X Y"
+                System.Globalization.NumberFormatInfo numberFormat = new System.Globalization.NumberFormatInfo() { NumberDecimalSeparator = "." };
+                foreach (PointF p in FadePoints)
+                {
+                    writer.WriteLine(p.X.ToString(numberFormat) + " " + p.Y.ToString(numberFormat));
+                }
+                writer.Close();*/
             }
         }
 
@@ -217,25 +225,21 @@ namespace Spotify_Recorder
                 }
                 case FadeTypes.UNDO_LINEAR:
                 {
-#warning Test FadeSettings UNDO cases !!!
                     factor = 1 / GetLinearFactor(new PointF((float)FadeStartTime_ms, (float)FadeBeginFactor), new PointF((float)(FadeStartTime_ms + FadeLength_ms), (float)FadeEndFactor), currentTime_ms); ;
                     break;
                 }
                 case FadeTypes.UNDO_LOG:
                 {
-#warning Test FadeSettings UNDO cases !!!
                     factor = 1 / GetLogFactor(new PointF((float)FadeStartTime_ms, (float)FadeBeginFactor), new PointF((float)(FadeStartTime_ms + FadeLength_ms), (float)FadeEndFactor), currentTime_ms, FadeShapeFactor); ;
                     break;
                 }
                 case FadeTypes.UNDO_HYPERBEL:
                 {
-#warning Test FadeSettings UNDO cases !!!
                     factor = 1 / GetHypFactor(new PointF((float)FadeStartTime_ms, (float)FadeBeginFactor), new PointF((float)(FadeStartTime_ms + FadeLength_ms), (float)FadeEndFactor), currentTime_ms, FadeShapeFactor); ;
                     break;
                 }
                 case FadeTypes.UNDO_CUSTOM:
                 {
-#warning Test FadeSettings UNDO cases !!!
                     factor = 1 / GetCustomFactor(currentTime_ms);
                     break;
                 }

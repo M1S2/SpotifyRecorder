@@ -81,9 +81,12 @@ namespace Spotify_Recorder
 
             WaveFileReader reader = new WaveFileReader(Filepath);
             format = reader.WaveFormat;
-#warning Is Lenght_s right ????
-            Length_s = reader.GetLength().TotalSeconds;
-            //Length_s = (reader.Length / format.BytesPerSecond) * 1000;
+
+            //Length_s = reader.GetLength().TotalSeconds;             // reader.GetLength() contains the FormatChunks too!
+            //Length_s = (reader.Length / format.BytesPerSecond);     // reader.Length contains the FormatChunks too!
+            List<CSCore.Codecs.WAV.WaveFileChunk> waveFileDataChunks = reader.Chunks.Where(c => c.GetType() == typeof(DataChunk)).ToList();
+            long waveFileDataChunksSizeBytes = waveFileDataChunks.Sum(c => c.ChunkDataSize);
+            Length_s = (waveFileDataChunksSizeBytes / format.BytesPerSecond);
 
             //long _sampleCount = reader.Length / (reader.WaveFormat.BitsPerSample / 8);
             //_sampleCount /= reader.WaveFormat.Channels;                                 //Each sample contains the values of the right and left channel for (Waveformat.Channels == 2)
@@ -93,7 +96,7 @@ namespace Spotify_Recorder
             format = source.WaveFormat;
 
             float[] sample_buffer = new float[format.Channels];
-            while (source.Read(sample_buffer, 0, sample_buffer.Length) > 0)          //At least one byte read
+            while (source.Read(sample_buffer, 0, sample_buffer.Length) > 0 && source.Position < (waveFileDataChunksSizeBytes / format.Channels))          //At least one byte read
             {
                 double time_ms = ((1 / (double)source.WaveFormat.BytesPerSecond) * source.WaveFormat.BytesPerSample * source.Position) * 1000;
 
@@ -114,6 +117,7 @@ namespace Spotify_Recorder
         /// <summary>
         /// Save all samples to a new WAV file
         /// </summary>
+        /// <param name="filepath">filepath of the new WAV file</param>
         public void SaveFile(string filepath)
         {
             if(Samples == null || format == null) { return; }
@@ -240,6 +244,8 @@ namespace Spotify_Recorder
         }
 
         //##########################################################################################################################################################################################################
+
+        #region Normalize
 
 #warning WaveFile.Normalize function not tested properly yet !!!
         /// <summary>
@@ -420,6 +426,8 @@ namespace Spotify_Recorder
                 return temp[count / 2];
             }
         }
+
+        #endregion
 
     }
 }

@@ -81,6 +81,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_37A9DDD9468749EA8837BE6EECEDC29E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3A4B1033FAAD439E9A332D890BBF6141"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -111,12 +117,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_6FFD39FE733D47BE90550F00A646EC18"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_71EC1CE0A523E1527B96A7D81A5F32E4"
         "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
         "MsmSig" = "8:_UNDEFINED"
@@ -142,6 +142,12 @@
         "Entry"
         {
         "MsmKey" = "8:_9172D56E6ABF434896C79EDF65145152"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_984CBE0845114D94A741261811D1FE5C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -219,13 +225,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E486D1EA3C11459484016E4A99C6050C"
+        "MsmKey" = "8:_E27154BED46B43848621302C96C7C4BA"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_E6048B6AF70148E4BD00A7FF50AB5683"
+        "MsmKey" = "8:_E45281E467D9468EB17454D1699FF5C0"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E486D1EA3C11459484016E4A99C6050C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -662,6 +674,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_37A9DDD9468749EA8837BE6EECEDC29E"
+            {
+            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\CHANGELOG.md"
+            "TargetName" = "8:CHANGELOG.md"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3A4B1033FAAD439E9A332D890BBF6141"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\pin_in.ico"
@@ -754,26 +786,6 @@
             "TargetName" = "8:vbaudio_cable_win7.cat"
             "Tag" = "8:"
             "Folder" = "8:_11B4E949A83B4726A7E2A109FDFFB7F5"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6FFD39FE733D47BE90550F00A646EC18"
-            {
-            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\README.md"
-            "TargetName" = "8:README.md"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -886,6 +898,26 @@
             "TargetName" = "8:Restore_default_audio_device.rtf"
             "Tag" = "8:"
             "Folder" = "8:_C39C94F8D2F04B05A0B8D1EB52CD5243"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_984CBE0845114D94A741261811D1FE5C"
+            {
+            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\README.md"
+            "TargetName" = "8:README.md"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1120,12 +1152,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E486D1EA3C11459484016E4A99C6050C"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E27154BED46B43848621302C96C7C4BA"
             {
-            "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\vbaudio_cable_vista.cat"
-            "TargetName" = "8:vbaudio_cable_vista.cat"
+            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\SpotifyPlayFadeInPoints.xml"
+            "TargetName" = "8:SpotifyPlayFadeInPoints.xml"
             "Tag" = "8:"
-            "Folder" = "8:_11B4E949A83B4726A7E2A109FDFFB7F5"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1140,12 +1172,32 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E6048B6AF70148E4BD00A7FF50AB5683"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E45281E467D9468EB17454D1699FF5C0"
             {
-            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\CHANGELOG.md"
-            "TargetName" = "8:CHANGELOG.md"
+            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\SpotifyPauseFadeOutPoints.xml"
+            "TargetName" = "8:SpotifyPauseFadeOutPoints.xml"
             "Tag" = "8:"
             "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E486D1EA3C11459484016E4A99C6050C"
+            {
+            "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\vbaudio_cable_vista.cat"
+            "TargetName" = "8:vbaudio_cable_vista.cat"
+            "Tag" = "8:"
+            "Folder" = "8:_11B4E949A83B4726A7E2A109FDFFB7F5"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1372,15 +1424,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SpotifyRecorder"
-        "ProductCode" = "8:{94B05966-803C-4C4E-9FFF-F278FA3D4309}"
-        "PackageCode" = "8:{E87FDDF5-DB83-4112-B1D7-A60D7344B69D}"
+        "ProductCode" = "8:{E18842C9-F32E-4728-962C-943F780F29C3}"
+        "PackageCode" = "8:{9BF58197-FFB3-4BBF-9056-93CC367C7979}"
         "UpgradeCode" = "8:{D4D50909-FF05-4D6E-B283-F2F6E3080CDE}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.2.0"
+        "ProductVersion" = "8:2.3.0"
         "Manufacturer" = "8:Markus Scheich"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

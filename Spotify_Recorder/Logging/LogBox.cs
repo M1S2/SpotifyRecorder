@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Spotify_Recorder
 {
@@ -261,6 +262,25 @@ namespace Spotify_Recorder
         private void btn_clearLog_Click(object sender, EventArgs e)
         {
             ClearLog();
+        }
+
+        /// <summary>
+        /// Save all log entries
+        /// </summary>
+        private void btn_saveLog_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "Text File|*.txt";
+            saveFileDialog1.Title = "Save a location for the log file";
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                StreamWriter writer = new StreamWriter(saveFileDialog1.FileName);
+                foreach (LogEvent logEvent in LogEvents)
+                {
+                    writer.WriteLine(logEvent.LogType.ToString() + "\t" + logEvent.LogTime.ToString(@"dd.MM.yyyy HH\:mm\:ss.ffff") + "\t" + logEvent.LogText);
+                }
+                writer.Close();
+            }
         }
     }
 }

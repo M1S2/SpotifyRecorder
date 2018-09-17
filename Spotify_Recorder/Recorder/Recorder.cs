@@ -28,7 +28,7 @@ namespace Spotify_Recorder
     /// <summary>
     /// Recorder states.
     /// </summary>
-    public enum RecordStates { RECORDING, PAUSED, STOPPED, NORMALIZING_WAV, CONVERTING_WAV_TO_MP3, ADDING_TAGS }
+    public enum RecordStates { RECORDING, PAUSED, STOPPED, NORMALIZING_WAV, CONVERTING_WAV_TO_MP3, ADDING_TAGS, REMOVING_FADES }
 
     /// <summary>
     /// What should be done if the file already exists. Skip and don't record anything, override the existing file, create a new file with another filename (number appended)
@@ -296,6 +296,7 @@ namespace Spotify_Recorder
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         private bool _isRecordPathValid;
+        private bool _wasRecordPaused;
 
         private WasapiCapture _capture;
         private WaveWriter _wavWriter;
@@ -350,6 +351,7 @@ namespace Spotify_Recorder
             RecordType = recordType;
             ExpectedRecordTime = -1;
             AllowedDifferenceToExpectedRecordTime = 1;
+            _wasRecordPaused = false;
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -370,6 +372,7 @@ namespace Spotify_Recorder
             RecordType = RecordTypes.MP3;
             ExpectedRecordTime = -1;
             AllowedDifferenceToExpectedRecordTime = 1;
+            _wasRecordPaused = false;
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -457,11 +460,11 @@ namespace Spotify_Recorder
             _capture.Start();
             RecordState = RecordStates.RECORDING;
             LogEvent?.Invoke(new LogEvent(LogTypes.INFO, DateTime.Now, "Record (\"" + Title + "\") started."));
+            _wasRecordPaused = false;
         }
 
         //***********************************************************************************************************************************************************************************************************
         
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! transitions between pause and no pause can be heared !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         /// <summary>
         /// Pause a record
         /// </summary>
@@ -472,12 +475,12 @@ namespace Spotify_Recorder
                 _silenceOut.Pause();
                 RecordState = RecordStates.PAUSED;
                 LogEvent?.Invoke(new LogEvent(LogTypes.INFO, DateTime.Now, "Record (\"" + Title + "\") paused."));
+                _wasRecordPaused = true;
             }
         }
 
         //***********************************************************************************************************************************************************************************************************
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! transitions between pause and no pause can be heared !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
         /// <summary>
         /// Resume a record
         /// </summary>
@@ -541,6 +544,12 @@ namespace Spotify_Recorder
 
             NormalizeWAVFile(FilestrWAV);
             LogEvent?.Invoke(new LogEvent(LogTypes.INFO, DateTime.Now, "Record (\"" + Title + "\") normalized."));
+
+            if (_wasRecordPaused)
+            {
+                RemoveSpotifyFades(FilestrWAV);
+                LogEvent?.Invoke(new LogEvent(LogTypes.INFO, DateTime.Now, "Record (\"" + Title + "\") spotify fades removed."));
+            }
 
             if (RecordType == RecordTypes.WAV_AND_MP3)
             {
@@ -714,5 +723,36 @@ namespace Spotify_Recorder
 
         #endregion
 
+        //***********************************************************************************************************************************************************************************************************
+
+        #region Remove spotify fades
+
+        /// <summary>
+        /// Find all places where the record was paused and remove the fade outs and fade ins that spotify applies when pausing and resuming a playback.
+        /// </summary>
+        /// <param name="wavFileName">WAV file to remove fades</param>
+        private void RemoveSpotifyFades(string wavFileName)
+        {
+            RecordState = RecordStates.REMOVING_FADES;
+            
+            string spotifyPauseFadeOutPointsPath = Application.StartupPath + @"\SpotifyPauseFadeOutPoints.xml";
+            string spotifyPlayFadeInPointsPath = Application.StartupPath + @"\SpotifyPlayFadeInPoints.xml";
+
+            WaveFile file = new WaveFile(wavFileName);
+            List<SilenceParts> silence = file.RemoveSilence(10, -1, 0.001);
+
+            List<FadeSettings> fades = new List<FadeSettings>();
+            foreach (SilenceParts sil in silence)
+            {
+                FadeSettings fadeOutSettings = new FadeSettings(sil.New_Start_ms, FadeTypes.UNDO_CUSTOM, spotifyPauseFadeOutPointsPath, AudioChannels.RIGHT_AND_LEFT);
+                fadeOutSettings.FadeStartTime_ms -= fadeOutSettings.FadePoints.Last().X;
+                fades.Add(fadeOutSettings);
+                fades.Add(new FadeSettings(sil.New_Start_ms, FadeTypes.UNDO_CUSTOM, spotifyPlayFadeInPointsPath, AudioChannels.RIGHT_AND_LEFT));
+            }
+            file.ApplyFading(fades);
+            file.SaveFile(wavFileName);
+        }
+
+        #endregion
     }
 }

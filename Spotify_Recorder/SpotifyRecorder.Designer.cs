@@ -378,7 +378,8 @@
             this.lbl_isRecording.TabIndex = 46;
             this.lbl_isRecording.Text = "---";
             this.toolTip1.SetToolTip(this.lbl_isRecording, "Recorder state. This could be one of the following:\r\n- RECORDING\r\n- PAUSED\r\n- STO" +
-        "PPED\r\n- NORMALIZING_WAV\r\n- CONVERTING_WAV_TO_MP3\r\n- ADDING_TAGS");
+        "PPED\r\n- NORMALIZING_WAV\r\n- REMOVING_FADES\r\n- CONVERTING_WAV_TO_MP3\r\n- ADDING_TAG" +
+        "S");
             // 
             // chk_output_wav
             // 

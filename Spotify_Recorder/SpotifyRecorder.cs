@@ -17,11 +17,9 @@ namespace Spotify_Recorder
 {
     public partial class SpotifyRecorder : Form
     {
-        SpotifyLocalAPI _spotify = new SpotifyLocalAPI();
-        Track _currentTrack;
-
-        //***********************************************************************************************************************************************************************************************************
-
+        private SpotifyLocalAPI _spotify = new SpotifyLocalAPI();
+        private Track _currentTrack;
+        
         private Recorder _recorder;
         private bool isRecorderArmed;
         private bool block_update = false;
@@ -54,81 +52,12 @@ namespace Spotify_Recorder
 
             logBox1.LogEvent(LogTypes.INFO, "SpotifyRecorder loaded.");
 
+
+            //TestWaveFileFunctions.TestSpotifyDefade();
+ 
+
             InitGUI();
             SpotifyConnect();
-
-            string path = @"D:\Benutzer\V17\Dokumente\Visual Studio 2015\Projects\Spotify_Recorder\";
-            //string path = @"C:\Users\masc107\Desktop\C#\Spotify_Recorder\";
-
-            //string filename = "American Idiot.wav";
-            //string filename_temp = "American Idiot_temp.wav";
-            //string filename = "Cascada - Miracle - Nightcore Edit.wav";
-            //string filename_temp = "Cascada - Miracle - Nightcore Edit_temp.wav";
-            string filename = "Marvel Opening Fanfare.wav"; //_paused.wav";
-            string filename_temp = "Marvel Opening Fanfare_paused.wav"; // _temp.wav";
-            //string filename = "test_faded.wav";
-            //string filename_temp = "test_UNfaded.wav";
-            //string filename = "test.wav";
-            //string filename_temp = "test_temp.wav";
-
-            return;
-
-            WAV_Compare wav_comp = new WAV_Compare(path + filename, path + filename_temp);
-            wav_comp.ShowDialog();
-
-            return;
-
-            WAV_Visualization wav_visualization = new WAV_Visualization(path + filename, 8000, 11000, 10000);
-            wav_visualization.ShowDialog();
-
-            WaveFile file = new WaveFile(path + filename);            
-            List<SilenceParts> silence = file.RemoveSilence(10, -1, 0.001);
-
-            List<PointF> fadeIn = new List<PointF>();
-            fadeIn.Add(new PointF(0, 0.05f));
-            fadeIn.Add(new PointF(9, 0.05f));
-            fadeIn.Add(new PointF(10, 0.06f));
-            fadeIn.Add(new PointF(200, 1));
-
-            List<PointF> fadeOut = new List<PointF>();
-            fadeOut.Add(new PointF(0, 1));
-            fadeOut.Add(new PointF(190, 0.06f));
-            fadeOut.Add(new PointF(191, 0.05f));
-            fadeOut.Add(new PointF(200, 0.05f));
-
-            List<FadeSettings> fades = new List<FadeSettings>();
-            foreach (SilenceParts sil in silence)
-            {
-                fades.Add(new FadeSettings(sil.New_Start_ms - 200, FadeTypes.UNDO_CUSTOM, fadeOut, AudioChannels.RIGHT_AND_LEFT));
-                fades.Add(new FadeSettings(sil.New_Start_ms, FadeTypes.UNDO_CUSTOM, fadeIn, AudioChannels.RIGHT_AND_LEFT));
-
-                //fades.Add(new FadeSettings(sil.New_Start_ms - 200, 200, 1, 0.05f, AudioChannels.RIGHT_AND_LEFT, FadeTypes.UNDO_LINEAR));
-                //fades.Add(new FadeSettings(sil.New_Start_ms, 200, 0.05f, 1, AudioChannels.RIGHT_AND_LEFT, FadeTypes.UNDO_LINEAR));
-
-                //fades.Add(new FadeSettings(sil.New_Start_ms - 200, 200, 1, 0.02f, AudioChannels.RIGHT_AND_LEFT, FadeTypes.UNDO_HYPERBEL, 1500));
-                //fades.Add(new FadeSettings(sil.New_Start_ms, 200, 0.02f, 1, AudioChannels.RIGHT_AND_LEFT, FadeTypes.UNDO_HYPERBEL, 1500));
-            }
-
-            file.ApplyFading(fades);
-            file.SaveFile(path + filename_temp);
-
-
-            //List<FadeSettings> fades = new List<FadeSettings>();
-
-            //List<PointF> customFactors = new List<PointF>() { new PointF(0, 1), new PointF(2000, 1), new PointF(10000, 0.1f) };
-            //fades.Add(new FadeSettings(0, FadeTypes.CUSTOM, customFactors, AudioChannels.RIGHT_AND_LEFT));
-
-            //fades.Add(new FadeSettings(1000, file.Length_s * 1000 - 1000, 0, 1, AudioChannels.RIGHT_AND_LEFT, FadeTypes.LINEAR));
-            //////fades.Add(new FadeSettings(2000, 500, 0, 1, AudioChannels.RIGHT_AND_LEFT, FadeTypes.LINEAR));
-            ////////fades.Add(new FadeSettings(2000, 500, 0, 1, AudioChannels.RIGHT_AND_LEFT, FadeTypes.UNDO_LINEAR));
-            //file.ApplyFading(fades);
-            //file.SaveFile(path + filename_temp);
-
-            //file.Normalize(AudioChannels.RIGHT_AND_LEFT);
-            //file.SaveFile(path + filename_temp);
-
-            wav_visualization = new WAV_Visualization(path + filename_temp, 8000, 11000, 10000);
-            wav_visualization.ShowDialog();
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -187,7 +116,7 @@ namespace Spotify_Recorder
             if (!Directory.Exists(Properties.Settings.Default.RecordPath)) { txt_output_path.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic); }
             else  { txt_output_path.Text = Properties.Settings.Default.RecordPath; }
 
-            if (!Properties.Settings.Default.RecordWAV && !Properties.Settings.Default.RecordWAV)
+            if (!Properties.Settings.Default.RecordWAV && !Properties.Settings.Default.RecordMP3)
             {
                 chk_output_wav.Checked = false;
                 chk_output_mp3.Checked = true;
@@ -232,6 +161,7 @@ namespace Spotify_Recorder
 
         Track _lastTrack = null;
         bool block_onTrackTimeChangeEvent = false;
+        bool block_recorderStartStop = false;
         private void _spotify_OnTrackTimeChange(object sender, TrackTimeChangeEventArgs e)
         {
             if (block_onTrackTimeChangeEvent) { return; }
@@ -247,9 +177,22 @@ namespace Spotify_Recorder
                 prog_track_time.Value = (int)e.TrackTime;
 
                 StatusResponse status = _spotify.GetStatus();
-                if (isRecorderArmed && _recorder.RecordState == RecordStates.STOPPED && status.Playing && status.PlayingPosition < 0.5 && _currentTrack != null && !_currentTrack.IsAd() && _lastTrack.TrackResource.Uri == status.Track.TrackResource.Uri)
+                if (isRecorderArmed && status.Playing && status.PlayingPosition < 0.5 && _currentTrack != null && !_currentTrack.IsAd() && _lastTrack.TrackResource.Uri == status.Track.TrackResource.Uri)
                 {
-                    StartRecord();
+                    if (_recorder.RecordState == RecordStates.STOPPED)
+                    {
+                        block_recorderStartStop = true;
+                        StartRecord();
+                    }
+                    else if(_recorder.RecordState == RecordStates.RECORDING && !block_recorderStartStop)
+                    {
+                        _recorder.StopRecord();
+                        StartRecord();
+                    }
+                }
+                else
+                {
+                    block_recorderStartStop = false;
                 }
                 _lastTrack = status?.Track;
             }
@@ -796,7 +739,9 @@ namespace Spotify_Recorder
         private void RecorderRecordingStateChanged(RecordStates recordingState)
         {
             lbl_isRecording.Text = recordingState.ToString();
-            switch(recordingState)
+            toolStripButton_recorder_start_manually.Enabled = (recordingState == RecordStates.STOPPED);     // Only allow to start a new record if the recorder is stopped.
+            toolStripButton_recorder_stop_manually.Enabled = (recordingState != RecordStates.STOPPED);      // Allow to stop the record if the recorder isn't stopped.
+            switch (recordingState)
             {
                 case RecordStates.RECORDING: pic_recordState.Image = Spotify_Recorder.Properties.Resources.Record; break;
                 case RecordStates.PAUSED: pic_recordState.Image = Spotify_Recorder.Properties.Resources.Pause; break;
@@ -804,6 +749,7 @@ namespace Spotify_Recorder
                 case RecordStates.NORMALIZING_WAV: pic_recordState.Image = Spotify_Recorder.Properties.Resources.Normalize; break;
                 case RecordStates.CONVERTING_WAV_TO_MP3: pic_recordState.Image = Spotify_Recorder.Properties.Resources.Convert_Audio; break;
                 case RecordStates.ADDING_TAGS: pic_recordState.Image = Spotify_Recorder.Properties.Resources.Tag; break;
+                case RecordStates.REMOVING_FADES: pic_recordState.Image = Spotify_Recorder.Properties.Resources.Fade; break;
             }
         }
 

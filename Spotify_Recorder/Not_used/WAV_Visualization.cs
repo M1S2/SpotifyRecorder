@@ -19,46 +19,80 @@ namespace Spotify_Recorder
         public double EndTime_ms { get; private set; }
         public long NumberOfSamplesAfterGrouping { get; private set; }
         public WaveFile WavFile { get; private set; }
+        public string EnvelopeSaveFilePath { get; private set; }
 
         //##########################################################################################################################################################################################################
 
+        /// <summary>
+        /// Display the WAV file in the given path. The whole file is displayed and no envelope points are saved.
+        /// </summary>
+        /// <param name="filepath">Path of the WAV file to display</param>
         public WAV_Visualization(string filepath)
         {
             InitializeComponent();
 
             WaveFile wavFile = new WaveFile(filepath);
-            Init(wavFile, -1, -1, -1);
+            Init(wavFile, -1, -1, -1, "");
         }
 
+        /// <summary>
+        /// Display the WAV file. The whole file is displayed and no envelope points are saved.
+        /// </summary>
+        /// <param name="wavFile">WAV file to display</param>
         public WAV_Visualization(WaveFile wavFile)
         {
             InitializeComponent();
-            Init(wavFile, -1, -1, -1);
+            Init(wavFile, -1, -1, -1, "");
         }
 
-        public WAV_Visualization(string filepath, double beginTime_ms, double endTime_ms, long numberSamplesAfterGrouping)
+        /// <summary>
+        /// Display the WAV file in the given path. You can limit the time that is displayed. You can also save the envelope points of the painted curve portion to an XML file.
+        /// </summary>
+        /// <param name="filepath">Path of the WAV file to display</param>
+        /// <param name="beginTime_ms">Start time in ms of the displayed portion</param>
+        /// <param name="endTime_ms">End time in ms of the displayed portion</param>
+        /// <param name="numberSamplesAfterGrouping">Number of samples after grouping the original samples. Grouping is used to reduce the number of samples that are displayed</param>
+        /// <param name="envelopeSaveFilePath">If you want to save the points that describe the envelope of the painted curve portion to a file, use this parameter to specify the file path for that XML file. Otherwise set this to ""</param>
+        public WAV_Visualization(string filepath, double beginTime_ms, double endTime_ms, long numberSamplesAfterGrouping, string envelopeSaveFilePath = "")
         {
             InitializeComponent();
-
+            
             WaveFile wavFile = new WaveFile(filepath);
-            Init(wavFile, beginTime_ms, endTime_ms, numberSamplesAfterGrouping);
+            Init(wavFile, beginTime_ms, endTime_ms, numberSamplesAfterGrouping, envelopeSaveFilePath);
         }
 
-        public WAV_Visualization(WaveFile wavFile, double beginTime_ms, double endTime_ms, long numberSamplesAfterGrouping)
+        /// <summary>
+        /// Display the WAV file. You can limit the time that is displayed. You can also save the envelope points of the painted curve portion to an XML file.
+        /// </summary>
+        /// <param name="wavFile">WAV file to display</param>
+        /// <param name="beginTime_ms">Start time in ms of the displayed portion</param>
+        /// <param name="endTime_ms">End time in ms of the displayed portion</param>
+        /// <param name="numberSamplesAfterGrouping">Number of samples after grouping the original samples. Grouping is used to reduce the number of samples that are displayed</param>
+        /// <param name="envelopeSaveFilePath">If you want to save the points that describe the envelope of the painted curve portion to a file, use this parameter to specify the file path for that XML file. Otherwise set this to ""</param>
+        public WAV_Visualization(WaveFile wavFile, double beginTime_ms, double endTime_ms, long numberSamplesAfterGrouping, string envelopeSaveFilePath = "")
         {
             InitializeComponent();
-            Init(wavFile, beginTime_ms, endTime_ms, numberSamplesAfterGrouping);
+            Init(wavFile, beginTime_ms, endTime_ms, numberSamplesAfterGrouping, envelopeSaveFilePath);
         }
 
         //##########################################################################################################################################################################################################
 
-        private void Init(WaveFile wavFile, double beginTime_ms, double endTime_ms, long numberSamplesAfterGrouping)
+        /// <summary>
+        /// Init function that is called from all constructors to initialize all parameters.
+        /// </summary>
+        /// <param name="wavFile">WAV file to display</param>
+        /// <param name="beginTime_ms">Start time in ms of the displayed portion</param>
+        /// <param name="endTime_ms">End time in ms of the displayed portion</param>
+        /// <param name="numberSamplesAfterGrouping">Number of samples after grouping the original samples. Grouping is used to reduce the number of samples that are displayed</param>
+        /// <param name="envelopeSaveFilePath">If you want to save the points that describe the envelope of the painted curve portion to a file, use this parameter to specify the file path for that XML file. Otherwise set this to ""</param>
+        private void Init(WaveFile wavFile, double beginTime_ms, double endTime_ms, long numberSamplesAfterGrouping, string envelopeSaveFilePath)
         {
             WavFile = wavFile;
             Filepath = (wavFile == null ? "" : wavFile.Filepath);
             BeginTime_ms = beginTime_ms;
             EndTime_ms = endTime_ms;
             NumberOfSamplesAfterGrouping = numberSamplesAfterGrouping;
+            EnvelopeSaveFilePath = envelopeSaveFilePath;
         }
 
         //##########################################################################################################################################################################################################
@@ -69,14 +103,36 @@ namespace Spotify_Recorder
 
             List<AudioSample> samples_L = new List<AudioSample>();
             List<AudioSample> samples_R = new List<AudioSample>();
+            List<PointF> samples_envelope_L = new List<PointF>();
+            List<PointF> samples_envelope_R = new List<PointF>();
 
             if (WavFile == null) { return; }
 
             samples_L = WavFile.GetChannelSamples(AudioChannels.LEFT, BeginTime_ms, EndTime_ms);
             samples_R = WavFile.GetChannelSamples(AudioChannels.RIGHT, BeginTime_ms, EndTime_ms);
 
+            samples_envelope_L = CalculateEnvelope(samples_L, 175);
+            samples_envelope_R = CalculateEnvelope(samples_R, 175);
+
+            List<PointF> samples_envelope_L_shifted = samples_envelope_L.Select(s => new PointF(s.X - samples_envelope_L.First().X, s.Y)).ToList();
+            List<PointF> samples_envelope_R_shifted = samples_envelope_R.Select(s => new PointF(s.X - samples_envelope_R.First().X, s.Y)).ToList();
+
+            if (EnvelopeSaveFilePath != "")
+            { 
+                FadeSettings fadeSettings = new FadeSettings(0, FadeTypes.CUSTOM, samples_envelope_L_shifted, AudioChannels.RIGHT_AND_LEFT);
+                fadeSettings.SaveFadePoints(EnvelopeSaveFilePath);
+            }
+
             samples_L = GroupSamples(samples_L, NumberOfSamplesAfterGrouping);
             samples_R = GroupSamples(samples_R, NumberOfSamplesAfterGrouping);
+
+            /*chart1.ChartAreas[0].AxisY.IsLogarithmic = true;
+            samples_L.ForEach(s => s.Value = (float)(Math.Abs(s.Value) + 0.00001));
+            samples_R.ForEach(s => s.Value = (float)(Math.Abs(s.Value) + 0.00001));
+            samples_envelope_L.ForEach(p => p.Y = (float)(Math.Abs(p.Y) + 0.00001));
+            samples_envelope_R.ForEach(p => p.Y = (float)(Math.Abs(p.Y) + 0.00001));
+            */
+
 
             foreach (AudioSample s in samples_L)
             {
@@ -85,6 +141,17 @@ namespace Spotify_Recorder
             foreach (AudioSample s in samples_R)
             {
                 chart1.Series["Series_Right"].Points.AddXY(s.Time_ms, s.Value);
+            }
+
+            if (samples_envelope_L.Count < 100) { chart1.Series["Series_Envelope_Left"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line; }     //Change chart type from FastLine to Line to show markers
+            if (samples_envelope_R.Count < 100) { chart1.Series["Series_Envelope_Right"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line; }
+            foreach (PointF p in samples_envelope_L)
+            {
+                chart1.Series["Series_Envelope_Left"].Points.AddXY(p.X, p.Y);
+            }
+            foreach (PointF p in samples_envelope_R)
+            {
+                chart1.Series["Series_Envelope_Right"].Points.AddXY(p.X, p.Y);
             }
         }
 
@@ -133,7 +200,27 @@ namespace Spotify_Recorder
             return grouped_samples;
         }
 
+        //##########################################################################################################################################################################################################
 
+        /// <summary>
+        /// Calculate the envelope curve for the given samples. The samples are devided in bins. For each bin the maximum absolute value is calculated.
+        /// </summary>
+        /// <param name="samples">Samples for which the envelope curve is calculated</param>
+        /// <param name="binWidth">number of samples per bin</param>
+        /// <returns>list with envelope points</returns>
+        public static List<PointF> CalculateEnvelope(List<AudioSample> samples, int binWidth)
+        {
+            List<PointF> envelopePoints = new List<PointF>();
+            int numberOfBins = samples.Count / binWidth;
+            for(int i = 0; i < numberOfBins; i++)
+            {
+                List<AudioSample> binSamples = samples.GetRange(i * binWidth, binWidth);
+                float binMaxValue = binSamples.Select(s => Math.Abs(s.Value)).Max();
+                float binMaxTime = (float)binSamples.Select(s => s.Time_ms).Average();
+                envelopePoints.Add(new PointF(binMaxTime, binMaxValue));
+            }
+            return envelopePoints;
+        }
 
         //##########################################################################################################################################################################################################
 

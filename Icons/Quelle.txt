@@ -8,3 +8,4 @@ Connect: 	https://www.onlinewebfonts.com/icon/410957
 Tag: 		http://www.endlessicons.com/free-icons/price-tag-icon/
 Normalize:	https://www.iconfinder.com/icons/675322/arrows_expand_normalization_normalize_sound_wave_icon
 Convert_Audio:	httpswww.iconfinder.comicons170742audio_convert_converter_music_recycle_recycling_icon
+Fade:		https://www.123rf.com/photo_67774364_stock-vector-sliders-or-faders-control-board-fader-icon.html

@@ -109,6 +109,7 @@
     <Compile Include="Not_used\VolumeControl.cs" />
     <Compile Include="WaveFile\AudioChannels.cs" />
     <Compile Include="WaveFile\AudioSample.cs" />
+    <Compile Include="WaveFile\TestWaveFileFunctions.cs" />
     <Compile Include="WaveFile\WaveFile.cs" />
     <Compile Include="Not_used\WAV_Compare.cs">
       <SubType>Form</SubType>
@@ -164,23 +165,62 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Play.png" />
-    <None Include="Resources\Previous.png" />
-    <None Include="Resources\Skip.png" />
-    <None Include="Resources\Stop.png" />
-    <None Include="Resources\Update.png" />
-    <None Include="Resources\Pause.png" />
-    <None Include="Resources\Spotify_Recorder_Icon.png" />
-    <None Include="Resources\spotify_recorder_icon.ico" />
-    <None Include="Resources\Record.png" />
-    <None Include="Resources\Clear.png" />
-    <None Include="Resources\Clear_small.png" />
-    <None Include="Resources\Folder_icon.ico" />
-    <None Include="Resources\Spotify.png" />
-    <None Include="Resources\Connect.png" />
-    <None Include="Resources\Tag.png" />
-    <None Include="Resources\Normalize.png" />
-    <None Include="Resources\Convert_Audio.png" />
+    <Resource Include="Resources\Play.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Previous.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Skip.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Stop.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Update.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Pause.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Spotify_Recorder_Icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\spotify_recorder_icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Record.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Clear.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Clear_small.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Folder_icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Spotify.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Connect.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Tag.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Normalize.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Convert_Audio.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Save.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Resources\Save_small.PNG" />
+    <None Include="Resources\Fade.png" />
     <Content Include="spotify_recorder_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

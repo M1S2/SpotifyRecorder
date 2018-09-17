@@ -21,7 +21,5 @@ If the track changes and the recorded length is shorter than the expected length
 
 If the record length is correct, the record is normalized (the volume is amplified to the maximum value without clipping), converted to MP3 (if needed) and tagged (infos are added to the file).
 
-The record is taken from a virtual audio device (virtual audio cable) to avoid other applications from interrupting the record. Therefore the sound from Spotify must be played via the audio cable output device.
-
-## Known issues
-- If Spotify is paused while a record is running, you can hear the pause in the recorded song (because of the fading, spotify applies when pausing).
+The record is taken from a virtual audio device (virtual audio cable) to avoid other applications from interrupting the record. Therefore the sound from Spotify must be played via the audio cable output device. This is done by changing the output device in the Spotify settings.
+You can even set the master volume to 0 and the song is still recorded.

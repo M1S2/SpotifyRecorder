@@ -39,8 +39,9 @@
             this.chk_showInfos = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btn_clearLog = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.btn_clearLog = new System.Windows.Forms.Button();
+            this.btn_saveLog = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -152,25 +153,12 @@
             this.flowLayoutPanel1.Controls.Add(this.chk_showWarnings);
             this.flowLayoutPanel1.Controls.Add(this.chk_showInfos);
             this.flowLayoutPanel1.Controls.Add(this.btn_clearLog);
+            this.flowLayoutPanel1.Controls.Add(this.btn_saveLog);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(514, 31);
             this.flowLayoutPanel1.TabIndex = 6;
-            // 
-            // btn_clearLog
-            // 
-            this.btn_clearLog.Image = global::Spotify_Recorder.Properties.Resources.Clear_small;
-            this.btn_clearLog.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_clearLog.Location = new System.Drawing.Point(311, 3);
-            this.btn_clearLog.Name = "btn_clearLog";
-            this.btn_clearLog.Size = new System.Drawing.Size(86, 23);
-            this.btn_clearLog.TabIndex = 6;
-            this.btn_clearLog.Text = "Clear Log";
-            this.btn_clearLog.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip1.SetToolTip(this.btn_clearLog, "Clear all log entries.");
-            this.btn_clearLog.UseVisualStyleBackColor = true;
-            this.btn_clearLog.Click += new System.EventHandler(this.btn_clearLog_Click);
             // 
             // toolTip1
             // 
@@ -178,6 +166,34 @@
             this.toolTip1.InitialDelay = 500;
             this.toolTip1.IsBalloon = true;
             this.toolTip1.ReshowDelay = 100;
+            // 
+            // btn_clearLog
+            // 
+            this.btn_clearLog.Image = global::Spotify_Recorder.Properties.Resources.Clear_small;
+            this.btn_clearLog.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_clearLog.Location = new System.Drawing.Point(311, 3);
+            this.btn_clearLog.Name = "btn_clearLog";
+            this.btn_clearLog.Size = new System.Drawing.Size(80, 23);
+            this.btn_clearLog.TabIndex = 6;
+            this.btn_clearLog.Text = "Clear Log";
+            this.btn_clearLog.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.btn_clearLog, "Clear all log entries.");
+            this.btn_clearLog.UseVisualStyleBackColor = true;
+            this.btn_clearLog.Click += new System.EventHandler(this.btn_clearLog_Click);
+            // 
+            // btn_saveLog
+            // 
+            this.btn_saveLog.Image = global::Spotify_Recorder.Properties.Resources.Save_small;
+            this.btn_saveLog.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_saveLog.Location = new System.Drawing.Point(397, 3);
+            this.btn_saveLog.Name = "btn_saveLog";
+            this.btn_saveLog.Size = new System.Drawing.Size(80, 23);
+            this.btn_saveLog.TabIndex = 7;
+            this.btn_saveLog.Text = "Save Log";
+            this.btn_saveLog.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.btn_saveLog, "Save all log entries.");
+            this.btn_saveLog.UseVisualStyleBackColor = true;
+            this.btn_saveLog.Click += new System.EventHandler(this.btn_saveLog_Click);
             // 
             // LogBox
             // 
@@ -210,5 +226,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button btn_clearLog;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Button btn_saveLog;
     }
 }
