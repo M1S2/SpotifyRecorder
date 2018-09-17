@@ -3,7 +3,7 @@
 |
 | ---------| -----------------------------------------|
 | Project: | Spotify_Recorder                   |
-| Version: | %version%                                |
+| Version: | v2.2                                |
 
 ## Purpose
 
