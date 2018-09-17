@@ -4,6 +4,9 @@ Project: Spotify_Recorder
 
 ## [%version%] - %date%
 
+
+## [v2.2] - 17.09.2018 18:46
+
 - The audio router isn't used anymore because Spotify has a hidden feature to play the audio via a specific device.
 - Spotify must be started with the \"--enable-audio-graph\" to be able to choose the output device. On startup of this application it is checked if Spotify runs with the correct option.
 - The master volume can be changed without affecting the record (because recording from the virtual audio cable ?!).
