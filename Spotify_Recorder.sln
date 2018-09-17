@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spotify_Recorder", "Spotify
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup_Spotify_Recorder", "Setup_Spotify_Recorder\Setup_Spotify_Recorder.vdproj", "{8A711CE2-5D1A-4786-BD40-D01837EFCC9B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{36FCF5FD-DD02-4C70-AEAB-DA529911BFF5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31979DC1-7195-4AC1-A362-3249461DBE7E}"
 	ProjectSection(SolutionItems) = preProject
 		CHANGELOG.md = CHANGELOG.md
 		README.md = README.md
@@ -25,10 +25,6 @@ Global
 		{DAF633B7-3821-4D13-9BF2-381B72E8677F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8A711CE2-5D1A-4786-BD40-D01837EFCC9B}.Debug|Any CPU.ActiveCfg = Debug
 		{8A711CE2-5D1A-4786-BD40-D01837EFCC9B}.Release|Any CPU.ActiveCfg = Release
-		{4698F494-95F6-459D-9ABC-1D7C3300A249}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4698F494-95F6-459D-9ABC-1D7C3300A249}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4698F494-95F6-459D-9ABC-1D7C3300A249}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4698F494-95F6-459D-9ABC-1D7C3300A249}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

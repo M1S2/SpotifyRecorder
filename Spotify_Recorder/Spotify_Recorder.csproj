@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Not_used\AudioLevelMonitor.cs" />
     <Compile Include="PictureDisplay.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,20 +106,20 @@
     <Compile Include="Recorder\SilenceGenerator.cs" />
     <Compile Include="WaveFile\FadeTypes.cs" />
     <Compile Include="WaveFile\SilenceParts.cs" />
-    <Compile Include="VolumeControl.cs" />
+    <Compile Include="Not_used\VolumeControl.cs" />
     <Compile Include="WaveFile\AudioChannels.cs" />
     <Compile Include="WaveFile\AudioSample.cs" />
     <Compile Include="WaveFile\WaveFile.cs" />
-    <Compile Include="WAV_Compare.cs">
+    <Compile Include="Not_used\WAV_Compare.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WAV_Compare.Designer.cs">
+    <Compile Include="Not_used\WAV_Compare.Designer.cs">
       <DependentUpon>WAV_Compare.cs</DependentUpon>
     </Compile>
-    <Compile Include="WAV_Visualization.cs">
+    <Compile Include="Not_used\WAV_Visualization.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WAV_Visualization.Designer.cs">
+    <Compile Include="Not_used\WAV_Visualization.Designer.cs">
       <DependentUpon>WAV_Visualization.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="FileNameSubFolderCreator.resx">
@@ -143,10 +144,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="WAV_Compare.resx">
+    <EmbeddedResource Include="Not_used\WAV_Compare.resx">
       <DependentUpon>WAV_Compare.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WAV_Visualization.resx">
+    <EmbeddedResource Include="Not_used\WAV_Visualization.resx">
       <DependentUpon>WAV_Visualization.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
