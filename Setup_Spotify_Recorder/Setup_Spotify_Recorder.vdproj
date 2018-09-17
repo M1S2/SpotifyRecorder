@@ -81,12 +81,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_37A9DDD9468749EA8837BE6EECEDC29E"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_3A4B1033FAAD439E9A332D890BBF6141"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -142,12 +136,6 @@
         "Entry"
         {
         "MsmKey" = "8:_9172D56E6ABF434896C79EDF65145152"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_984CBE0845114D94A741261811D1FE5C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -213,6 +201,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_C8CBA1FA8FF8473B9717F9A106BE6030"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_CAD62E71804D4C3AA37DA944F6A61EBE"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -220,6 +214,12 @@
         "Entry"
         {
         "MsmKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E0834347AAA64B3DABC114434149B4EF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -674,26 +674,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_37A9DDD9468749EA8837BE6EECEDC29E"
-            {
-            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\CHANGELOG.md"
-            "TargetName" = "8:CHANGELOG.md"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3A4B1033FAAD439E9A332D890BBF6141"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\pin_in.ico"
@@ -912,26 +892,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_984CBE0845114D94A741261811D1FE5C"
-            {
-            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\README.md"
-            "TargetName" = "8:README.md"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A19C6F0C79CB4547B8F96ABE810EE6B4"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\VBCABLE_Setup_x64.exe"
@@ -1132,12 +1092,52 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C8CBA1FA8FF8473B9717F9A106BE6030"
+            {
+            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\README.md"
+            "TargetName" = "8:README.md"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CAD62E71804D4C3AA37DA944F6A61EBE"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\vbMmeCable_win7.inf"
             "TargetName" = "8:vbMmeCable_win7.inf"
             "Tag" = "8:"
             "Folder" = "8:_11B4E949A83B4726A7E2A109FDFFB7F5"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E0834347AAA64B3DABC114434149B4EF"
+            {
+            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\CHANGELOG.md"
+            "TargetName" = "8:CHANGELOG.md"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"

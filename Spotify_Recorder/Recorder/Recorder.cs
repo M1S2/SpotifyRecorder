@@ -288,18 +288,35 @@ namespace Spotify_Recorder
 
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        public string FilestrWAV { get; private set; }      //Filename: "interpret - title.wav"
-        public string FilestrMP3 { get; private set; }      //Filename: "interpret - title.mp3"      
+        /// <summary>
+        /// Filename: "interpret - title.wav"
+        /// </summary>
+        public string FilestrWAV { get; private set; }
+
+        /// <summary>
+        /// Filename: "interpret - title.mp3" 
+        /// </summary>
+        public string FilestrMP3 { get; private set; }
+
+        //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Mark paused files (add "_paused" to the file name)
+        /// </summary>
+        public bool MarkPausedFiles { get; set; }
 
         #endregion
 
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         private bool _isRecordPathValid;
-        private bool _wasRecordPaused;
+        private bool _wasRecordPaused;                                      // true -> the record was paused at least once; false -> the record wasn't paused
+        private List<double> _recordPauseTimes_s = new List<double>();      // list with times when the record was paused
 
         private WasapiCapture _capture;
         private WaveWriter _wavWriter;
+        private WaveFormat _wavWriterFormat;
+        private double _wavWriterPositionBytes;
 
         private ISoundOut _silenceOut;      //This object is used to play silence during each record. Otherwise blank parts won't be recorded. "Another oddity is that WASAPI will only push data down to the render endpoint when there are active streams. When nothing is playing, there is nothing to capture." (see: https://stackoverflow.com/questions/24135557/cscore-loopback-recording-when-muted)
 
@@ -352,6 +369,7 @@ namespace Spotify_Recorder
             ExpectedRecordTime = -1;
             AllowedDifferenceToExpectedRecordTime = 1;
             _wasRecordPaused = false;
+            MarkPausedFiles = true;
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -373,6 +391,7 @@ namespace Spotify_Recorder
             ExpectedRecordTime = -1;
             AllowedDifferenceToExpectedRecordTime = 1;
             _wasRecordPaused = false;
+            MarkPausedFiles = true;
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -435,9 +454,10 @@ namespace Spotify_Recorder
             SampleToPcm16 soundInSourcePCM = new SampleToPcm16(soundInSource.ToSampleSource());     //Used to convert _capture to Pcm16 format
             
             Directory.CreateDirectory(Path.GetDirectoryName(FilestrWAV));
-            WaveFormat wavFormat = new WaveFormat(_capture.WaveFormat.SampleRate, soundInSourcePCM.WaveFormat.BitsPerSample, _capture.WaveFormat.Channels, AudioEncoding.Pcm, _capture.WaveFormat.ExtraSize);      //WAV file must be 16-bit PCM file for normalizing with normalize.exe
-            _wavWriter = new WaveWriter(FilestrWAV, wavFormat); // _capture.WaveFormat);
-            
+            _wavWriterFormat = new WaveFormat(_capture.WaveFormat.SampleRate, soundInSourcePCM.WaveFormat.BitsPerSample, _capture.WaveFormat.Channels, AudioEncoding.Pcm, _capture.WaveFormat.ExtraSize);      //WAV file must be 16-bit PCM file for normalizing with normalize.exe
+            _wavWriter = new WaveWriter(FilestrWAV, _wavWriterFormat); // _capture.WaveFormat);
+            _wavWriterPositionBytes = 0;
+
             soundInSource.DataAvailable += (s, capData) =>
             {
                 if (RecordState == RecordStates.RECORDING)              //Only record when RecordState is RECORDING
@@ -448,6 +468,7 @@ namespace Spotify_Recorder
                     while ((read = soundInSourcePCM.Read(buffer, 0, buffer.Length)) > 0)        //keep reading as long as we still get some data
                     {
                         _wavWriter.Write(buffer, 0, read);          //write the read data to a file
+                        _wavWriterPositionBytes += read;
                     }
                 }
                 
@@ -464,7 +485,7 @@ namespace Spotify_Recorder
         }
 
         //***********************************************************************************************************************************************************************************************************
-        
+
         /// <summary>
         /// Pause a record
         /// </summary>
@@ -476,6 +497,9 @@ namespace Spotify_Recorder
                 RecordState = RecordStates.PAUSED;
                 LogEvent?.Invoke(new LogEvent(LogTypes.INFO, DateTime.Now, "Record (\"" + Title + "\") paused."));
                 _wasRecordPaused = true;
+
+                double recordLength_s = (_wavWriterPositionBytes / _wavWriterFormat.BytesPerSecond);
+                _recordPauseTimes_s.Add(recordLength_s);
             }
         }
 
@@ -545,9 +569,18 @@ namespace Spotify_Recorder
             NormalizeWAVFile(FilestrWAV);
             LogEvent?.Invoke(new LogEvent(LogTypes.INFO, DateTime.Now, "Record (\"" + Title + "\") normalized."));
 
-            if (_wasRecordPaused)
+            if(_wasRecordPaused && MarkPausedFiles)
             {
-                RemoveSpotifyFades(FilestrWAV);
+                string newFilestrWAV = FilestrWAV.Remove(FilestrWAV.Length - 4, 4) + "_paused.wav";
+                RemoveSpotifyFades(FilestrWAV, newFilestrWAV);
+                System.IO.File.Delete(FilestrWAV);
+                FilestrWAV = newFilestrWAV;
+                FilestrMP3 = newFilestrWAV.Replace(".wav", ".mp3");
+                LogEvent?.Invoke(new LogEvent(LogTypes.INFO, DateTime.Now, "Record (\"" + Title + "\") spotify fades removed."));
+            }
+            else if(_wasRecordPaused && !MarkPausedFiles)
+            {
+                RemoveSpotifyFades(FilestrWAV, FilestrWAV);
                 LogEvent?.Invoke(new LogEvent(LogTypes.INFO, DateTime.Now, "Record (\"" + Title + "\") spotify fades removed."));
             }
 
@@ -730,27 +763,35 @@ namespace Spotify_Recorder
         /// <summary>
         /// Find all places where the record was paused and remove the fade outs and fade ins that spotify applies when pausing and resuming a playback.
         /// </summary>
-        /// <param name="wavFileName">WAV file to remove fades</param>
-        private void RemoveSpotifyFades(string wavFileName)
+        /// <param name="inputWavFileName">WAV file to remove fades</param>
+        /// <param name="outputWavFileName">WAV file with removed fades</param>
+        private void RemoveSpotifyFades(string inputWavFileName, string outputWavFileName)
         {
             RecordState = RecordStates.REMOVING_FADES;
             
             string spotifyPauseFadeOutPointsPath = Application.StartupPath + @"\SpotifyPauseFadeOutPoints.xml";
             string spotifyPlayFadeInPointsPath = Application.StartupPath + @"\SpotifyPlayFadeInPoints.xml";
 
-            WaveFile file = new WaveFile(wavFileName);
-            List<SilenceParts> silence = file.RemoveSilence(10, -1, 0.001);
+            WaveFile file = new WaveFile(inputWavFileName);
+            List<SilenceParts> silence = file.RemoveSilence(200, -1, 0.0001);
 
+            double allowedPauseSilenceDifference_ms = 500;
             List<FadeSettings> fades = new List<FadeSettings>();
             foreach (SilenceParts sil in silence)
             {
+                List<double> validPauseTimes = _recordPauseTimes_s.Where(p => ((p * 1000) > (sil.Original_Start_ms - allowedPauseSilenceDifference_ms)) && ((p * 1000) < (sil.Original_Start_ms + allowedPauseSilenceDifference_ms))).ToList();
+                if (validPauseTimes.Count() == 0)   //Only remove fades if the difference between the current silencePart and any of the pauseTimes is small enough
+                {
+                    continue;
+                }
+
                 FadeSettings fadeOutSettings = new FadeSettings(sil.New_Start_ms, FadeTypes.UNDO_CUSTOM, spotifyPauseFadeOutPointsPath, AudioChannels.RIGHT_AND_LEFT);
                 fadeOutSettings.FadeStartTime_ms -= fadeOutSettings.FadePoints.Last().X;
                 fades.Add(fadeOutSettings);
                 fades.Add(new FadeSettings(sil.New_Start_ms, FadeTypes.UNDO_CUSTOM, spotifyPlayFadeInPointsPath, AudioChannels.RIGHT_AND_LEFT));
             }
             file.ApplyFading(fades);
-            file.SaveFile(wavFileName);
+            file.SaveFile(outputWavFileName);
         }
 
         #endregion

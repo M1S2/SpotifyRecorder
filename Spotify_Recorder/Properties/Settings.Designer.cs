@@ -118,5 +118,17 @@ namespace Spotify_Recorder.Properties {
                 this["WindowState"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool MarkPausedFiles {
+            get {
+                return ((bool)(this["MarkPausedFiles"]));
+            }
+            set {
+                this["MarkPausedFiles"] = value;
+            }
+        }
     }
 }

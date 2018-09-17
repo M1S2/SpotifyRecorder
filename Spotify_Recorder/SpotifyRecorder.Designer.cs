@@ -55,6 +55,9 @@
             this.chk_output_wav = new System.Windows.Forms.CheckBox();
             this.chk_output_mp3 = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rdb_markPausedFiles_no = new System.Windows.Forms.RadioButton();
+            this.rdb_markPausedFiles_yes = new System.Windows.Forms.RadioButton();
+            this.label7 = new System.Windows.Forms.Label();
             this.pic_recordState = new System.Windows.Forms.PictureBox();
             this.label9 = new System.Windows.Forms.Label();
             this.cmb_fileExistMode = new System.Windows.Forms.ComboBox();
@@ -103,7 +106,7 @@
             this.lbl_track_duration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_track_duration.AutoSize = true;
             this.lbl_track_duration.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_track_duration.Location = new System.Drawing.Point(803, 343);
+            this.lbl_track_duration.Location = new System.Drawing.Point(803, 319);
             this.lbl_track_duration.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbl_track_duration.Name = "lbl_track_duration";
             this.lbl_track_duration.Size = new System.Drawing.Size(44, 17);
@@ -177,7 +180,7 @@
             this.btn_arm_disarm.BackColor = System.Drawing.SystemColors.Control;
             this.btn_arm_disarm.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_arm_disarm.ImageKey = "(Keine)";
-            this.btn_arm_disarm.Location = new System.Drawing.Point(714, 162);
+            this.btn_arm_disarm.Location = new System.Drawing.Point(714, 183);
             this.btn_arm_disarm.Margin = new System.Windows.Forms.Padding(2);
             this.btn_arm_disarm.Name = "btn_arm_disarm";
             this.btn_arm_disarm.Size = new System.Drawing.Size(133, 38);
@@ -218,10 +221,10 @@
             this.groupBox2.Controls.Add(this.pic_album_art);
             this.groupBox2.Controls.Add(this.prog_track_time);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(4, 221);
+            this.groupBox2.Location = new System.Drawing.Point(4, 245);
             this.groupBox2.MinimumSize = new System.Drawing.Size(286, 211);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(853, 366);
+            this.groupBox2.Size = new System.Drawing.Size(853, 342);
             this.groupBox2.TabIndex = 43;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Spotify Info / Control";
@@ -302,7 +305,7 @@
             this.lbl_track_time.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_track_time.AutoSize = true;
             this.lbl_track_time.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_track_time.Location = new System.Drawing.Point(5, 343);
+            this.lbl_track_time.Location = new System.Drawing.Point(5, 319);
             this.lbl_track_time.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbl_track_time.Name = "lbl_track_time";
             this.lbl_track_time.Size = new System.Drawing.Size(44, 17);
@@ -339,7 +342,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pic_album_art.Location = new System.Drawing.Point(261, 22);
             this.pic_album_art.Name = "pic_album_art";
-            this.pic_album_art.Size = new System.Drawing.Size(586, 309);
+            this.pic_album_art.Size = new System.Drawing.Size(586, 285);
             this.pic_album_art.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pic_album_art.TabIndex = 42;
             this.pic_album_art.TabStop = false;
@@ -350,7 +353,7 @@
             // 
             this.prog_track_time.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.prog_track_time.Location = new System.Drawing.Point(54, 337);
+            this.prog_track_time.Location = new System.Drawing.Point(54, 313);
             this.prog_track_time.Name = "prog_track_time";
             this.prog_track_time.Size = new System.Drawing.Size(744, 23);
             this.prog_track_time.TabIndex = 48;
@@ -360,7 +363,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(5, 173);
+            this.label10.Location = new System.Drawing.Point(5, 194);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(93, 17);
@@ -371,7 +374,7 @@
             // 
             this.lbl_isRecording.AutoSize = true;
             this.lbl_isRecording.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_isRecording.Location = new System.Drawing.Point(148, 173);
+            this.lbl_isRecording.Location = new System.Drawing.Point(148, 194);
             this.lbl_isRecording.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbl_isRecording.Name = "lbl_isRecording";
             this.lbl_isRecording.Size = new System.Drawing.Size(23, 17);
@@ -411,6 +414,9 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.rdb_markPausedFiles_no);
+            this.groupBox1.Controls.Add(this.rdb_markPausedFiles_yes);
+            this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.pic_recordState);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.cmb_fileExistMode);
@@ -431,14 +437,51 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(4, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(853, 212);
+            this.groupBox1.Size = new System.Drawing.Size(853, 236);
             this.groupBox1.TabIndex = 52;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Recorder Control";
             // 
+            // rdb_markPausedFiles_no
+            // 
+            this.rdb_markPausedFiles_no.AutoSize = true;
+            this.rdb_markPausedFiles_no.Location = new System.Drawing.Point(210, 109);
+            this.rdb_markPausedFiles_no.Name = "rdb_markPausedFiles_no";
+            this.rdb_markPausedFiles_no.Size = new System.Drawing.Size(44, 21);
+            this.rdb_markPausedFiles_no.TabIndex = 67;
+            this.rdb_markPausedFiles_no.Text = "No";
+            this.toolTip1.SetToolTip(this.rdb_markPausedFiles_no, "Don\'t append \"_paused\" to the filename if the record was paused. Paused files can" +
+        "\'t be identified later.");
+            this.rdb_markPausedFiles_no.UseVisualStyleBackColor = true;
+            // 
+            // rdb_markPausedFiles_yes
+            // 
+            this.rdb_markPausedFiles_yes.AutoSize = true;
+            this.rdb_markPausedFiles_yes.Checked = true;
+            this.rdb_markPausedFiles_yes.Location = new System.Drawing.Point(146, 109);
+            this.rdb_markPausedFiles_yes.Name = "rdb_markPausedFiles_yes";
+            this.rdb_markPausedFiles_yes.Size = new System.Drawing.Size(50, 21);
+            this.rdb_markPausedFiles_yes.TabIndex = 66;
+            this.rdb_markPausedFiles_yes.TabStop = true;
+            this.rdb_markPausedFiles_yes.Text = "Yes";
+            this.toolTip1.SetToolTip(this.rdb_markPausedFiles_yes, "Append \"_paused\" to the filename if the record was paused.");
+            this.rdb_markPausedFiles_yes.UseVisualStyleBackColor = true;
+            this.rdb_markPausedFiles_yes.CheckedChanged += new System.EventHandler(this.rdb_markPausedFiles_yes_CheckedChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(5, 111);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(123, 17);
+            this.label7.TabIndex = 65;
+            this.label7.Text = "Mark paused files:";
+            // 
             // pic_recordState
             // 
-            this.pic_recordState.Location = new System.Drawing.Point(103, 166);
+            this.pic_recordState.Location = new System.Drawing.Point(103, 187);
             this.pic_recordState.Name = "pic_recordState";
             this.pic_recordState.Size = new System.Drawing.Size(40, 40);
             this.pic_recordState.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -449,7 +492,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(5, 113);
+            this.label9.Location = new System.Drawing.Point(5, 140);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(131, 17);
@@ -460,7 +503,7 @@
             // 
             this.cmb_fileExistMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_fileExistMode.FormattingEnabled = true;
-            this.cmb_fileExistMode.Location = new System.Drawing.Point(146, 110);
+            this.cmb_fileExistMode.Location = new System.Drawing.Point(146, 137);
             this.cmb_fileExistMode.Name = "cmb_fileExistMode";
             this.cmb_fileExistMode.Size = new System.Drawing.Size(179, 24);
             this.cmb_fileExistMode.TabIndex = 62;
@@ -508,7 +551,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_record_file_path.AutoEllipsis = true;
             this.lbl_record_file_path.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_record_file_path.Location = new System.Drawing.Point(121, 143);
+            this.lbl_record_file_path.Location = new System.Drawing.Point(121, 164);
             this.lbl_record_file_path.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbl_record_file_path.Name = "lbl_record_file_path";
             this.lbl_record_file_path.Size = new System.Drawing.Size(726, 17);
@@ -519,7 +562,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(5, 143);
+            this.label11.Location = new System.Drawing.Point(5, 164);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(112, 17);
@@ -844,6 +887,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton hilfeToolStripButton;
         private System.Windows.Forms.PictureBox pic_recordState;
+        private System.Windows.Forms.RadioButton rdb_markPausedFiles_no;
+        private System.Windows.Forms.RadioButton rdb_markPausedFiles_yes;
+        private System.Windows.Forms.Label label7;
     }
 }
 

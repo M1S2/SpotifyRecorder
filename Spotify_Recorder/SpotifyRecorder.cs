@@ -127,6 +127,10 @@ namespace Spotify_Recorder
                 chk_output_mp3.Checked = Properties.Settings.Default.RecordMP3;
             }
 
+            rdb_markPausedFiles_yes.Checked = Properties.Settings.Default.MarkPausedFiles;
+            rdb_markPausedFiles_no.Checked = !rdb_markPausedFiles_yes.Checked;
+            _recorder.MarkPausedFiles = rdb_markPausedFiles_yes.Checked;
+
             cmb_fileExistMode.Items.Clear();
             foreach(string fileExistMode in Enum.GetNames(typeof(FileExistModes)))
             {
@@ -440,6 +444,15 @@ namespace Spotify_Recorder
             SetRecordFileLabel();
             Properties.Settings.Default.RecordWAV = chk_output_wav.Checked;
             Properties.Settings.Default.RecordMP3 = chk_output_mp3.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        private void rdb_markPausedFiles_yes_CheckedChanged(object sender, EventArgs e)
+        {
+            _recorder.MarkPausedFiles = rdb_markPausedFiles_yes.Checked;
+            Properties.Settings.Default.MarkPausedFiles = rdb_markPausedFiles_yes.Checked;
             Properties.Settings.Default.Save();
         }
 
