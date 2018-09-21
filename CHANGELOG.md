@@ -4,6 +4,9 @@ Project: Spotify_Recorder
 
 ## [%version%] - %date%
 
+
+## [v2.3] - 21.09.2018 20:08
+
 - Remove the fading that Spotify applies when pausing a song. This works almost perfect. Sometimes the transition between pause and play can be heared a little bit. But this is insignificant. To get perfect records, don't pause while recording!
 - Added feature to save all log box entries.
 
