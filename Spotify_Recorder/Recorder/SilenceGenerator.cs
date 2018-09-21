@@ -38,6 +38,11 @@ namespace Spotify_Recorder
             get { return -1; }
         }
 
+        public bool CanSeek
+        {
+            get { return false; }
+        }
+
         public void Dispose()
         {
             //do nothing

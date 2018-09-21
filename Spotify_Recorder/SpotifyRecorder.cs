@@ -536,6 +536,18 @@ namespace Spotify_Recorder
         public void SpotifyConnect()
         {
             logBox1.LogEvent(LogTypes.INFO, "Try to connect to Spotify.");
+
+            if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
+            {
+                SpotifyLocalAPI.RunSpotifyWebHelper();
+                SpotifyConnect();
+                return;
+
+                //logBox1.LogEvent(LogTypes.WARNING, "SpotifyWebHelper isn't running!");
+                //MessageBox.Show("SpotifyWebHelper isn't running!", "SpotifyWebHelper not running!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //return;
+            }
+
             if (!SpotifyLocalAPI.IsSpotifyRunning())
             {
                 if (MessageBox.Show("Spotify isn't running. Open Spotify?\n\nMake sure that the output device is set to the virtual audio cable output (settings > advanced settings > playback device).", "Open Spotify?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
@@ -561,13 +573,6 @@ namespace Spotify_Recorder
                     }
                     else { return; }
                 }
-            }
-
-            if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
-            {
-                logBox1.LogEvent(LogTypes.WARNING, "SpotifyWebHelper isn't running!");
-                MessageBox.Show("SpotifyWebHelper isn't running!", "SpotifyWebHelper not running!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
             }
 
             bool successful = false;
