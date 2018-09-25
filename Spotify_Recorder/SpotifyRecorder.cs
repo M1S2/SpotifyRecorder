@@ -13,6 +13,12 @@ using SpotifyAPI.Local;
 using SpotifyAPI.Local.Enums;
 using SpotifyAPI.Local.Models;
 
+using SpotifyAPI.Web;
+using SpotifyAPI.Web.Auth;
+using SpotifyAPI.Web.Enums;
+using SpotifyAPI.Web.Models;
+
+
 namespace Spotify_Recorder
 {
     public partial class SpotifyRecorder : Form
@@ -528,13 +534,58 @@ namespace Spotify_Recorder
             ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", "--enable-audio-graph");     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify, use the --enable-audio-graph option to have the possibility to change the output device
         }
 
-        //***********************************************************************************************************************************************************************************************************
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        SpotifyWebAPI spotifyWeb;
+        AvailabeDevices availabeDevices;
+
+        // see: https://github.com/JohnnyCrazy/SpotifyAPI-NET/issues/254
+        //https://developer.spotify.com/console/put-play/
+        async void WebAPITests()
+        {
+            WebAPIFactory webApiFactory = new WebAPIFactory(
+                "http://localhost",
+                8000,
+                // Spotify API Client ID goes here, you SHOULD get your own at https://developer.spotify.com/dashboard/
+                // It should be noted, "http://localhost:8000" must be whitelisted in your dashboard after getting your own client key
+                "ab0969d9fab2486182e57bfbe8590df4",
+                Scope.UserReadPrivate | Scope.UserReadEmail | Scope.PlaylistReadPrivate | Scope.UserLibraryRead |
+                Scope.UserFollowRead | Scope.UserReadBirthdate | Scope.UserTopRead | Scope.PlaylistReadCollaborative |
+                Scope.UserReadRecentlyPlayed | Scope.UserReadPlaybackState | Scope.UserModifyPlaybackState,
+                new SpotifyAPI.ProxyConfig());
+
+            try
+            {
+                spotifyWeb = await webApiFactory.GetWebApi();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            if (spotifyWeb == null) { return; }
+
+            availabeDevices = spotifyWeb.GetDevices();
+
+            ErrorResponse errorResponse;
+            errorResponse = spotifyWeb.PausePlayback(availabeDevices.Devices[0].Id);
+            //errorResponse = spotifyWeb.ResumePlayback(availabeDevices.Devices[0].Id);
+            //errorResponse = spotifyWeb.SkipPlaybackToNext(availabeDevices.Devices[0].Id);
+
+        }
+
+        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         /// <summary>
         /// Connect to Spotify. Check if Spotify was started with the "--enable-audio-graph" option. If it isn't running ask the user to start Spotify.
         /// </summary>
         public void SpotifyConnect()
         {
+            WebAPITests();
+
+            
             logBox1.LogEvent(LogTypes.INFO, "Try to connect to Spotify.");
 
             if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
