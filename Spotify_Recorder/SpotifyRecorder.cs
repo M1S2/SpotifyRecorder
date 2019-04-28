@@ -18,19 +18,23 @@ using SpotifyAPI.Web.Auth;
 using SpotifyAPI.Web.Enums;
 using SpotifyAPI.Web.Models;
 
+using Spotify_Recorder.GenericPlayer;
+
 
 namespace Spotify_Recorder
 {
     public partial class SpotifyRecorder : Form
     {
-        private SpotifyLocalAPI _spotify = new SpotifyLocalAPI();
-        private Track _currentTrack;
+        //private SpotifyLocalAPI _spotify = new SpotifyLocalAPI();
+        private Player _player;
+
+        private PlayerTrack _currentTrack;
         
         private Recorder _recorder;
         private bool isRecorderArmed;
         private bool block_update = false;
         private Size windowSize;
-        private int silentTimeBeforeTrack_ms = 750;        //The time between _recorder.StartRecord() and _spotify.Play() in ms
+        //private int silentTimeBeforeTrack_ms = 750;        //The time between _recorder.StartRecord() and _spotify.Play() in ms
 
         //***********************************************************************************************************************************************************************************************************
 
@@ -46,10 +50,11 @@ namespace Spotify_Recorder
             this.prog_track_time.MouseClick += Prog_track_time_MouseClick;
             isRecorderArmed = false;
 
-            _spotify.OnPlayStateChange += _spotify_OnPlayStateChange;
-            _spotify.OnTrackChange += _spotify_OnTrackChange;
-            _spotify.OnTrackTimeChange += _spotify_OnTrackTimeChange;
-            _spotify.OnVolumeChange += _spotify_OnVolumeChange;
+            _player = new SpotifyPlayer(10);
+            _player.OnPlayStateChange += _player_OnPlayStateChange;
+            _player.OnTrackTimeChange += _player_OnTrackTimeChange;
+            _player.OnVolumeChange += _player_OnVolumeChange;
+            _player.OnTrackChange += _player_OnTrackChange;
 
             _recorder = new Recorder();
             _recorder.AllowedDifferenceToExpectedRecordTime = 4;
@@ -60,10 +65,9 @@ namespace Spotify_Recorder
 
 
             //TestWaveFileFunctions.TestSpotifyDefade();
- 
 
             InitGUI();
-            SpotifyConnect();
+            PlayerConnect();
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -154,14 +158,14 @@ namespace Spotify_Recorder
         }
 
         //***********************************************************************************************************************************************************************************************************
-        //********* S P O T I F Y   E V E N T S *********************************************************************************************************************************************************************
+        //********* P L A Y E R   E V E N T S ***********************************************************************************************************************************************************************
         //***********************************************************************************************************************************************************************************************************
 
-        private void _spotify_OnVolumeChange(object sender, VolumeChangeEventArgs e)
+        private void _player_OnVolumeChange(object sender, PlayerVolumeChangeEventArgs e)
         {
             if (InvokeRequired)
             {
-                Invoke(new Action(() => _spotify_OnVolumeChange(sender, e)));
+                Invoke(new Action(() => _player_OnVolumeChange(sender, e)));
                 return;
             }
             UpdateSpotifyInformation();
@@ -169,10 +173,11 @@ namespace Spotify_Recorder
 
         //***********************************************************************************************************************************************************************************************************
 
-        Track _lastTrack = null;
+        PlayerTrack _lastTrack = null;
         bool block_onTrackTimeChangeEvent = false;
         bool block_recorderStartStop = false;
-        private void _spotify_OnTrackTimeChange(object sender, TrackTimeChangeEventArgs e)
+
+        private void _player_OnTrackTimeChange(object sender, PlayerTrackTimeChangeEventArgs e)
         {
             if (block_onTrackTimeChangeEvent) { return; }
 
@@ -180,14 +185,14 @@ namespace Spotify_Recorder
             {
                 if (InvokeRequired)
                 {
-                    Invoke(new Action(() => _spotify_OnTrackTimeChange(sender, e)));
+                    Invoke(new Action(() => _player_OnTrackTimeChange(sender, e)));
                     return;
                 }
                 lbl_track_time.Text = FormatTime(e.TrackTime);
                 prog_track_time.Value = (int)e.TrackTime;
 
-                StatusResponse status = _spotify.GetStatus();
-                if (isRecorderArmed && status.Playing && status.PlayingPosition < 0.5 && _currentTrack != null && !_currentTrack.IsAd() && _lastTrack.TrackResource.Uri == status.Track.TrackResource.Uri)
+                PlayerPlaybackStatus status = _player.CurrentPlaybackStatus;
+                if (isRecorderArmed && status.IsPlaying && status.Progress < 0.5 && _currentTrack != null && !_currentTrack.IsAd && _lastTrack.TrackID == status.Track.TrackID)
                 {
                     if (_recorder.RecordState == RecordStates.STOPPED)
                     {
@@ -216,20 +221,20 @@ namespace Spotify_Recorder
 
         //***********************************************************************************************************************************************************************************************************
 
-        private void _spotify_OnTrackChange(object sender, TrackChangeEventArgs e)
+        private void _player_OnTrackChange(object sender, PlayerTrackChangeEventArgs e)
         {
             if (InvokeRequired)
             {
-                Invoke(new Action(() => _spotify_OnTrackChange(sender, e)));
+                Invoke(new Action(() => _player_OnTrackChange(sender, e)));
                 return;
             }
 
-            logBox1.LogEvent(LogTypes.INFO, "Track changed to \"" + e.NewTrack.TrackResource.Name + "\" (" + e.NewTrack.ArtistResource.Name + ") ");
+            logBox1.LogEvent(LogTypes.INFO, "Track changed to \"" + e.NewTrack.TrackName + "\" (" + e.NewTrack.Artists[0].ArtistName + ") ");
 
-            bool spotifyPlaying = _spotify.GetStatus().Playing;
-            _spotify.Pause();
+            bool spotifyPlaying = _player.CurrentPlaybackStatus.IsPlaying;
+            //_spotify.Pause();
             _recorder.StopRecord();
-            if(spotifyPlaying) { _spotify.Play(); }
+            //if(spotifyPlaying) { _spotify.Play(); }
 
             StartRecord();
         }
@@ -237,29 +242,30 @@ namespace Spotify_Recorder
         //***********************************************************************************************************************************************************************************************************
 
         bool block_onPlayStateChangeEvent = false;
-        private void _spotify_OnPlayStateChange(object sender, PlayStateEventArgs e)
+
+        private void _player_OnPlayStateChange(object sender, PlayerPlayStateEventArgs e)
         {
             if (block_onPlayStateChangeEvent) { return; }
 
             if (InvokeRequired)
             {
-                Invoke(new Action(() => _spotify_OnPlayStateChange(sender, e)));
+                Invoke(new Action(() => _player_OnPlayStateChange(sender, e)));
                 return;
             }
 
-            logBox1.LogEvent(LogTypes.INFO, "Spotify playback " + (e.Playing ? "started." : "paused."));
+            logBox1.LogEvent(LogTypes.INFO, _player.PlayerName + " playback " + (e.Playing ? "started." : "paused."));
 
-            StatusResponse status = _spotify.GetStatus();       
+            PlayerPlaybackStatus status = _player.CurrentPlaybackStatus;       
 
-            if(e.Playing && status.PlayingPosition <= 0.5 && _currentTrack != null && !_currentTrack.IsAd())
+            if(e.Playing && status.Progress <= 0.5 && _currentTrack != null && !_currentTrack.IsAd)
             {
                 StartRecord();
             }
-            else if (e.Playing && status.PlayingPosition > 0.5 && _currentTrack != null && !_currentTrack.IsAd())
+            else if (e.Playing && status.Progress > 0.5 && _currentTrack != null && !_currentTrack.IsAd)
             {
                 _recorder.ResumeRecord();
             }
-            else if (!e.Playing && _currentTrack != null && !_currentTrack.IsAd())
+            else if (!e.Playing && _currentTrack != null && !_currentTrack.IsAd)
             {
                 _recorder.PauseRecord();
             }
@@ -271,9 +277,9 @@ namespace Spotify_Recorder
 
         private void StartRecord()
         {
-            bool spotifyPlaying = _spotify.GetStatus().Playing;
+            bool isPlaying = _player.CurrentPlaybackStatus.IsPlaying;
 
-            if (!spotifyPlaying || !isRecorderArmed)
+            if (!isPlaying || !isRecorderArmed)
             {
                 UpdateTrackInformation();
                 return;
@@ -282,25 +288,25 @@ namespace Spotify_Recorder
             block_onTrackTimeChangeEvent = true;
             block_onPlayStateChangeEvent = true;
             
-            if (!spotifyPlaying) { return; }                        //Only start a new record if music is playing
+            if (!isPlaying) { return; }                        //Only start a new record if music is playing
 
-            _spotify.Pause();
+            //_spotify.Pause();
             UpdateTrackInformation();
 
             SetRecordFileLabel();
 
-            if (_currentTrack != null && !_currentTrack.IsAd())
+            if (_currentTrack != null && !_currentTrack.IsAd)
             {
                 block_onPlayStateChangeEvent = true;
-#warning PlayingPosition can't be set in this way (_spotify.GetStatus().PlayingPosition = 0)
-                _spotify.GetStatus().PlayingPosition = 0;       //Play track from beginning
+//#warning PlayingPosition can't be set in this way (_spotify.GetStatus().PlayingPosition = 0)
+                //_spotify.GetStatus().PlayingPosition = 0;       //Play track from beginning
                 _recorder.StartRecord();
 
-                System.Threading.Thread.Sleep(silentTimeBeforeTrack_ms);
+                //System.Threading.Thread.Sleep(silentTimeBeforeTrack_ms);
                 block_onPlayStateChangeEvent = false;
             }
             
-            _spotify.Play();
+            //_spotify.Play();
             
             block_onTrackTimeChangeEvent = false;
             block_onPlayStateChangeEvent = false;
@@ -312,7 +318,7 @@ namespace Spotify_Recorder
 
         private void toolStripButton_sp_connect_Click(object sender, EventArgs e)
         {
-            SpotifyConnect();
+            PlayerConnect();
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -527,109 +533,20 @@ namespace Spotify_Recorder
         //***********************************************************************************************************************************************************************************************************
 
         /// <summary>
-        /// Start spotify with the "--enable-audio-graph" option. With this option the user is able to change the output device.
+        /// Connect to The Player.
         /// </summary>
-        private void StartSpotify()
+        public async void PlayerConnect()
         {
-            ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", "--enable-audio-graph");     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify, use the --enable-audio-graph option to have the possibility to change the output device
-        }
+            logBox1.LogEvent(LogTypes.INFO, "Try to connect to " + _player.PlayerName + ".");
 
-        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            _player.StartPlayerApplication();
 
-        SpotifyWebAPI spotifyWeb;
-        AvailabeDevices availabeDevices;
-
-        // see: https://github.com/JohnnyCrazy/SpotifyAPI-NET/issues/254
-        //https://developer.spotify.com/console/put-play/
-        async void WebAPITests()
-        {
-            WebAPIFactory webApiFactory = new WebAPIFactory(
-                "http://localhost",
-                8000,
-                // Spotify API Client ID goes here, you SHOULD get your own at https://developer.spotify.com/dashboard/
-                // It should be noted, "http://localhost:8000" must be whitelisted in your dashboard after getting your own client key
-                "ab0969d9fab2486182e57bfbe8590df4",
-                Scope.UserReadPrivate | Scope.UserReadEmail | Scope.PlaylistReadPrivate | Scope.UserLibraryRead |
-                Scope.UserFollowRead | Scope.UserReadBirthdate | Scope.UserTopRead | Scope.PlaylistReadCollaborative |
-                Scope.UserReadRecentlyPlayed | Scope.UserReadPlaybackState | Scope.UserModifyPlaybackState,
-                new SpotifyAPI.ProxyConfig());
-
-            try
-            {
-                spotifyWeb = await webApiFactory.GetWebApi();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-
-            if (spotifyWeb == null) { return; }
-
-            availabeDevices = spotifyWeb.GetDevices();
-
-            ErrorResponse errorResponse;
-            errorResponse = spotifyWeb.PausePlayback(availabeDevices.Devices[0].Id);
-            //errorResponse = spotifyWeb.ResumePlayback(availabeDevices.Devices[0].Id);
-            //errorResponse = spotifyWeb.SkipPlaybackToNext(availabeDevices.Devices[0].Id);
-
-        }
-
-        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-        /// <summary>
-        /// Connect to Spotify. Check if Spotify was started with the "--enable-audio-graph" option. If it isn't running ask the user to start Spotify.
-        /// </summary>
-        public void SpotifyConnect()
-        {
-            WebAPITests();
-
-            
-            logBox1.LogEvent(LogTypes.INFO, "Try to connect to Spotify.");
-
-            if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
-            {
-                SpotifyLocalAPI.RunSpotifyWebHelper();
-                SpotifyConnect();
-                return;
-
-                //logBox1.LogEvent(LogTypes.WARNING, "SpotifyWebHelper isn't running!");
-                //MessageBox.Show("SpotifyWebHelper isn't running!", "SpotifyWebHelper not running!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //return;
-            }
-
-            if (!SpotifyLocalAPI.IsSpotifyRunning())
-            {
-                if (MessageBox.Show("Spotify isn't running. Open Spotify?\n\nMake sure that the output device is set to the virtual audio cable output (settings > advanced settings > playback device).", "Open Spotify?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-                {
-                    StartSpotify();
-                    System.Threading.Thread.Sleep(2000);        //Wait one second before connecting to spotify
-                }
-                else
-                {
-                    logBox1.LogEvent(LogTypes.WARNING, "Spotify isn't running! Please open Spotify first.");
-                    return;
-                }
-            }
-            else    //Spotify is running, make sure it was started with the "--enable-audio-graph" option
-            {
-                List<string> spotifyStartArguments = ProcessHelper.GetProcessStartArguments("Spotify");
-                if (!spotifyStartArguments.Any(str => str.Contains("--enable-audio-graph")))     // no process with the name "Spotify.exe" was started with the "--enable-audio-graph" option
-                {
-                    if(MessageBox.Show("Spotify was started without the \"--enable-audio-graph\" option.\nTo use this recorder, close Spotify and then click on \"OK\".\nYou can click on \"Cancel\" to close Spotify later. After starting it with the correct option, click on \"Connect to spotify\" in the menu.", "Spotify must run with \"--enable-audio-graph\" option.", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
-                    {
-                        SpotifyConnect();
-                        return;
-                    }
-                    else { return; }
-                }
-            }
+            MessageBox.Show("Make sure that the output device is set to the virtual audio cable output (settings > advanced settings > playback device).");
 
             bool successful = false;
             try
             {
-                successful = _spotify.Connect();
+                successful = await _player.Connect();
             }
             catch (Exception) { /* Connect not successful. See the else path of the following if-else-construct. */ }
 
@@ -640,22 +557,22 @@ namespace Spotify_Recorder
             {
                 btn_arm_disarm.Enabled = true;
 
-                logBox1.LogEvent(LogTypes.INFO, "Connection to Spotify successful.");
-                toolStripButton_sp_connect.Text = "Connection to Spotify successful";
+                logBox1.LogEvent(LogTypes.INFO, "Connection to " + _player.PlayerName + " successful.");
+                toolStripButton_sp_connect.Text = "Connection to " + _player.PlayerName + " successful";
                 toolStripButton_sp_connect.Enabled = false;
                 btn_arm_disarm.BackColor = Color.Lime;
                 UpdateSpotifyInformation();
                 UpdateTrackInformation();
-                _spotify.ListenForEvents = true;
-                Track track = _spotify.GetStatus()?.Track;
-                logBox1.LogEvent(LogTypes.INFO, "Track \"" + track?.TrackResource.Name + "\" (" + track?.ArtistResource.Name + ") ");
+                _player.ListenForEvents = true;
+                PlayerTrack track = _player.CurrentTrack;
+                logBox1.LogEvent(LogTypes.INFO, "Track \"" + track?.TrackName + "\" (" + track?.Artists[0].ArtistName + ") ");
             }
             else
             {
-                logBox1.LogEvent(LogTypes.WARNING, "Connection to Spotify failed.");
-                if (MessageBox.Show("Couldn't connect to the spotify client. Retry?", "Spotify connection error.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                logBox1.LogEvent(LogTypes.WARNING, "Connection to " + _player.PlayerName +  " failed.");
+                if (MessageBox.Show("Couldn't connect to the " + _player.PlayerName + ". Retry?", "Player connection error.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
-                    SpotifyConnect();
+                    PlayerConnect();
                 }
             }
         }
@@ -664,11 +581,11 @@ namespace Spotify_Recorder
 
         private void UpdateSpotifyInformation()
         {
-            StatusResponse status = _spotify.GetStatus();
+            PlayerPlaybackStatus status = _player.CurrentPlaybackStatus;
             if (status == null) { return; }
 
-            lbl_sp_isPlaying.Text = status.Playing.ToString();
-            lbl_sp_volume.Text = Math.Round(status.Volume * 100, 0).ToString() + " %";
+            lbl_sp_isPlaying.Text = status.IsPlaying.ToString();
+            lbl_sp_volume.Text = status.DeviceVolumePercent.ToString() + " %";
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -677,43 +594,38 @@ namespace Spotify_Recorder
         {
             try
             {
-                StatusResponse status = _spotify.GetStatus();
+                PlayerPlaybackStatus status = _player.CurrentPlaybackStatus;
                 if (status == null || status.Track == null) { return; }
 
                 _currentTrack = status.Track;
 
                 if (_currentTrack != null)
                 {
-                    if (_currentTrack.TrackResource != null)
+                    lbl_track_title.Text = _currentTrack.TrackName;
+                    _recorder.Title = _currentTrack.TrackName;
+                    if (_currentTrack.Artists.Count > 0)
                     {
-                        lbl_track_title.Text = _currentTrack.TrackResource.Name;
-                        _recorder.Title = _currentTrack.TrackResource.Name;
+                        lbl_track_interpret.Text = _currentTrack.Artists[0].ArtistName;
+                        _recorder.Interpret = _currentTrack.Artists[0].ArtistName;
                     }
-                    if (_currentTrack.ArtistResource != null)
-                    {
-                        lbl_track_interpret.Text = _currentTrack.ArtistResource.Name;
-                        _recorder.Interpret = _currentTrack.ArtistResource.Name;
-                    }
-                    if (_currentTrack.AlbumResource != null)
-                    {
-                        lbl_track_album.Text = _currentTrack.AlbumResource.Name;
-                        _recorder.Album = _currentTrack.AlbumResource.Name;
-                    }
+                    lbl_track_album.Text = _currentTrack.Album.AlbumName;
+                    _recorder.Album = _currentTrack.Album.AlbumName;
 
-                    lbl_track_duration.Text = FormatTime(_currentTrack.Length);
 
-                    pic_album_art.Image = _currentTrack.GetAlbumArt(AlbumArtSize.Size640);
-                    prog_track_time.Maximum = _currentTrack.Length;
+                    lbl_track_duration.Text = FormatTime(_currentTrack.Duration);
 
-                    _recorder.AlbumArt = _currentTrack.GetAlbumArt(AlbumArtSize.Size640);
-                    _recorder.ExpectedRecordTime = _currentTrack.Length;
+                    pic_album_art.Image = _currentTrack.Album.Images[0];
+                    prog_track_time.Maximum = (int)_currentTrack.Duration;
+
+                    _recorder.AlbumArt = _currentTrack.Album.Images[0];
+                    _recorder.ExpectedRecordTime = _currentTrack.Duration;
                 }
 
-                lbl_track_time.Text = FormatTime(status.PlayingPosition);
-                prog_track_time.Value = (int)status.PlayingPosition;
+                lbl_track_time.Text = FormatTime(status.Progress);
+                prog_track_time.Value = (int)status.Progress;
                 SetRecordFileLabel();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logBox1.LogEvent(LogTypes.ERROR, "UpdateTrackInformation: " + ex.Message);
             }
@@ -725,22 +637,22 @@ namespace Spotify_Recorder
 
         private void toolStripButton_sp_start_Click(object sender, EventArgs e)
         {
-            _spotify.Play();
+            //_spotify.Play();
         }
 
         private void toolStripButton_sp_pause_Click(object sender, EventArgs e)
         {
-            _spotify.Pause();
+            //_spotify.Pause();
         }
 
         private void toolStripButton_sp_previous_Click(object sender, EventArgs e)
         {
-            _spotify.Previous();
+            //_spotify.Previous();
         }
 
         private void toolStripButton_sp_skip_Click(object sender, EventArgs e)
         {
-            _spotify.Skip();
+            //_spotify.Skip();
         }
 
         private void toolStripButton_sp_update_infos_Click(object sender, EventArgs e)

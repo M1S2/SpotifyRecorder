@@ -90,6 +90,13 @@
     </Compile>
     <Compile Include="Logging\LogEvent.cs" />
     <Compile Include="Logging\LogTypes.cs" />
+    <Compile Include="GenericPlayer\Player.cs" />
+    <Compile Include="GenericPlayer\PlayerAlbum.cs" />
+    <Compile Include="GenericPlayer\PlayerArtist.cs" />
+    <Compile Include="GenericPlayer\PlayerEventArgs.cs" />
+    <Compile Include="GenericPlayer\PlayerPlaybackStatus.cs" />
+    <Compile Include="GenericPlayer\PlayerTrack.cs" />
+    <Compile Include="GenericPlayer\SpotifyPlayer.cs" />
     <Compile Include="ProcessHelper.cs" />
     <Compile Include="Recorder\DirectoryManager.cs" />
     <Compile Include="FileNameSubFolderCreator.cs">
