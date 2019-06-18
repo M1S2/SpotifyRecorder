@@ -195,6 +195,23 @@ namespace SpotifyRecorder.GenericPlayer
         //***********************************************************************************************************************************************************************************************************
 
         /// <summary>
+        /// Toggle between play and pause playback state. If the player is playing the playback is paused. If the player is paused the playback is started again.
+        /// </summary>
+        public void TogglePlayPause()
+        {
+            if (CurrentPlaybackStatus?.IsPlaying == true)
+            {
+                PausePlayback();
+            }
+            else if (CurrentPlaybackStatus?.IsPlaying == false)
+            {
+                StartPlayback();
+            }
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        /// <summary>
         /// Skip to the next track
         /// </summary>
         public abstract void NextTrack();

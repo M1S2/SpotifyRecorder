@@ -766,8 +766,8 @@ namespace Spotify_Recorder
         /// </summary>
         private void hilfeToolStripButton_Click(object sender, EventArgs e)
         {
-            AssemblyInfoHelper.FormAssemblyInfo infoForm = new AssemblyInfoHelper.FormAssemblyInfo();
-            infoForm.ShowDialog();
+            //AssemblyInfoHelper.FormAssemblyInfo infoForm = new AssemblyInfoHelper.FormAssemblyInfo();
+            //infoForm.ShowDialog();
         }
 
     }

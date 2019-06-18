@@ -18,6 +18,7 @@ using System.Runtime.CompilerServices;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using SpotifyRecorder.GenericPlayer;
+using SpotifyRecorder.GenericRecorder;
 
 namespace SpotifyRecorder
 {
@@ -55,6 +56,25 @@ namespace SpotifyRecorder
             set { _playerApp = value; OnPropertyChanged(); }
         }
 
+        private Recorder _recorderHandle;
+        public Recorder RecorderHandle
+        {
+            get { return _recorderHandle; }
+            set { _recorderHandle = value; OnPropertyChanged(); }
+        }
+
+        private bool _isRecorderArmed;
+        public bool IsRecorderArmed
+        {
+            get { return _isRecorderArmed; }
+            set
+            {
+                _isRecorderArmed = value;
+                logBox1.LogEvent(new LogBox.LogEventInfo("SpotifyRecorder " + (_isRecorderArmed ? "armed." : "disarmed.")));
+                OnPropertyChanged();
+            }
+        }
+
         //##############################################################################################################################################################################################
 
         #region Commands
@@ -86,7 +106,7 @@ namespace SpotifyRecorder
                     _connectCommand = new WindowTheme.RelayCommand(async param =>
                     {
                         await startAndConnectToPlayer();
-                    }, param => { return PlayerApp?.IsConnected == false; });
+                    }); //, param => { return PlayerApp?.IsConnected == false; });
                 }
                 return _connectCommand;
             }
@@ -101,11 +121,30 @@ namespace SpotifyRecorder
                 {
                     _playPauseCommand = new WindowTheme.RelayCommand(param =>
                     {
-                        if (PlayerApp.CurrentPlaybackStatus?.IsPlaying == true) { PlayerApp.PausePlayback(); }
-                        else if (PlayerApp.CurrentPlaybackStatus?.IsPlaying == false) { PlayerApp.StartPlayback(); }
+                        PlayerApp.TogglePlayPause();
                     }, param => { return PlayerApp?.CurrentPlaybackStatus != null; });
                 }
                 return _playPauseCommand;
+            }
+        }
+
+        private ICommand _openFileNamePrototypeCommand;
+        public ICommand OpenFileNamePrototypeCommand
+        {
+            get
+            {
+                if (_openFileNamePrototypeCommand == null)
+                {
+                    _openFileNamePrototypeCommand = new WindowTheme.RelayCommand(param =>
+                    {
+                        FileNamePrototypeCreator fileNamePrototypeCreator = new FileNamePrototypeCreator(RecorderHandle.FileNamePrototype, RecorderHandle.RecordBasePath, PlayerApp.CurrentTrack?.TrackName, PlayerApp.CurrentTrack?.Artists[0].ArtistName, PlayerApp.CurrentTrack?.Album.AlbumName, RecorderHandle.FileExistMode);
+                        if(fileNamePrototypeCreator.ShowDialog().Value == true)
+                        {
+                            RecorderHandle.FileNamePrototype = fileNamePrototypeCreator.FileNamePrototype;
+                        }
+                    });
+                }
+                return _openFileNamePrototypeCommand;
             }
         }
 
@@ -131,6 +170,16 @@ namespace SpotifyRecorder
             PlayerApp = new SpotifyPlayer(10, this);
 
             await startAndConnectToPlayer();
+
+            RecorderHandle = new Recorder(_logHandle);
+            RecorderHandle.TrackInfo = PlayerApp.CurrentTrack;
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        private void MetroWindow_Closed(object sender, EventArgs e)
+        {
+            if (RecorderHandle != null) { RecorderHandle.StopRecord(); }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -147,12 +196,15 @@ namespace SpotifyRecorder
             {
                 _logHandle.Report(new LogBox.LogEventInfo("Connecting..."));
                 await PlayerApp.Connect();
-                _logHandle.Report(new LogBox.LogEventInfo(PlayerApp.IsConnected ? "Connected successfully." : "Connection failed."));
+
+                if (PlayerApp.IsConnected) { _logHandle.Report(new LogBox.LogEventInfo("Connected successfully.")); }
+                else { _logHandle.Report(new LogBox.LogEventWarning("Connection failed.")); }
 
                 if (PlayerApp.IsConnected)
                 {
                     PlayerApp.OnTrackChange += PlayerApp_OnTrackChange;
                     PlayerApp.OnPlayStateChange += PlayerApp_OnPlayStateChange;
+                    PlayerApp.OnTrackTimeChange += PlayerApp_OnTrackTimeChange;
                     PlayerApp.ListenForEvents = true;
                 }
             }
@@ -163,11 +215,103 @@ namespace SpotifyRecorder
         private void PlayerApp_OnTrackChange(object sender, PlayerTrackChangeEventArgs e)
         {
             _logHandle.Report(new LogBox.LogEventInfo("Track changed to \"" + e.NewTrack?.TrackName + "\" (" + e.NewTrack?.Artists[0].ArtistName + ")"));
+
+            bool spotifyPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
+            //_spotify.Pause();
+            RecorderHandle.StopRecord();
+            //if(spotifyPlaying) { _spotify.Play(); }
+
+            StartRecord();
         }
+
+        //***********************************************************************************************************************************************************************************************************
 
         private void PlayerApp_OnPlayStateChange(object sender, PlayerPlayStateEventArgs e)
         {
-            _logHandle.Report(new LogBox.LogEventInfo("Playback " + (e.Playing ? "started" : "paused")));
+            _logHandle.Report(new LogBox.LogEventInfo(PlayerApp.PlayerName + " playback " + (e.Playing ? "started" : "paused")));
+
+            PlayerPlaybackStatus status = PlayerApp.CurrentPlaybackStatus;
+
+            if (e.Playing && status.Progress.TotalSeconds <= 0.5 && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
+            {
+                StartRecord();
+            }
+            else if (e.Playing && status.Progress.TotalSeconds > 0.5 && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
+            {
+                RecorderHandle.ResumeRecord();
+            }
+            else if (!e.Playing && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
+            {
+                RecorderHandle.PauseRecord();
+            }
         }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        PlayerTrack _lastTrack = null;
+        bool block_recorderStartStop = false;
+        private void PlayerApp_OnTrackTimeChange(object sender, PlayerTrackTimeChangeEventArgs e)
+        {
+            try
+            {
+                PlayerPlaybackStatus status = PlayerApp.CurrentPlaybackStatus;
+                if (IsRecorderArmed && status.IsPlaying && status.Progress.TotalSeconds < 0.5 && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd && _lastTrack.TrackID == status.Track.TrackID)
+                {
+                    if (RecorderHandle.RecordState == RecordStates.STOPPED)
+                    {
+                        block_recorderStartStop = true;
+                        StartRecord();
+                    }
+                    else if (RecorderHandle.RecordState == RecordStates.RECORDING && !block_recorderStartStop)
+                    {
+                        RecorderHandle.StopRecord();
+                        StartRecord();
+                    }
+                }
+                else
+                {
+                    block_recorderStartStop = false;
+                }
+                _lastTrack = status?.Track;
+            }
+            catch (ObjectDisposedException)
+            { }
+            catch (Exception ex)
+            {
+                logBox1.LogEvent(new LogBox.LogEventError("OnTrackTimeChange event: " + ex.Message));
+            }
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        private void StartRecord()
+        {
+            PlayerApp.ListenForEvents = false;
+
+            bool isPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
+
+            if (!isPlaying || !IsRecorderArmed)     //Only start a new record if music is playing and the recorder is armed
+            {
+                return;
+            }
+            
+            if (!isPlaying) { return; }
+
+            //PlayerApp.PausePlayback();
+            
+            RecorderHandle.TrackInfo = PlayerApp.CurrentTrack;
+
+            if (PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
+            {
+                RecorderHandle.StartRecord();
+
+                //System.Threading.Thread.Sleep(silentTimeBeforeTrack_ms);
+            }
+
+            //PlayerApp.StartPlayback();
+
+            PlayerApp.ListenForEvents = true;
+        }
+
     }
 }

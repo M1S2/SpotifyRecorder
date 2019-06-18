@@ -3,15 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:windowTheming="clr-namespace:SpotifyRecorder.WindowTheme"
         xmlns:local="clr-namespace:SpotifyRecorder"
         xmlns:logBox="clr-namespace:LogBox;assembly=LogBox"
         xmlns:converters="clr-namespace:SpotifyRecorder.Converters"
+        xmlns:recorder="clr-namespace:SpotifyRecorder.GenericRecorder"
         mc:Ignorable="d"
-        Title="Spotify Recorder" Height="800" Width="800"
+        Title="Spotify Recorder" Height="1000" Width="900"
         Loaded="MetroWindow_Loaded"
+        Closed="MetroWindow_Closed"
         ResizeMode="CanResizeWithGrip"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
@@ -19,27 +22,35 @@
         <logBox:BitmapToImageSourceConverter x:Key="BitmapImageSourceConverter"/>
         <converters:IsPlayingToIconConverter x:Key="IsPlayingIconConverter"/>
         <converters:IsConnectedToIconConverter x:Key="IsConnectedIconConverter"/>
-        
+        <converters:IsArmedToIconConverter x:Key="IsArmedIconConverter"/>
+
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="18"/>
         </Style>
         <Style TargetType="ToolTip">
             <Setter Property="FontSize" Value="18"/>
         </Style>
+
+        <ObjectDataProvider x:Key="valuesEnumRecorderFormats" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="recorder:RecordFormats"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="valuesEnumRecorderFileExistModes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="recorder:RecorderFileExistModes"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </Controls:MetroWindow.Resources>
 
-    <Controls:MetroWindow.LeftWindowCommands>
-        <Controls:WindowCommands>
-            <Button Command="{Binding ConnectCommand}" ToolTip="Connect to player application">
-                <iconPacks:PackIconMaterial Width="22" Height="22" Kind="LinkVariant" Foreground="{DynamicResource IdealForegroundColorBrush}"/>
-            </Button>
-        </Controls:WindowCommands>
-    </Controls:MetroWindow.LeftWindowCommands>
-    
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <windowTheming:WindowThemeUserControl/>
 
+            <Button Command="{Binding ConnectCommand}" ToolTip="Connect to player application">
+                <iconPacks:PackIconMaterial Width="22" Height="22" Kind="LinkVariant" Foreground="{DynamicResource IdealForegroundColorBrush}"/>
+            </Button>
             <Button Command="{Binding InfoCommand}" ToolTip="About this application">
                 <iconPacks:PackIconModern Width="22" Height="22" Kind="InformationCircle" Foreground="{DynamicResource IdealForegroundColorBrush}"/>
             </Button>
@@ -53,45 +64,100 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="0" Margin="10">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35"/>
-                    <RowDefinition Height="35"/>
-                    <RowDefinition Height="35"/>
-                    <RowDefinition Height="300"/>
-                    <RowDefinition Height="50"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="55"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="120"/>
-                </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Row="0" Margin="5">
+            <StackPanel Orientation="Vertical">
+                <Border Margin="5" BorderBrush="{DynamicResource AccentBaseColorBrush}" BorderThickness="1" CornerRadius="5">
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="45"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="55"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="90"/>
+                        </Grid.ColumnDefinitions>
 
-                <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="0" Kind="Music" ToolTip="Track" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Track" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.TrackName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="0" Kind="FolderOpen" ToolTip="Track" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" ToolTip="Recorder Base Path" Text="{Binding RecorderHandle.RecordBasePath}" VerticalAlignment="Center"/>
+                        <Button Grid.Row="0" Grid.Column="2" Margin="10,2,10,2" Style="{DynamicResource SquareButtonStyle}">
+                            <iconPacks:Modern Kind="Edit"/>
+                        </Button>
 
-                <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Account" ToolTip="Artist" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Artist" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.Artists[0].ArtistName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                        <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="CodeTags" ToolTip="File Name Prototype" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" ToolTip="File Name Prototype" Text="{Binding RecorderHandle.FileNamePrototype}" VerticalAlignment="Center"/>
+                        <Button Grid.Row="1" Grid.Column="2" Margin="10,2,10,2" Style="{DynamicResource SquareButtonStyle}" Command="{Binding OpenFileNamePrototypeCommand}">
+                            <iconPacks:Modern Kind="Edit"/>
+                        </Button>
 
-                <iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="Album" ToolTip="Album" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Album" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.AlbumName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                        <!--<iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="Music" ToolTip="Record Format" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>-->
+                        <ComboBox Grid.Row="2" Grid.Column="1" ToolTip="Record Format" ItemsSource="{Binding Source={StaticResource valuesEnumRecorderFormats}}" SelectedItem="{Binding RecorderHandle.RecordFormat}" VerticalAlignment="Center"/>
 
-                <Image Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" ToolTip="Album Image" Source="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.Images[0], Converter={StaticResource BitmapImageSourceConverter}}"/>
+                        <iconPacks:PackIconMaterial Grid.Row="3" Grid.Column="0" Kind="FileQuestion" ToolTip="File Exists Mode" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        <ComboBox Grid.Row="3" Grid.Column="1" ToolTip="File Exists Mode" ItemsSource="{Binding Source={StaticResource valuesEnumRecorderFileExistModes}}" SelectedItem="{Binding RecorderHandle.FileExistMode}" VerticalAlignment="Center"/>
 
-                <DockPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4">
-                    <Button Width="50" Command="{Binding PlayPauseCommand}" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
-                        <Image Height="Auto" Width="Auto" Margin="10">
-                            <Image.Source>
-                                <DrawingImage Drawing="{Binding PlayerApp.CurrentPlaybackStatus.IsPlaying, Mode=OneWay, FallbackValue=False, TargetNullValue=False, Converter={StaticResource IsPlayingIconConverter}}"/>
-                            </Image.Source>
-                        </Image>
-                    </Button>
-                    <TextBlock DockPanel.Dock="Left" Margin="5" ToolTip="Current track time" Text="{Binding PlayerApp.CurrentPlaybackStatus.Progress, StringFormat=mm\\:ss}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                    <TextBlock DockPanel.Dock="Right" Margin="5" ToolTip="Total track time" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.Duration, StringFormat=mm\\:ss}" VerticalAlignment="Center"/>
-                    <Controls:MetroProgressBar Margin="5" ToolTip="Current track time" Value="{Binding PlayerApp.CurrentPlaybackStatus.Progress.Ticks, Mode=OneWay}" Maximum="{Binding PlayerApp.CurrentPlaybackStatus.Track.Duration.Ticks, Mode=OneWay}" BorderBrush="{DynamicResource AccentBaseColorBrush}" BorderThickness="1" Foreground="{DynamicResource AccentBaseColorBrush}"/>
-                </DockPanel>
-            </Grid>
+                        <iconPacks:PackIconMaterial Grid.Row="4" Grid.Column="0" Kind="FileMusic" ToolTip="File Path" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="File Path" Text="{Binding RecorderHandle.RecordFilepathWithoutExtension}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                    
+                        <iconPacks:PackIconFontAwesome Grid.Row="5" Grid.Column="0" Kind="SpinnerSolid" ToolTip="Recorder Status" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" ToolTip="Recorder Status" Text="{Binding RecorderHandle.RecordState}" VerticalAlignment="Center"/>
+
+                        <ToggleButton Grid.Row="5" Grid.Column="2" Grid.RowSpan="2" Width="70" Height="70" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" IsChecked="{Binding IsRecorderArmed, Mode=TwoWay}">
+                            <Image Height="Auto" Width="Auto" Margin="10">
+                                <Image.Source>
+                                    <DrawingImage Drawing="{Binding IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}, Mode=OneWay, FallbackValue=False, TargetNullValue=False, Converter={StaticResource IsArmedIconConverter}}"/>
+                                </Image.Source>
+                            </Image>
+                        </ToggleButton>
+                    </Grid>
+                </Border>
+
+                <Border Margin="5" BorderBrush="{DynamicResource AccentBaseColorBrush}" BorderThickness="1" CornerRadius="5">
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="250"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="55"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
+
+                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="0" Kind="Music" ToolTip="Track" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Track" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.TrackName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+
+                        <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Account" ToolTip="Artist" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Artist" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.Artists[0].ArtistName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+
+                        <iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="Album" ToolTip="Album" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Album" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.AlbumName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+
+                        <Image Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" ToolTip="Album Image" Source="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.Images[0], Converter={StaticResource BitmapImageSourceConverter}}"/>
+
+                        <DockPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4">
+                            <Button Width="50" Command="{Binding PlayPauseCommand}" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
+                                <Image Height="Auto" Width="Auto" Margin="10">
+                                    <Image.Source>
+                                        <DrawingImage Drawing="{Binding PlayerApp.CurrentPlaybackStatus.IsPlaying, Mode=OneWay, FallbackValue=False, TargetNullValue=False, Converter={StaticResource IsPlayingIconConverter}}"/>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                            <TextBlock DockPanel.Dock="Left" Margin="5" ToolTip="Current track time" Text="{Binding PlayerApp.CurrentPlaybackStatus.Progress, StringFormat=mm\\:ss}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            <TextBlock DockPanel.Dock="Right" Margin="5" ToolTip="Total track time" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.Duration, StringFormat=mm\\:ss}" VerticalAlignment="Center"/>
+                            <Controls:MetroProgressBar Margin="5" ToolTip="Current track time" Value="{Binding PlayerApp.CurrentPlaybackStatus.Progress.Ticks, Mode=OneWay}" Maximum="{Binding PlayerApp.CurrentPlaybackStatus.Track.Duration.Ticks, Mode=OneWay}" BorderBrush="{DynamicResource AccentBaseColorBrush}" BorderThickness="1" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        </DockPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
         </ScrollViewer>
 
         <GridSplitter ResizeDirection="Rows" Grid.Row="1" Height="5" Margin="0,5,0,5" ShowsPreview="False" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#FFB2B2B2"/>
