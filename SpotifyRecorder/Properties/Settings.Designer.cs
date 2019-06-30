@@ -22,5 +22,16 @@ namespace SpotifyRecorder.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::SpotifyRecorder.RecorderSettings RecSettings {
+            get {
+                return ((global::SpotifyRecorder.RecorderSettings)(this["RecSettings"]));
+            }
+            set {
+                this["RecSettings"] = value;
+            }
+        }
     }
 }

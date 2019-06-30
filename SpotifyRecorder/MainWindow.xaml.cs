@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,11 +57,17 @@ namespace SpotifyRecorder
             set { _playerApp = value; OnPropertyChanged(); }
         }
 
-        private Recorder _recorderHandle;
-        public Recorder RecorderHandle
+        private object _recordersListLock = new object();
+        private ObservableCollection<Recorder> _recorders;
+        public ObservableCollection<Recorder> Recorders
         {
-            get { return _recorderHandle; }
-            set { _recorderHandle = value; OnPropertyChanged(); }
+            get { return _recorders; }
+            set { _recorders = value; OnPropertyChanged(); OnPropertyChanged("CurrentRecorder"); OnPropertyChanged("AreRecorderSettingsChanged"); }
+        }
+        
+        public Recorder CurrentRecorder
+        {
+            get { return (Recorders == null || Recorders.Count == 0) ? null : Recorders.Last(); }
         }
 
         private bool _isRecorderArmed;
@@ -72,6 +79,31 @@ namespace SpotifyRecorder
                 _isRecorderArmed = value;
                 logBox1.LogEvent(new LogBox.LogEventInfo("SpotifyRecorder " + (_isRecorderArmed ? "armed." : "disarmed.")));
                 OnPropertyChanged();
+            }
+        }
+
+        private RecorderSettings _recSettings;
+        public RecorderSettings RecSettings
+        {
+            get { return _recSettings; }
+            set
+            {
+                if (_recSettings != null) { _recSettings.PropertyChanged -= RecSettingsPropertyChanged; }
+                _recSettings = value;
+                if (_recSettings != null) { _recSettings.PropertyChanged += RecSettingsPropertyChanged; }
+                
+                OnPropertyChanged();
+                OnPropertyChanged("AreRecorderSettingsChanged");
+            }
+        }
+
+        void RecSettingsPropertyChanged(object sender, PropertyChangedEventArgs args) { OnPropertyChanged("RecSettings"); OnPropertyChanged("AreRecorderSettingsChanged"); }
+
+        public bool AreRecorderSettingsChanged
+        {
+            get
+            {
+                return (CurrentRecorder != null && CurrentRecorder.RecordState != RecordStates.STOPPED && !CurrentRecorder.RecorderRecSettings.Equals(RecSettings));
             }
         }
 
@@ -137,14 +169,30 @@ namespace SpotifyRecorder
                 {
                     _openFileNamePrototypeCommand = new WindowTheme.RelayCommand(param =>
                     {
-                        FileNamePrototypeCreator fileNamePrototypeCreator = new FileNamePrototypeCreator(RecorderHandle.FileNamePrototype, RecorderHandle.RecordBasePath, PlayerApp.CurrentTrack?.TrackName, PlayerApp.CurrentTrack?.Artists[0].ArtistName, PlayerApp.CurrentTrack?.Album.AlbumName, RecorderHandle.FileExistMode);
+                        FileNamePrototypeCreator fileNamePrototypeCreator = new FileNamePrototypeCreator(CurrentRecorder.RecorderRecSettings.FileNamePrototype, CurrentRecorder.RecorderRecSettings.BasePath, PlayerApp.CurrentTrack?.TrackName, PlayerApp.CurrentTrack?.Artists[0].ArtistName, PlayerApp.CurrentTrack?.Album.AlbumName, CurrentRecorder.RecorderRecSettings.FileExistMode);
                         if(fileNamePrototypeCreator.ShowDialog().Value == true)
                         {
-                            RecorderHandle.FileNamePrototype = fileNamePrototypeCreator.FileNamePrototype;
+                            CurrentRecorder.RecorderRecSettings.FileNamePrototype = fileNamePrototypeCreator.FileNamePrototype;
                         }
                     });
                 }
                 return _openFileNamePrototypeCommand;
+            }
+        }
+
+        private ICommand _resetRecSettingsCommand;
+        public ICommand ResetRecSettingsCommand
+        {
+            get
+            {
+                if (_resetRecSettingsCommand == null)
+                {
+                    _resetRecSettingsCommand = new WindowTheme.RelayCommand(param =>
+                    {
+                        RecSettings = (CurrentRecorder == null ? new RecorderSettings() : (RecorderSettings)CurrentRecorder.RecorderRecSettings.Clone());
+                    });
+                }
+                return _resetRecSettingsCommand;
             }
         }
 
@@ -167,19 +215,37 @@ namespace SpotifyRecorder
 
         private async void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            if (Properties.Settings.Default.RecSettings == null) { Properties.Settings.Default.RecSettings = new RecorderSettings(); }
+            RecSettings = Properties.Settings.Default.RecSettings;
+
             PlayerApp = new SpotifyPlayer(10, this);
 
             await startAndConnectToPlayer();
 
-            RecorderHandle = new Recorder(_logHandle);
-            RecorderHandle.TrackInfo = PlayerApp.CurrentTrack;
+            Recorders = new ObservableCollection<Recorder>();
+            BindingOperations.EnableCollectionSynchronization(Recorders, _recordersListLock);
+
+            /*Recorder tmpRecorder = new Recorder(RecSettings, new PlayerTrack() { TrackName = "Track1" }, _logHandle);
+            Recorders.Add(tmpRecorder);
+            
+            tmpRecorder = new Recorder(RecSettings, new PlayerTrack() { TrackName = "Track2" }, _logHandle);
+            Recorders.Add(tmpRecorder);
+
+            tmpRecorder = new Recorder(RecSettings, new PlayerTrack() { TrackName = "Track3" }, _logHandle);
+            Recorders.Add(tmpRecorder);*/
+
+            Recorder tmpRecorder = new Recorder((RecorderSettings)RecSettings.Clone(), PlayerApp.CurrentTrack, _logHandle);
+            Recorders.Add(tmpRecorder);
         }
 
         //***********************************************************************************************************************************************************************************************************
 
         private void MetroWindow_Closed(object sender, EventArgs e)
         {
-            if (RecorderHandle != null) { RecorderHandle.StopRecord(); }
+            Properties.Settings.Default.RecSettings = this.RecSettings;
+            Properties.Settings.Default.Save();
+
+            foreach(Recorder rec in Recorders) { rec?.StopRecord(); }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -212,14 +278,15 @@ namespace SpotifyRecorder
 
         //##############################################################################################################################################################################################
 
+#warning Ad after normal Track doesn't fire Track changed event!!!
         private void PlayerApp_OnTrackChange(object sender, PlayerTrackChangeEventArgs e)
         {
             _logHandle.Report(new LogBox.LogEventInfo("Track changed to \"" + e.NewTrack?.TrackName + "\" (" + e.NewTrack?.Artists[0].ArtistName + ")"));
 
-            bool spotifyPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
-            //_spotify.Pause();
-            RecorderHandle.StopRecord();
-            //if(spotifyPlaying) { _spotify.Play(); }
+            bool isPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
+            //PlayerApp.PausePlayback();
+            CurrentRecorder?.StopRecord();
+            //if(isPlaying) { PlayerApp.StartPlayback(); }
 
             StartRecord();
         }
@@ -232,53 +299,43 @@ namespace SpotifyRecorder
 
             PlayerPlaybackStatus status = PlayerApp.CurrentPlaybackStatus;
 
-            if (e.Playing && status.Progress.TotalSeconds <= 0.5 && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
+            if (e.Playing && status.Progress.TotalSeconds <= 1 && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
             {
                 StartRecord();
             }
-            else if (e.Playing && status.Progress.TotalSeconds > 0.5 && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
+            else if (e.Playing && status.Progress.TotalSeconds > 1 && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
             {
-                RecorderHandle.ResumeRecord();
+                CurrentRecorder?.ResumeRecord();
             }
             else if (!e.Playing && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
             {
-                RecorderHandle.PauseRecord();
+                CurrentRecorder?.PauseRecord();
             }
         }
 
         //***********************************************************************************************************************************************************************************************************
 
         PlayerTrack _lastTrack = null;
-        bool block_recorderStartStop = false;
+        TimeSpan _lastProgress = new TimeSpan();
         private void PlayerApp_OnTrackTimeChange(object sender, PlayerTrackTimeChangeEventArgs e)
         {
             try
             {
                 PlayerPlaybackStatus status = PlayerApp.CurrentPlaybackStatus;
-                if (IsRecorderArmed && status.IsPlaying && status.Progress.TotalSeconds < 0.5 && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd && _lastTrack.TrackID == status.Track.TrackID)
+                if(status == null) { return; }
+                if (status.IsPlaying && status.Progress.TotalSeconds < 1 && status.Track != null && !status.Track.IsAd && _lastTrack.TrackID == status.Track.TrackID && _lastProgress.TotalSeconds > 2)
                 {
-                    if (RecorderHandle.RecordState == RecordStates.STOPPED)
-                    {
-                        block_recorderStartStop = true;
-                        StartRecord();
-                    }
-                    else if (RecorderHandle.RecordState == RecordStates.RECORDING && !block_recorderStartStop)
-                    {
-                        RecorderHandle.StopRecord();
-                        StartRecord();
-                    }
-                }
-                else
-                {
-                    block_recorderStartStop = false;
+                    StartRecord();
                 }
                 _lastTrack = status?.Track;
+                _lastProgress = (status == null ? TimeSpan.Zero : status.Progress);
             }
             catch (ObjectDisposedException)
             { }
             catch (Exception ex)
             {
-                logBox1.LogEvent(new LogBox.LogEventError("OnTrackTimeChange event: " + ex.Message));
+#warning NullReference error while ad?!
+                _logHandle.Report(new LogBox.LogEventError("OnTrackTimeChange event: " + ex.Message));
             }
         }
 
@@ -289,6 +346,7 @@ namespace SpotifyRecorder
             PlayerApp.ListenForEvents = false;
 
             bool isPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
+            OnPropertyChanged("AreRecorderSettingsChanged");
 
             if (!isPlaying || !IsRecorderArmed)     //Only start a new record if music is playing and the recorder is armed
             {
@@ -297,21 +355,38 @@ namespace SpotifyRecorder
             
             if (!isPlaying) { return; }
 
-            //PlayerApp.PausePlayback();
+            Recorder tmpRecorder = new Recorder((RecorderSettings)RecSettings.Clone(), PlayerApp.CurrentTrack, _logHandle);
+            tmpRecorder.OnRecorderPostStepsFinished += TmpRecorder_OnRecorderPostStepsFinished;
+            Recorders.Add(tmpRecorder);
             
-            RecorderHandle.TrackInfo = PlayerApp.CurrentTrack;
-
             if (PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
             {
-                RecorderHandle.StartRecord();
-
-                //System.Threading.Thread.Sleep(silentTimeBeforeTrack_ms);
+                tmpRecorder?.StartRecord();
             }
 
-            //PlayerApp.StartPlayback();
+            CleanupRecordersList();
 
             PlayerApp.ListenForEvents = true;
         }
 
+        //***********************************************************************************************************************************************************************************************************
+
+        private void TmpRecorder_OnRecorderPostStepsFinished(object sender, EventArgs e)
+        {
+            CleanupRecordersList();
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        /// <summary>
+        /// Cleanup all recorders that are stopped. Leave the last recorder in the list.
+        /// </summary>
+        private void CleanupRecordersList()
+        {
+            List<Recorder> recordersCleanedup = Recorders.Where(r => r.RecordState != RecordStates.STOPPED || Recorders.IndexOf(r) == (Recorders.Count - 1)).ToList();
+
+            Recorders.Clear();
+            foreach (Recorder item in recordersCleanedup) { Recorders.Add(item); }
+        }
     }
 }

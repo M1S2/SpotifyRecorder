@@ -58,6 +58,7 @@ namespace SpotifyRecorder.GenericRecorder
             get { return _trackInfo; }
             set
             {
+                if(_trackInfo == value) { return; }
                 if (RecordState == RecordStates.STOPPED)
                 {
                     _trackInfo = value;
@@ -73,106 +74,14 @@ namespace SpotifyRecorder.GenericRecorder
 
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        private string _recordBasePath;
+        private RecorderSettings _recorderRecSettings;
         /// <summary>
-        /// Path where the records are saved
+        /// Settings for the recorder
         /// </summary>
-        public string RecordBasePath
+        public RecorderSettings RecorderRecSettings
         {
-            get { return _recordBasePath; }
-            set
-            {
-                if (RecordState == RecordStates.STOPPED)
-                {
-                    if (!Directory.Exists(value))
-                    {
-                        _logHandle.Report(new LogBox.LogEventError("Invalid RecordPath selected: \"" + value + "\""));
-                        _isRecordPathValid = false;
-                    }
-                    else
-                    {
-                        _recordBasePath = value;
-                        OnPropertyChanged();
-                        _isRecordPathValid = true;
-                        CreateFilePath();
-                    }
-                }
-                else
-                {
-                    _logHandle.Report(new LogBox.LogEventWarning("Record is currently running. Please stop it before changing the record path."));
-                }
-            }
-        }
-
-        //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        private string _fileNamePrototype;
-        /// <summary>
-        /// String that represents a filename with placeholders and without extension (for example "{RecordPath}\{Album}\{Interpret} - {Title}")
-        /// </summary>
-        public string FileNamePrototype
-        {
-            get { return _fileNamePrototype; }
-            set 
-            {
-                if (RecordState == RecordStates.STOPPED)
-                {
-                    _fileNamePrototype = FileNamePrototypeCreator.GetValidFileNamePrototyp(value);
-                    OnPropertyChanged();
-                    CreateFilePath();
-                }
-                else
-                {
-                    _logHandle.Report(new LogBox.LogEventWarning("Record is currently running. Please stop it before changing the file name prototype."));
-                }
-            }
-        }
-
-        //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        private RecorderFileExistModes _fileExistMode;
-        /// <summary>
-        /// What should be done if the file already exists. Skip and don't record anything, override the existing file, create a new file with another filename (number appended)
-        /// </summary>
-        public RecorderFileExistModes FileExistMode
-        {
-            get { return _fileExistMode; }
-            set
-            {
-                if(RecordState == RecordStates.STOPPED)
-                {
-                    _fileExistMode = value;
-                    OnPropertyChanged();
-                    CreateFilePath();
-                }
-                else
-                {
-                    _logHandle.Report(new LogBox.LogEventWarning("Record is currently running. Please stop it before changing the file exist mode."));
-                }
-            }
-        }
-
-        //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        private RecordFormats _recordFormat;
-        /// <summary>
-        /// Type of the record
-        /// </summary>
-        public RecordFormats RecordFormat
-        {
-            get { return _recordFormat; }
-            set
-            {
-                if (RecordState == RecordStates.STOPPED)
-                {
-                    _recordFormat = value;
-                    OnPropertyChanged();
-                }
-                else
-                {
-                    _logHandle.Report(new LogBox.LogEventWarning("Record is currently running. Please stop it before changing the record format."));
-                }
-            }
+            get { return _recorderRecSettings; }
+            set { _recorderRecSettings = value; OnPropertyChanged(); CreateFilePath(); }
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -183,7 +92,7 @@ namespace SpotifyRecorder.GenericRecorder
         /// </summary>    
         public RecordStates RecordState  
         {
-            get { return _recordState; } 
+            get { return _recordState; }
             private set { _recordState = value; OnPropertyChanged(); }
         }
 
@@ -225,14 +134,20 @@ namespace SpotifyRecorder.GenericRecorder
 
         #endregion
 
-        //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //***********************************************************************************************************************************************************************************************************
+
+        /// <summary>
+        /// Event that gets called when the recorder finished all post recording steps (normalizing, converting, ...).
+        /// </summary>
+        public event EventHandler OnRecorderPostStepsFinished;
+
+        //***********************************************************************************************************************************************************************************************************
 
         private string FileStrWAV { get { return RecordFilepathWithoutExtension + ".wav"; } }
         private string FileStrMP3 { get { return RecordFilepathWithoutExtension + ".mp3"; } }
 
         private IProgress<LogBox.LogEvent> _logHandle;
 
-        private bool _isRecordPathValid;
         private bool _wasRecordPaused;                                      // true -> the record was paused at least once; false -> the record wasn't paused
         private List<double> _recordPauseTimes_s = new List<double>();      // list with times when the record was paused
 
@@ -248,20 +163,15 @@ namespace SpotifyRecorder.GenericRecorder
         /// <summary>
         /// Constructor of the Recorder class
         /// </summary>
-        /// <param name="recordBasePath">Base path where the records are saved</param>
+        /// <param name="recorderSettings">Settings for the recorder</param>
         /// <param name="trackInfo">Track info of the record</param>
-        /// <param name="fileExistMode">What should be done if the file already exists. Skip and don't record anything, override the existing file, create a new file with another filename (number appended)</param>
-        /// <param name="recordFormat">Format of the record</param>
         /// <param name="logHandle">Handle that is used to write log entries</param>
-        public Recorder(string recordBasePath, GenericPlayer.PlayerTrack trackInfo, RecorderFileExistModes fileExistMode, RecordFormats recordFormat, IProgress<LogBox.LogEvent> logHandle)
+        public Recorder(RecorderSettings recorderSettings, GenericPlayer.PlayerTrack trackInfo, IProgress<LogBox.LogEvent> logHandle)
         {
             _logHandle = logHandle;
             RecordState = RecordStates.STOPPED;
-            FileNamePrototype = FileNamePrototypeCreator.PROTOTYPSTRING_DEFAULT;
-            RecordBasePath = recordBasePath;
-            FileExistMode = fileExistMode;
+            RecorderRecSettings = recorderSettings;
             TrackInfo = trackInfo;
-            RecordFormat = recordFormat;
             AllowedDifferenceToTrackDuration = new TimeSpan(0, 0, 1);
             _wasRecordPaused = false;
             MarkPausedFiles = true;
@@ -278,11 +188,11 @@ namespace SpotifyRecorder.GenericRecorder
         {
             _logHandle = logHandle;
             RecordState = RecordStates.STOPPED;
-            FileNamePrototype = FileNamePrototypeCreator.PROTOTYPSTRING_DEFAULT;
-            RecordBasePath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
-            FileExistMode = RecorderFileExistModes.SKIP;
+            RecorderRecSettings.FileNamePrototype = FileNamePrototypeCreator.PROTOTYPSTRING_DEFAULT;
+            RecorderRecSettings.BasePath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+            RecorderRecSettings.FileExistMode = RecorderFileExistModes.SKIP;
             TrackInfo = null;
-            RecordFormat = RecordFormats.MP3;
+            RecorderRecSettings.RecordFormat = RecordFormats.MP3;
             AllowedDifferenceToTrackDuration = new TimeSpan(0, 0, 1);
             _wasRecordPaused = false;
             MarkPausedFiles = true;
@@ -299,7 +209,7 @@ namespace SpotifyRecorder.GenericRecorder
             if (TrackInfo == null) { RecordFilepathWithoutExtension = ""; }
             else
             {
-                RecordFilepathWithoutExtension = FileNamePrototypeCreator.GetCompleteFileNameWithoutExtension(FileNamePrototype, RecordBasePath, TrackInfo?.TrackName, TrackInfo?.Artists[0].ArtistName, TrackInfo?.Album.AlbumName, FileExistMode);
+                RecordFilepathWithoutExtension = FileNamePrototypeCreator.GetCompleteFileNameWithoutExtension(RecorderRecSettings.FileNamePrototype, RecorderRecSettings.BasePath, TrackInfo?.TrackName, ((TrackInfo?.Artists == null ||TrackInfo?.Artists.Count == 0) ? "" : TrackInfo?.Artists[0].ArtistName), TrackInfo?.Album?.AlbumName, RecorderRecSettings.FileExistMode);
             }
         }
 
@@ -319,13 +229,13 @@ namespace SpotifyRecorder.GenericRecorder
                 return;
             }
             CreateFilePath();
-            if(FileExistMode == RecorderFileExistModes.SKIP && (System.IO.File.Exists(FileStrWAV) || System.IO.File.Exists(FileStrMP3)))
+            if(RecorderRecSettings.FileExistMode == RecorderFileExistModes.SKIP && (System.IO.File.Exists(FileStrWAV) || System.IO.File.Exists(FileStrMP3)))
             {
                 _logHandle.Report(new LogBox.LogEventWarning("Record (\"" + TrackInfo?.TrackName + "\") not started, because FileExistMode == SKIP and file already exists."));
                 return;
             }
             
-            if(!_isRecordPathValid)
+            if(!Directory.Exists(RecorderRecSettings.BasePath))
             {
                 _logHandle.Report(new LogBox.LogEventWarning("Record (\"" + TrackInfo?.TrackName + "\") not started, because RecordPath is invalid."));
                 return;
@@ -340,7 +250,7 @@ namespace SpotifyRecorder.GenericRecorder
 
             MMDeviceEnumerator devEnumerator = new MMDeviceEnumerator();
             MMDeviceCollection mMDevices = devEnumerator.EnumAudioEndpoints(DataFlow.All, DeviceState.All);
-#warning Spotify not able to set output source ???!!!
+
             MMDevice dev = mMDevices.Where(d => d.FriendlyName.StartsWith("CABLE Input"))?.First();
             if (dev == null)
             {
@@ -375,6 +285,7 @@ namespace SpotifyRecorder.GenericRecorder
             };
 
             _capture.Start();
+
             RecordState = RecordStates.RECORDING;
             _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") started."));
             _wasRecordPaused = false;
@@ -419,94 +330,100 @@ namespace SpotifyRecorder.GenericRecorder
         /// <summary>
         /// Stop a record
         /// </summary>
-        public void StopRecord()
+        public async void StopRecord()
         {
-            if (RecordState == RecordStates.STOPPED) { return; }
-
-            if (_capture != null)
+            await Task.Run(() =>
             {
-                try
-                {
-                    _capture.Stop();
-                    _capture.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    _logHandle.Report(new LogBox.LogEventError("Error while stopping record: " + ex.Message));
-                }
+                if (RecordState == RecordStates.STOPPED) { return; }
 
-                _silenceOut.Stop();
-            }
-            if(_silenceOut != null) { _silenceOut.Stop(); _silenceOut.Dispose(); }
-            if (_wavWriter != null) { _wavWriter.Dispose(); }
-            _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") stopped."));
-
-            if (System.IO.File.Exists(FileStrWAV))
-            {
-                IWaveSource wavSource = new WaveFileReader(FileStrWAV);
-                TimeSpan wavLength = wavSource.GetLength();
-                wavSource.Dispose();
-                if (TrackInfo?.Duration > TimeSpan.Zero && (wavLength < (TrackInfo?.Duration - AllowedDifferenceToTrackDuration) || wavLength > (TrackInfo?.Duration + AllowedDifferenceToTrackDuration)))
+                if (_capture != null)
                 {
-                    System.IO.File.Delete(FileStrWAV);
-                    DirectoryManager.DeleteEmptyFolders(RecordBasePath);
+                    try
+                    {
+                        _capture.Stop();
+                        _capture.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logHandle.Report(new LogBox.LogEventError("Error while stopping record: " + ex.Message));
+                    }
+
+                    _silenceOut.Stop();
+                }
+                if (_silenceOut != null) { _silenceOut.Stop(); _silenceOut.Dispose(); }
+                if (_wavWriter != null) { _wavWriter.Dispose(); }
+                _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") stopped."));
+
+#warning uncomment
+#if false
+                if (System.IO.File.Exists(FileStrWAV))
+                {
+                    IWaveSource wavSource = new WaveFileReader(FileStrWAV);
+                    TimeSpan wavLength = wavSource.GetLength();
+                    wavSource.Dispose();
+                    if (TrackInfo?.Duration > TimeSpan.Zero && (wavLength < (TrackInfo?.Duration - AllowedDifferenceToTrackDuration) || wavLength > (TrackInfo?.Duration + AllowedDifferenceToTrackDuration)))
+                    {
+                        System.IO.File.Delete(FileStrWAV);
+                        DirectoryManager.DeleteEmptyFolders(RecorderRecSettings.BasePath);
+                        RecordState = RecordStates.STOPPED;
+                        _logHandle.Report(new LogBox.LogEventWarning("Record (\"" + TrackInfo?.TrackName + "\") deleted, because of wrong length (Length = " + wavLength.ToString() + " s, Expected Range = [" + (TrackInfo?.Duration - AllowedDifferenceToTrackDuration).ToString() + ", " + (TrackInfo?.Duration + AllowedDifferenceToTrackDuration).ToString() + "])."));
+                        return;
+                    }
+                }
+#endif
+                if (!System.IO.File.Exists(FileStrWAV))
+                {
                     RecordState = RecordStates.STOPPED;
-                    _logHandle.Report(new LogBox.LogEventWarning("Record (\"" + TrackInfo?.TrackName + "\") deleted, because of wrong length (Length = " + wavLength.ToString() + " s, Expected Range = [" + (TrackInfo?.Duration - AllowedDifferenceToTrackDuration).ToString() + ", " + (TrackInfo?.Duration + AllowedDifferenceToTrackDuration).ToString() + "])."));
                     return;
                 }
-            }
 
-            if(!System.IO.File.Exists(FileStrWAV))
-            {
-                RecordState = RecordStates.STOPPED;
-                return;
-            }
-
-            NormalizeWAVFile(FileStrWAV);
-            _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") normalized."));
+                if(NormalizeWAVFile(FileStrWAV) == false) { return; }
+                _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") normalized."));
 
 #warning Remove Player specific parts (Spotify) !!!
-            /*if(_wasRecordPaused && MarkPausedFiles)
-            {
-                string newFilestrWAV = FilestrWAV.Remove(FilestrWAV.Length - 4, 4) + "_paused.wav";
-                RemoveSpotifyFades(FilestrWAV, newFilestrWAV);
-                System.IO.File.Delete(FilestrWAV);
-                FilestrWAV = newFilestrWAV;
-                FilestrMP3 = newFilestrWAV.Replace(".wav", ".mp3");
-                _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + Title + "\") spotify fades removed."));
-            }
-            else if(_wasRecordPaused && !MarkPausedFiles)
-            {
+                /*if(_wasRecordPaused && MarkPausedFiles)
+                {
+                    string newFilestrWAV = FilestrWAV.Remove(FilestrWAV.Length - 4, 4) + "_paused.wav";
+                    RemoveSpotifyFades(FilestrWAV, newFilestrWAV);
+                    System.IO.File.Delete(FilestrWAV);
+                    FilestrWAV = newFilestrWAV;
+                    FilestrMP3 = newFilestrWAV.Replace(".wav", ".mp3");
+                    _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + Title + "\") spotify fades removed."));
+                }
+                else if(_wasRecordPaused && !MarkPausedFiles)
+                {
 
-                RemoveSpotifyFades(FilestrWAV, FilestrWAV);
-                _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + Title + "\") spotify fades removed."));
-            }*/
+                    RemoveSpotifyFades(FilestrWAV, FilestrWAV);
+                    _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + Title + "\") spotify fades removed."));
+                }*/
 
-            if (RecordFormat == RecordFormats.WAV_AND_MP3)
-            {
-                //Task t = Task.Run(() => ConvertWAVToMP3(FilestrWAV_temp, FilestrMP3, true));    //Run Conversion in new Task
-                ConvertWAVToMP3(FileStrWAV, FileStrMP3);
-                _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") converted to MP3."));
-            }
-            else if(RecordFormat == RecordFormats.MP3)
-            {
-                ConvertWAVToMP3(FileStrWAV, FileStrMP3);
-                if (System.IO.File.Exists(FileStrWAV)) { System.IO.File.Delete(FileStrWAV); }
-                _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") converted to MP3 and WAV deleted."));
-            }
+                if (RecorderRecSettings.RecordFormat == RecordFormats.WAV_AND_MP3)
+                {
+                    //Task t = Task.Run(() => ConvertWAVToMP3(FilestrWAV_temp, FilestrMP3, true));    //Run Conversion in new Task
+                    if(ConvertWAVToMP3(FileStrWAV, FileStrMP3) == false) { return; }
+                    _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") converted to MP3."));
+                }
+                else if (RecorderRecSettings.RecordFormat == RecordFormats.MP3)
+                {
+                    if(ConvertWAVToMP3(FileStrWAV, FileStrMP3) == false) { return; }
+                    if (System.IO.File.Exists(FileStrWAV)) { System.IO.File.Delete(FileStrWAV); }
+                    _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") converted to MP3 and WAV deleted."));
+                }
 
-            AddTrackTags(FileStrWAV, TrackInfo);
-            AddTrackTags(FileStrMP3, TrackInfo);
-            _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") tagged."));
+                AddTrackTags(FileStrWAV, TrackInfo);
+                AddTrackTags(FileStrMP3, TrackInfo);
+                _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") tagged."));
 
-            RecordState = RecordStates.STOPPED;
+                RecordState = RecordStates.STOPPED;
+                OnRecorderPostStepsFinished?.Invoke(this, new EventArgs());
+            });
         }
 
-        #endregion
+#endregion
 
         //***********************************************************************************************************************************************************************************************************
 
-        #region Convert .wav to .mp3
+#region Convert .wav to .mp3
 
         //#warning Delete LAME mp3 encoder after testing the other built in solution of cscore
         /// <summary>
@@ -516,24 +433,26 @@ namespace SpotifyRecorder.GenericRecorder
         /// </summary>
         /// <param name="filenameWAV">input file path of the .wav file to convert</param>
         /// <param name="filenameMP3">output file path of the converted .mp3 file</param>
-        private void ConvertWAVToMP3(string filenameWAV, string filenameMP3)
+        /// <returns>true on success, false when failed</returns>
+        private bool ConvertWAVToMP3(string filenameWAV, string filenameMP3)
         {
             string lame_path = System.AppDomain.CurrentDomain.BaseDirectory + "\\" + "lame.exe";
             if (!System.IO.File.Exists(lame_path))
             {
                 _logHandle.Report(new LogBox.LogEventError("Conversion to MP3 failed, because lame.exe not found: " + lame_path));
-                return;
+                return false;
             }
             if(!System.IO.File.Exists(filenameWAV))
             {
                 _logHandle.Report(new LogBox.LogEventError("Conversion to MP3 failed, because WAV file doesn't exist."));
-                return;
+                return false;
             }
 
-            RecordState = RecordStates.CONVERTING_WAV_TO_MP3;
+            RecordState = RecordStates.WAV_TO_MP3;
             Directory.CreateDirectory(Path.GetDirectoryName(filenameMP3));
             System.Diagnostics.Process converter = System.Diagnostics.Process.Start(lame_path, "-V2 \"" + filenameWAV + "\" \"" + filenameMP3 + "\"");
             converter.WaitForExit();
+            return true;
         }
 
         //#warning test wav to mp3 conversion
@@ -569,11 +488,11 @@ namespace SpotifyRecorder.GenericRecorder
         //            if (deleteWAV) { System.IO.File.Delete(filenameWAV); }
         //        }
 
-        #endregion
+#endregion
 
         //***********************************************************************************************************************************************************************************************************
 
-        #region Add tags to sound file
+#region Add tags to sound file
 
         /// <summary>
         /// Add additional infos to the .wav and/or .mp3 file
@@ -604,19 +523,20 @@ namespace SpotifyRecorder.GenericRecorder
             }
         }
 
-        #endregion
+#endregion
 
         //***********************************************************************************************************************************************************************************************************
 
-        #region Normalize .wav file
+#region Normalize .wav file
 
         /// <summary>
         /// Normalize the given .wav file using the tool from Manuel Kasper (see: https://neon1.net/prog/normalizer.html)
         /// </summary>
         /// <param name="wavFileName">file path of the .wav file to normalize. This file is overwritten by the normalized file</param>
-        private void NormalizeWAVFile(string wavFileName)
+        /// <returns>true on success, false when failed</returns>
+        private bool NormalizeWAVFile(string wavFileName)
         {
-            NormalizeWAVFile(wavFileName, wavFileName);
+            return NormalizeWAVFile(wavFileName, wavFileName);
         }
 
         /// <summary>
@@ -624,21 +544,22 @@ namespace SpotifyRecorder.GenericRecorder
         /// </summary>
         /// <param name="wavFileNameOriginal">input .wav file path (16-bit PCM required)</param>
         /// <param name="wavFileNameOutput">output .wav file path</param>
-        private void NormalizeWAVFile(string wavFileNameOriginal, string wavFileNameOutput)
+        /// <returns>true on success, false when failed</returns>
+        private bool NormalizeWAVFile(string wavFileNameOriginal, string wavFileNameOutput)
         {
             string normalizer_path = System.AppDomain.CurrentDomain.BaseDirectory + "\\" + "normalize.exe";
             if (!System.IO.File.Exists(normalizer_path))
             {
                 _logHandle.Report(new LogBox.LogEventError("Normalizing failed, because normalize.exe not found: " + normalizer_path));
-                return;
+                return false;
             }
             if (!System.IO.File.Exists(wavFileNameOriginal))
             {
                 _logHandle.Report(new LogBox.LogEventError("Normalizing failed, because WAV file doesn't exist."));
-                return;
+                return false;
             }
 
-            RecordState = RecordStates.NORMALIZING_WAV;
+            RecordState = RecordStates.NORMALIZING;
 
             System.Diagnostics.Process normalizer;
             if (wavFileNameOriginal != wavFileNameOutput)
@@ -650,13 +571,14 @@ namespace SpotifyRecorder.GenericRecorder
                 normalizer = System.Diagnostics.Process.Start(normalizer_path, "\"" + wavFileNameOriginal + "\"");
             }
             normalizer.WaitForExit();
+            return true;
         }
 
-        #endregion
+#endregion
 
         //***********************************************************************************************************************************************************************************************************
         /*
-        #region Remove spotify fades
+#region Remove spotify fades
 
         /// <summary>
         /// Find all places where the record was paused and remove the fade outs and fade ins that spotify applies when pausing and resuming a playback.
@@ -692,7 +614,7 @@ namespace SpotifyRecorder.GenericRecorder
             file.SaveFile(outputWavFileName);
         }
 
-        #endregion
+#endregion
     */
     }
 }

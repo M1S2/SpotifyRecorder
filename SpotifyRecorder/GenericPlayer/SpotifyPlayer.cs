@@ -87,9 +87,19 @@ namespace SpotifyRecorder.GenericPlayer
         /// Start the spotify desktop application if it's not running 
         /// </summary>
         /// <returns>true -> started successful, false -> error while starting application</returns>
-        public async override Task<bool> StartPlayerApplication()
+        public override Task<bool> StartPlayerApplication()
         {
+#warning https://community.spotify.com/t5/Desktop-Windows/Missing-enable-audio-graph-has-stopped-giving-option-to-select/td-p/4726519
+#warning Set Spotify output device over windows Sound settings (Integrate to setup project) >> App sound settings >> Spotify output = CABLE Input
+
             if (!IsPlayerApplicationRunning)
+            {
+                ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe");     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify
+                System.Threading.Thread.Sleep(2000);        //Wait some time before connecting to spotify
+            }
+            return Task.FromResult(true);
+
+            /*if (!IsPlayerApplicationRunning)
             {
                 ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", "--enable-audio-graph");     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify, use the --enable-audio-graph option to have the possibility to change the output device
                 System.Threading.Thread.Sleep(2000);        //Wait some time before connecting to spotify
@@ -116,7 +126,7 @@ namespace SpotifyRecorder.GenericPlayer
                     else { return false; }
                 }
             }
-            return true;
+            return true;*/
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -143,7 +153,7 @@ namespace SpotifyRecorder.GenericPlayer
             {
                 _spotifyWeb = await webApiFactory.GetWebApi();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 IsConnected = false;
                 return false;

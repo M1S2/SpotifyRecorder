@@ -18,7 +18,6 @@ The official Web API can only be used with an premium account.***
 
 This application can be used to record songs from Spotify.
 
-On startup the application checks if Spotify is open and if it was started with the \"--enable-audio-graph\" option. This is neccessary to choose the output device on which Spotify plays.
 Configure all neccessary settings (output path, output format, ...) and then arm the recorder.
 
 A new record is started if one of the following conditions is met:
@@ -30,5 +29,5 @@ If the track changes and the recorded length is shorter than the expected length
 
 If the record length is correct, the record is normalized (the volume is amplified to the maximum value without clipping), converted to MP3 (if needed) and tagged (infos are added to the file).
 
-The record is taken from a virtual audio device (virtual audio cable) to avoid other applications from interrupting the record. Therefore the sound from Spotify must be played via the audio cable output device. This is done by changing the output device in the Spotify settings.
+The output device of Spotify needs to be set to "CABLE Input (VB-Audio Virtual Cable)" because the record is taken from a virtual audio device (virtual audio cable) to avoid other applications from interrupting the record. 
 You can even set the master volume to 0 and the song is still recorded.

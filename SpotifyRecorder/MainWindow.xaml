@@ -12,6 +12,7 @@
         xmlns:converters="clr-namespace:SpotifyRecorder.Converters"
         xmlns:recorder="clr-namespace:SpotifyRecorder.GenericRecorder"
         mc:Ignorable="d"
+        x:Name="mainWindow"
         Title="Spotify Recorder" Height="1000" Width="900"
         Loaded="MetroWindow_Loaded"
         Closed="MetroWindow_Closed"
@@ -23,6 +24,10 @@
         <converters:IsPlayingToIconConverter x:Key="IsPlayingIconConverter"/>
         <converters:IsConnectedToIconConverter x:Key="IsConnectedIconConverter"/>
         <converters:IsArmedToIconConverter x:Key="IsArmedIconConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolVisibilityConverter"/>
+        <converters:IndexToVisibilityConverter x:Key="IndexVisibilityConverter"/>
+        <converters:RecorderStateToIconConverter x:Key="RecorderStateIconConverter"/>
+        <converters:AdditionConverter x:Key="AddConverter"/>
 
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="18"/>
@@ -69,13 +74,12 @@
                 <Border Margin="5" BorderBrush="{DynamicResource AccentBaseColorBrush}" BorderThickness="1" CornerRadius="5">
                     <Grid Margin="5">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="35"/>
                             <RowDefinition Height="35"/>
                             <RowDefinition Height="35"/>
                             <RowDefinition Height="35"/>
-                            <RowDefinition Height="35"/>
-                            <RowDefinition Height="35"/>
-                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="55"/>
@@ -83,31 +87,85 @@
                             <ColumnDefinition Width="90"/>
                         </Grid.ColumnDefinitions>
 
-                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="0" Kind="FolderOpen" ToolTip="Track" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" ToolTip="Recorder Base Path" Text="{Binding RecorderHandle.RecordBasePath}" VerticalAlignment="Center"/>
-                        <Button Grid.Row="0" Grid.Column="2" Margin="10,2,10,2" Style="{DynamicResource SquareButtonStyle}">
+                        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Background="{DynamicResource AccentBaseColorBrush}" Visibility="{Binding AreRecorderSettingsChanged, Converter={StaticResource BoolVisibilityConverter}}">
+                            <DockPanel>
+                                <Button DockPanel.Dock="Right" Margin="2" Width="150" Content="Reset to current settings" Style="{DynamicResource SquareButtonStyle}" Controls:ControlsHelper.ContentCharacterCasing="Normal" Command="{Binding ResetRecSettingsCommand}"/>
+                                <TextBlock DockPanel.Dock="Left" Padding="5" Text="Currently a recorder is running. All changes are used for the next record." Foreground="{DynamicResource IdealForegroundColorBrush}"/>
+                            </DockPanel>
+                        </Border>
+
+                        <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="FolderOpen" ToolTip="Base Path" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" ToolTip="Recorder Base Path" Text="{Binding RecSettings.BasePath}" VerticalAlignment="Center"/>
+                        <Button Grid.Row="1" Grid.Column="2" Margin="10,2,10,2" Style="{DynamicResource SquareButtonStyle}">
                             <iconPacks:Modern Kind="Edit"/>
                         </Button>
 
-                        <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="CodeTags" ToolTip="File Name Prototype" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" ToolTip="File Name Prototype" Text="{Binding RecorderHandle.FileNamePrototype}" VerticalAlignment="Center"/>
-                        <Button Grid.Row="1" Grid.Column="2" Margin="10,2,10,2" Style="{DynamicResource SquareButtonStyle}" Command="{Binding OpenFileNamePrototypeCommand}">
+                        <iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="CodeTags" ToolTip="File Name Prototype" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" ToolTip="File Name Prototype" Text="{Binding RecSettings.FileNamePrototype, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                        <Button Grid.Row="2" Grid.Column="2" Margin="10,2,10,2" Style="{DynamicResource SquareButtonStyle}" Command="{Binding OpenFileNamePrototypeCommand}">
                             <iconPacks:Modern Kind="Edit"/>
                         </Button>
 
-                        <!--<iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="Music" ToolTip="Record Format" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>-->
-                        <ComboBox Grid.Row="2" Grid.Column="1" ToolTip="Record Format" ItemsSource="{Binding Source={StaticResource valuesEnumRecorderFormats}}" SelectedItem="{Binding RecorderHandle.RecordFormat}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="MP3&#10;   WAV" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}" FontSize="12" FontWeight="Black"/>
+                        <ComboBox Grid.Row="3" Grid.Column="1" ToolTip="Record Format" ItemsSource="{Binding Source={StaticResource valuesEnumRecorderFormats}}" SelectedItem="{Binding RecSettings.RecordFormat}" VerticalAlignment="Center"/>
 
-                        <iconPacks:PackIconMaterial Grid.Row="3" Grid.Column="0" Kind="FileQuestion" ToolTip="File Exists Mode" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
-                        <ComboBox Grid.Row="3" Grid.Column="1" ToolTip="File Exists Mode" ItemsSource="{Binding Source={StaticResource valuesEnumRecorderFileExistModes}}" SelectedItem="{Binding RecorderHandle.FileExistMode}" VerticalAlignment="Center"/>
+                        <iconPacks:PackIconMaterial Grid.Row="4" Grid.Column="0" Kind="FileQuestion" ToolTip="File Exists Mode" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        <ComboBox Grid.Row="4" Grid.Column="1" ToolTip="File Exists Mode" ItemsSource="{Binding Source={StaticResource valuesEnumRecorderFileExistModes}}" SelectedItem="{Binding RecSettings.FileExistMode}" VerticalAlignment="Center"/>
 
+                        <!--
                         <iconPacks:PackIconMaterial Grid.Row="4" Grid.Column="0" Kind="FileMusic" ToolTip="File Path" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
                         <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="File Path" Text="{Binding RecorderHandle.RecordFilepathWithoutExtension}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                    
+                        
                         <iconPacks:PackIconFontAwesome Grid.Row="5" Grid.Column="0" Kind="SpinnerSolid" ToolTip="Recorder Status" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
                         <TextBlock Grid.Row="5" Grid.Column="1" ToolTip="Recorder Status" Text="{Binding RecorderHandle.RecordState}" VerticalAlignment="Center"/>
+                        -->
 
-                        <ToggleButton Grid.Row="5" Grid.Column="2" Grid.RowSpan="2" Width="70" Height="70" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" IsChecked="{Binding IsRecorderArmed, Mode=TwoWay}">
+                        <ItemsControl Grid.Row="5" Grid.Column="1" Margin="0,5,0,0" ItemsSource="{Binding Recorders}" BorderThickness="1" BorderBrush="{DynamicResource AccentBaseColorBrush}" AlternationCount="10">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="7">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- see: https://stackoverflow.com/questions/22378456/how-to-get-the-index-of-the-current-itemscontrol-item -->
+                                        <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Text="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource Mode=TemplatedParent}, StringFormat={}#{0}, Converter={StaticResource AddConverter}, ConverterParameter=1}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource GrayBrush3}" FontSize="25"/>
+
+                                        <Image Grid.Row="0" Grid.Column="1" Height="25" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Recorder Status">
+                                            <Image.Source>
+                                                <DrawingImage Drawing="{Binding RecordState, Mode=OneWay, Converter={StaticResource RecorderStateIconConverter}}"/>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding RecordState}" ToolTip="Recorder Status" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource GrayBrush3}" FontSize="14"/>
+                                        <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Text="{Binding RecordFilepathWithoutExtension}" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="14" ToolTip="File Path"/>
+
+                                        <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Foreground="{DynamicResource GrayBrush3}">
+                                            <Separator.Visibility>
+                                                <MultiBinding Converter="{StaticResource IndexVisibilityConverter}">
+                                                    <Binding Path="Recorders" ElementName="mainWindow"/>
+                                                    <Binding/>
+                                                </MultiBinding>
+                                            </Separator.Visibility>
+                                        </Separator>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <ToggleButton Grid.Row="5" Grid.Column="2" Width="70" Height="70" VerticalAlignment="Bottom" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" IsChecked="{Binding IsRecorderArmed, Mode=TwoWay}">
                             <Image Height="Auto" Width="Auto" Margin="10">
                                 <Image.Source>
                                     <DrawingImage Drawing="{Binding IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}, Mode=OneWay, FallbackValue=False, TargetNullValue=False, Converter={StaticResource IsArmedIconConverter}}"/>
@@ -132,6 +190,8 @@
                             <ColumnDefinition Width="120"/>
                         </Grid.ColumnDefinitions>
 
+                        <TextBlock Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="3" Text="Ad is playing" FontSize="50" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource GrayBrush3}" Visibility="{Binding PlayerApp.CurrentPlaybackStatus.Track.IsAd, Converter={StaticResource BoolVisibilityConverter}}"/>
+
                         <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="0" Kind="Music" ToolTip="Track" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
                         <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Track" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.TrackName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
 
@@ -142,7 +202,7 @@
                         <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Album" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.AlbumName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
 
                         <Image Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" ToolTip="Album Image" Source="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.Images[0], Converter={StaticResource BitmapImageSourceConverter}}"/>
-
+                        
                         <DockPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4">
                             <Button Width="50" Command="{Binding PlayPauseCommand}" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
                                 <Image Height="Auto" Width="Auto" Margin="10">

@@ -124,7 +124,7 @@ namespace Spotify_Recorder.GenericPlayer
             {
                 _spotifyWeb = await webApiFactory.GetWebApi();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

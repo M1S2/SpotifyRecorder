@@ -224,7 +224,7 @@ namespace SpotifyRecorder.GenericPlayer
         public abstract void PreviousTrack();
 
         //***********************************************************************************************************************************************************************************************************
-
+        
         /// <summary>
         /// Check if an event has to be raised.
         /// </summary>
@@ -238,6 +238,7 @@ namespace SpotifyRecorder.GenericPlayer
                 return;
             }
             UpdateCurrentPlaybackStatus();
+
             if (CurrentPlaybackStatus == null)
             {
                 _eventTimer.Start();
@@ -248,9 +249,18 @@ namespace SpotifyRecorder.GenericPlayer
                 _eventTimer.Start();
                 return;
             }
+
+            if (CurrentPlaybackStatus.IsPlaying && _tmpPlaybackStatus.Track != null && CurrentPlaybackStatus.Track == null)
+            {
+                OnTrackChange?.Invoke(this, new PlayerTrackChangeEventArgs()
+                {
+                    OldTrack = _tmpPlaybackStatus.Track,
+                    NewTrack = null
+                });
+            }
             if (CurrentPlaybackStatus.Track != null && _tmpPlaybackStatus.Track != null)
             {
-                if (CurrentPlaybackStatus.Track?.TrackID != _tmpPlaybackStatus.Track?.TrackID || CurrentPlaybackStatus.Track.TrackType == "other" && CurrentPlaybackStatus.Track.Duration != CurrentPlaybackStatus.Track.Duration)
+                if (CurrentPlaybackStatus.Track?.TrackID != _tmpPlaybackStatus.Track?.TrackID || CurrentPlaybackStatus.Track.TrackType == "other" && CurrentPlaybackStatus.Track.Duration != _tmpPlaybackStatus.Track.Duration)
                 {
                     OnTrackChange?.Invoke(this, new PlayerTrackChangeEventArgs()
                     {

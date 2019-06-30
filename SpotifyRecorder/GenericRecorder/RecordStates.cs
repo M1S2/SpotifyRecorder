@@ -29,12 +29,12 @@ namespace SpotifyRecorder.GenericRecorder
         /// <summary>
         /// Normalizing WAV file
         /// </summary>
-        NORMALIZING_WAV,
+        NORMALIZING,
 
         /// <summary>
         /// Converting WAV to MP3
         /// </summary>
-        CONVERTING_WAV_TO_MP3,
+        WAV_TO_MP3,
 
         /// <summary>
         /// Adding tags to file
