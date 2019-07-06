@@ -5,15 +5,6 @@
 | Project: | Spotify_Recorder                   |
 | Version: | %version%                                |
 
-## Caution
-
-<span style="color:blue; font-size:14pt">
-
-***This application doesn't work anymore, because the (inofficial) Spotify local API is out of order (since about July 2018).
-The official Web API can only be used with an premium account.***
-
-</span>
-
 ## Purpose
 
 This application can be used to record songs from Spotify.

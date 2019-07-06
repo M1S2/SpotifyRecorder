@@ -168,13 +168,22 @@ namespace SpotifyRecorder.GenericPlayer
         /// <summary>
         /// Start the player application async
         /// </summary>
+        /// <param name="minimized">true -> start minimized; otherwise false</param>
         /// <returns>true -> started successful, false -> error while starting application</returns>
-        public abstract Task<bool> StartPlayerApplication();
+        public abstract Task<bool> StartPlayerApplication(bool minimized = false);
 
         //***********************************************************************************************************************************************************************************************************
 
         /// <summary>
-        /// Get the current playback status
+        /// Close the player application async
+        /// </summary>
+        /// <returns>true -> closed successful, false -> error while closing application</returns>
+        public abstract Task<bool> ClosePlayerApplication();
+
+        //***********************************************************************************************************************************************************************************************************
+
+        /// <summary>
+        /// Get the current playback status property
         /// </summary>
         public abstract void UpdateCurrentPlaybackStatus();
 
@@ -197,17 +206,14 @@ namespace SpotifyRecorder.GenericPlayer
         /// <summary>
         /// Toggle between play and pause playback state. If the player is playing the playback is paused. If the player is paused the playback is started again.
         /// </summary>
-        public void TogglePlayPause()
-        {
-            if (CurrentPlaybackStatus?.IsPlaying == true)
-            {
-                PausePlayback();
-            }
-            else if (CurrentPlaybackStatus?.IsPlaying == false)
-            {
-                StartPlayback();
-            }
-        }
+        public abstract void TogglePlayPause();
+
+        //***********************************************************************************************************************************************************************************************************
+
+        /// <summary>
+        /// Toggle between mute and unmute state.
+        /// </summary>
+        public abstract void ToggleMuteState();
 
         //***********************************************************************************************************************************************************************************************************
 
@@ -249,7 +255,7 @@ namespace SpotifyRecorder.GenericPlayer
                 _eventTimer.Start();
                 return;
             }
-
+#warning Improve advertisement handling
             if (CurrentPlaybackStatus.IsPlaying && _tmpPlaybackStatus.Track != null && CurrentPlaybackStatus.Track == null)
             {
                 OnTrackChange?.Invoke(this, new PlayerTrackChangeEventArgs()

@@ -14,19 +14,13 @@ namespace SpotifyRecorder
         /// Find a process by the given name
         /// </summary>
         /// <param name="processName">name of the process to find</param>
+        /// <param name="onlyApplicationProcesses">if true, only application processes are returned; if false all processes (application, background, ...) are returned</param>
         /// <returns>list of Process object or empty list, if the process wasn't found</returns>
         /// see: https://stackoverflow.com/questions/4722198/checking-if-my-windows-application-is-running
-        public static List<Process> FindProcess(string processName)
+        public static List<Process> FindProcess(string processName, bool onlyApplicationProcesses)
         {
-            List<Process> processes = new List<Process>();
-            foreach (Process clsProcess in Process.GetProcesses())
-            {
-                if (clsProcess.ProcessName == processName)
-                {
-                    processes.Add(clsProcess);
-                }
-            }
-
+            List<Process> processes = Process.GetProcesses().Where(p => p.ProcessName == processName).ToList();
+            if (onlyApplicationProcesses) { processes = processes.Where(p => p.MainWindowHandle != IntPtr.Zero).ToList(); }
             return processes;
         }
 
@@ -36,11 +30,12 @@ namespace SpotifyRecorder
         /// Check if a process with the given name is open
         /// </summary>
         /// <param name="processName">name of the process to find</param>
+        /// <param name="onlyApplicationProcesses">if true, only application processes are returned; if false all processes (application, background, ...) are returned</param>
         /// <returns>true -> process is open; false -> process is not open</returns>
         /// see: https://stackoverflow.com/questions/4722198/checking-if-my-windows-application-is-running
-        public static bool IsProcessOpen(string processName)
+        public static bool IsProcessOpen(string processName, bool onlyApplicationProcesses)
         {
-            return (FindProcess(processName).Count > 0);
+            return (FindProcess(processName, onlyApplicationProcesses).Count > 0);
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -70,9 +65,10 @@ namespace SpotifyRecorder
         /// Close the main window of the process with the given name
         /// </summary>
         /// <param name="processName">name of the process to close</param>
-        public static void StopProcess(string processName)
+        /// <param name="onlyApplicationProcesses">if true, only application processes are returned; if false all processes (application, background, ...) are returned</param>
+        public static void StopProcess(string processName, bool onlyApplicationProcesses)
         {
-            List<Process> processes = FindProcess(processName);
+            List<Process> processes = FindProcess(processName, onlyApplicationProcesses);
             foreach (Process process in processes)
             {
                 try

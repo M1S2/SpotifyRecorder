@@ -29,6 +29,7 @@ namespace SpotifyRecorder.GenericPlayer
         private const int VK_MEDIA_PLAY_PAUSE = 0xB3;
         private const int VK_MEDIA_NEXT_TRACK = 0xB0;
         private const int VK_MEDIA_PREV_TRACK = 0xB1;
+        private const int VK_VOLUME_MUTE = 0xAD;
 
         private SpotifyWebAPI _spotifyWeb;
 
@@ -83,53 +84,40 @@ namespace SpotifyRecorder.GenericPlayer
 
         //***********************************************************************************************************************************************************************************************************
 
-        /// <summary>
-        /// Start the spotify desktop application if it's not running 
-        /// </summary>
-        /// <returns>true -> started successful, false -> error while starting application</returns>
-        public override Task<bool> StartPlayerApplication()
-        {
 #warning https://community.spotify.com/t5/Desktop-Windows/Missing-enable-audio-graph-has-stopped-giving-option-to-select/td-p/4726519
 #warning Set Spotify output device over windows Sound settings (Integrate to setup project) >> App sound settings >> Spotify output = CABLE Input
 
+        /// <summary>
+        /// Start the spotify desktop application if it's not running 
+        /// </summary>
+        /// <param name="minimized">true -> start minimized; otherwise false</param>
+        /// <returns>true -> started successful, false -> error while starting application</returns>
+        public override Task<bool> StartPlayerApplication(bool minimized = false)
+        {
+            bool startResult = true;
             if (!IsPlayerApplicationRunning)
             {
-                ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe");     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify
+                startResult = ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", (minimized ? "--minimized" : ""));     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify
                 System.Threading.Thread.Sleep(2000);        //Wait some time before connecting to spotify
             }
-            return Task.FromResult(true);
-
-            /*if (!IsPlayerApplicationRunning)
-            {
-                ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", "--enable-audio-graph");     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify, use the --enable-audio-graph option to have the possibility to change the output device
-                System.Threading.Thread.Sleep(2000);        //Wait some time before connecting to spotify
-            }
-            else    //Spotify is running, make sure it was started with the "--enable-audio-graph" option
-            {
-                List<string> spotifyStartArguments = ProcessHelper.GetProcessStartArguments("Spotify");
-                if (!spotifyStartArguments.Any(str => str.Contains("--enable-audio-graph")))     // no process with the name "Spotify.exe" was started with the "--enable-audio-graph" option
-                {
-                    bool wasClosed = false;
-                    if (_mainWindow == null)
-                    {
-                        wasClosed = (MessageBox.Show("Spotify was started without the \"--enable-audio-graph\" option.\nTo use this recorder, close Spotify and then click on \"OK\".\nYou can click on \"Cancel\" to close Spotify later. After starting it with the correct option, try to connect again.", "Spotify must run with \"--enable-audio-graph\" option.", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK);
-                    }
-                    else
-                    {
-                        wasClosed = (await _mainWindow.ShowMessageAsync("Spotify must run with \"--enable-audio-graph\" option.", "Spotify was started without the \"--enable-audio-graph\" option.\nTo use this recorder, close Spotify and then click on \"OK\".\nYou can click on \"Cancel\" to close Spotify later. After starting it with the correct option, try to connect again.", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative);
-                    }
-
-                    if (wasClosed)
-                    {
-                        return await StartPlayerApplication();
-                    }
-                    else { return false; }
-                }
-            }
-            return true;*/
+            return Task.FromResult(startResult);
         }
 
         //***********************************************************************************************************************************************************************************************************
+
+        /// <summary>
+        /// Close the player application async
+        /// </summary>
+        /// <returns>true -> closed successful, false -> error while closing application</returns>
+        public override Task<bool> ClosePlayerApplication()
+        {
+            ProcessHelper.StopProcess("Spotify", true);
+            return Task.FromResult(true);
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        //ImplicitGrantAuth auth;
 
         /// <summary>
         /// Connect to the Spotify Web API
@@ -138,15 +126,30 @@ namespace SpotifyRecorder.GenericPlayer
         /// see: https://github.com/JohnnyCrazy/SpotifyAPI-NET/issues/254
         public override async Task<bool> Connect()
         {
+            /*auth = new ImplicitGrantAuth() //new AutorizationCodeAuth()
+            {
+                ClientId = "ab0969d9fab2486182e57bfbe8590df4",
+                RedirectUri = "http://localhost:8000",
+                Scope = Scope.UserReadPlaybackState,
+                ShowDialog = false
+            };
+            auth.StartHttpServer(8000);
+            auth.OnResponseReceivedEvent += Auth_OnResponseReceivedEvent;
+            auth.DoAuth();
+
+            return true;*/
+
+
             WebAPIFactory webApiFactory = new WebAPIFactory(
                 "http://localhost",
                 8000,
                 // Spotify API Client ID goes here, you SHOULD get your own at https://developer.spotify.com/dashboard/
                 // It should be noted, "http://localhost:8000" must be whitelisted in your dashboard after getting your own client key
                 "ab0969d9fab2486182e57bfbe8590df4",
-                Scope.UserReadPrivate | Scope.UserReadEmail | Scope.PlaylistReadPrivate | Scope.UserLibraryRead |
-                Scope.UserFollowRead | Scope.UserReadBirthdate | Scope.UserTopRead | Scope.PlaylistReadCollaborative |
-                Scope.UserReadRecentlyPlayed | Scope.UserReadPlaybackState | Scope.UserModifyPlaybackState,
+                Scope.UserReadPlaybackState,
+                //Scope.UserReadPrivate | Scope.UserReadEmail | Scope.PlaylistReadPrivate | Scope.UserLibraryRead |
+                //Scope.UserFollowRead | Scope.UserReadBirthdate | Scope.UserTopRead | Scope.PlaylistReadCollaborative |
+                //Scope.UserReadRecentlyPlayed | Scope.UserReadPlaybackState | Scope.UserModifyPlaybackState,
                 new SpotifyAPI.ProxyConfig());
 
             try
@@ -162,8 +165,22 @@ namespace SpotifyRecorder.GenericPlayer
             if (_spotifyWeb == null) { IsConnected = false; return false; }
 
             IsConnected = true;
+
             return true;
         }
+
+        /*private void Auth_OnResponseReceivedEvent(Token token, string state)
+        //private void Auth_OnResponseReceivedEvent(AutorizationCodeAuthResponse response)
+        {
+            auth.StopHttpServer();
+
+            //Token token = auth.ExchangeAuthCode(response.Code, "");
+            SpotifyWebAPI api = new SpotifyWebAPI
+            {
+                AccessToken = token.AccessToken,
+                TokenType = token.TokenType
+            };
+        }*/
 
         //***********************************************************************************************************************************************************************************************************
 
@@ -173,10 +190,7 @@ namespace SpotifyRecorder.GenericPlayer
         /// see: https://stackoverflow.com/questions/1645815/how-can-i-programmatically-generate-keypress-events-in-c
         public override void StartPlayback()
         {
-            if (CurrentPlaybackStatus?.IsPlaying == false)
-            {
-                keybd_event((byte)VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_EXTENDEDKEY | 0, 0);
-            }
+            if (CurrentPlaybackStatus?.IsPlaying == false) { TogglePlayPause(); }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -187,10 +201,29 @@ namespace SpotifyRecorder.GenericPlayer
         /// see: https://stackoverflow.com/questions/1645815/how-can-i-programmatically-generate-keypress-events-in-c
         public override void PausePlayback()
         {
-            if (CurrentPlaybackStatus?.IsPlaying == true)
-            {
-                keybd_event((byte)VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_EXTENDEDKEY | 0, 0);
-            }
+            if (CurrentPlaybackStatus?.IsPlaying == true) { TogglePlayPause(); }
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        /// <summary>
+        /// Toggle between play and pause playback state. If the player is playing the playback is paused. If the player is paused the playback is started again.
+        /// </summary>
+        /// see: https://stackoverflow.com/questions/1645815/how-can-i-programmatically-generate-keypress-events-in-c
+        public override void TogglePlayPause()
+        {
+            keybd_event((byte)VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_EXTENDEDKEY | 0, 0);
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        /// <summary>
+        /// Toggle between mute and unmute state.
+        /// </summary>
+        /// see: https://stackoverflow.com/questions/1645815/how-can-i-programmatically-generate-keypress-events-in-c
+        public override void ToggleMuteState()
+        {
+            keybd_event((byte)VK_VOLUME_MUTE, 0, KEYEVENTF_EXTENDEDKEY | 0, 0);
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -198,6 +231,7 @@ namespace SpotifyRecorder.GenericPlayer
         /// <summary>
         /// Skip to the next track
         /// </summary>
+        /// see: https://stackoverflow.com/questions/1645815/how-can-i-programmatically-generate-keypress-events-in-c
         public override void NextTrack()
         {
             keybd_event((byte)VK_MEDIA_NEXT_TRACK, 0, KEYEVENTF_EXTENDEDKEY | 0, 0);
@@ -208,6 +242,7 @@ namespace SpotifyRecorder.GenericPlayer
         /// <summary>
         /// Skip to the previous track
         /// </summary>
+        /// see: https://stackoverflow.com/questions/1645815/how-can-i-programmatically-generate-keypress-events-in-c
         public override void PreviousTrack()
         {
             keybd_event((byte)VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_EXTENDEDKEY | 0, 0);

@@ -5,5 +5,8 @@
     <Setting Name="RecSettings" Type="SpotifyRecorder.RecorderSettings" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="IsPlayerAdblockerEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

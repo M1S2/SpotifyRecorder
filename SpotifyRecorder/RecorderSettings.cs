@@ -72,6 +72,8 @@ namespace SpotifyRecorder
 
         public object Clone() => this.MemberwiseClone();
 
+        public override int GetHashCode() => base.GetHashCode();
+
         public override bool Equals(object obj)
         {
             RecorderSettings settings1 = (RecorderSettings)obj;

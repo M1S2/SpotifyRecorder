@@ -19,7 +19,7 @@ namespace SpotifyRecorder.Converters
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             Geometry iconGeometry = null;
-            Brush foregroundBrush = App.Current.TryFindResource("AccentBaseColorBrush") as Brush;
+            Brush foregroundBrush = App.Current.TryFindResource("GrayBrush3") as Brush;
 
             switch((RecordStates)value)
             {

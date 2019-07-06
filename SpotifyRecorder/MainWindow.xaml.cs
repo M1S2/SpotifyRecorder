@@ -107,6 +107,13 @@ namespace SpotifyRecorder
             }
         }
 
+        private bool _isPlayerAdblockerEnabled;
+        public bool IsPlayerAdblockerEnabled
+        {
+            get { return _isPlayerAdblockerEnabled; }
+            set { _isPlayerAdblockerEnabled = value; OnPropertyChanged(); }
+        }
+
         //##############################################################################################################################################################################################
 
         #region Commands
@@ -127,7 +134,9 @@ namespace SpotifyRecorder
                 return _infoCommand;
             }
         }
-        
+
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
         private ICommand _connectCommand;
         public ICommand ConnectCommand
         {
@@ -143,6 +152,8 @@ namespace SpotifyRecorder
                 return _connectCommand;
             }
         }
+
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         private ICommand _playPauseCommand;
         public ICommand PlayPauseCommand
@@ -160,6 +171,8 @@ namespace SpotifyRecorder
             }
         }
 
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
         private ICommand _openFileNamePrototypeCommand;
         public ICommand OpenFileNamePrototypeCommand
         {
@@ -169,16 +182,43 @@ namespace SpotifyRecorder
                 {
                     _openFileNamePrototypeCommand = new WindowTheme.RelayCommand(param =>
                     {
-                        FileNamePrototypeCreator fileNamePrototypeCreator = new FileNamePrototypeCreator(CurrentRecorder.RecorderRecSettings.FileNamePrototype, CurrentRecorder.RecorderRecSettings.BasePath, PlayerApp.CurrentTrack?.TrackName, PlayerApp.CurrentTrack?.Artists[0].ArtistName, PlayerApp.CurrentTrack?.Album.AlbumName, CurrentRecorder.RecorderRecSettings.FileExistMode);
+                        FileNamePrototypeCreator fileNamePrototypeCreator = new FileNamePrototypeCreator(RecSettings.FileNamePrototype, RecSettings.BasePath, PlayerApp.CurrentTrack?.TrackName, PlayerApp.CurrentTrack?.Artists[0].ArtistName, PlayerApp.CurrentTrack?.Album.AlbumName, RecSettings.FileExistMode);
                         if(fileNamePrototypeCreator.ShowDialog().Value == true)
                         {
-                            CurrentRecorder.RecorderRecSettings.FileNamePrototype = fileNamePrototypeCreator.FileNamePrototype;
+                            RecSettings.FileNamePrototype = fileNamePrototypeCreator.FileNamePrototype;
                         }
                     });
                 }
                 return _openFileNamePrototypeCommand;
             }
         }
+
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        private ICommand _chooseRecorderBasePathCommand;
+        public ICommand ChooseRecorderBasePathCommand
+        {
+            get
+            {
+                if (_chooseRecorderBasePathCommand == null)
+                {
+                    _chooseRecorderBasePathCommand = new WindowTheme.RelayCommand(param =>
+                    {
+                        System.Windows.Forms.FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+                        folderBrowserDialog.Description = "Please choose a recorder base path.";
+                        folderBrowserDialog.SelectedPath = RecSettings.BasePath;
+                        
+                        if(folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                        {
+                            RecSettings.BasePath = folderBrowserDialog.SelectedPath;
+                        }
+                    });
+                }
+                return _chooseRecorderBasePathCommand;
+            }
+        }
+
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         private ICommand _resetRecSettingsCommand;
         public ICommand ResetRecSettingsCommand
@@ -217,22 +257,14 @@ namespace SpotifyRecorder
         {
             if (Properties.Settings.Default.RecSettings == null) { Properties.Settings.Default.RecSettings = new RecorderSettings(); }
             RecSettings = Properties.Settings.Default.RecSettings;
+            IsPlayerAdblockerEnabled = Properties.Settings.Default.IsPlayerAdblockerEnabled;
 
             PlayerApp = new SpotifyPlayer(10, this);
-
+            
             await startAndConnectToPlayer();
 
             Recorders = new ObservableCollection<Recorder>();
             BindingOperations.EnableCollectionSynchronization(Recorders, _recordersListLock);
-
-            /*Recorder tmpRecorder = new Recorder(RecSettings, new PlayerTrack() { TrackName = "Track1" }, _logHandle);
-            Recorders.Add(tmpRecorder);
-            
-            tmpRecorder = new Recorder(RecSettings, new PlayerTrack() { TrackName = "Track2" }, _logHandle);
-            Recorders.Add(tmpRecorder);
-
-            tmpRecorder = new Recorder(RecSettings, new PlayerTrack() { TrackName = "Track3" }, _logHandle);
-            Recorders.Add(tmpRecorder);*/
 
             Recorder tmpRecorder = new Recorder((RecorderSettings)RecSettings.Clone(), PlayerApp.CurrentTrack, _logHandle);
             Recorders.Add(tmpRecorder);
@@ -243,6 +275,7 @@ namespace SpotifyRecorder
         private void MetroWindow_Closed(object sender, EventArgs e)
         {
             Properties.Settings.Default.RecSettings = this.RecSettings;
+            Properties.Settings.Default.IsPlayerAdblockerEnabled = this.IsPlayerAdblockerEnabled;
             Properties.Settings.Default.Save();
 
             foreach(Recorder rec in Recorders) { rec?.StopRecord(); }
@@ -253,7 +286,8 @@ namespace SpotifyRecorder
         /// <summary>
         /// Start the player application if it's not running and connect to it
         /// </summary>
-        private async Task startAndConnectToPlayer()
+        /// <param name="startMinimized">true -> start player minimized; false -> start normal</param>
+        private async Task startAndConnectToPlayer(bool startMinimized = false)
         {
             if (!PlayerApp.IsPlayerApplicationRunning) { _logHandle.Report(new LogBox.LogEventInfo("Starting " + PlayerApp.PlayerName + " application.")); }
             bool playerStarted = await PlayerApp.StartPlayerApplication();
@@ -272,23 +306,47 @@ namespace SpotifyRecorder
                     PlayerApp.OnPlayStateChange += PlayerApp_OnPlayStateChange;
                     PlayerApp.OnTrackTimeChange += PlayerApp_OnTrackTimeChange;
                     PlayerApp.ListenForEvents = true;
+                    PlayerApp.UpdateCurrentPlaybackStatus();
+
+                    /*if (PlayerApp.CurrentPlaybackStatus == null || !PlayerApp.CurrentPlaybackStatus.IsPlaying)   // If no track is running, start and stop the playback to get the correct track infos
+                    {
+                        PlayerApp.ToggleMuteState();
+                        await Task.Delay(300);
+                        PlayerApp.TogglePlayPause();
+                        await Task.Delay(300);
+                        PlayerApp.TogglePlayPause();
+                        await Task.Delay(300);
+                        PlayerApp.ToggleMuteState();
+                        PlayerApp.UpdateCurrentPlaybackStatus();
+                    }*/
                 }
             }
         }
 
         //##############################################################################################################################################################################################
 
-#warning Ad after normal Track doesn't fire Track changed event!!!
-        private void PlayerApp_OnTrackChange(object sender, PlayerTrackChangeEventArgs e)
+        private async void PlayerApp_OnTrackChange(object sender, PlayerTrackChangeEventArgs e)
         {
             _logHandle.Report(new LogBox.LogEventInfo("Track changed to \"" + e.NewTrack?.TrackName + "\" (" + e.NewTrack?.Artists[0].ArtistName + ")"));
 
-            bool isPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
-            //PlayerApp.PausePlayback();
             CurrentRecorder?.StopRecord();
-            //if(isPlaying) { PlayerApp.StartPlayback(); }
 
-            StartRecord();
+            if ((e.NewTrack == null || e.NewTrack?.TrackName == "") && IsPlayerAdblockerEnabled)
+            {
+                bool wasPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
+                if(wasPlaying) { PlayerApp.PausePlayback(); }
+                await Task.Delay(300);
+                await PlayerApp.ClosePlayerApplication();
+                await Task.Delay(1000);
+                await startAndConnectToPlayer(true);
+                await Task.Delay(300);
+                PlayerApp.UpdateCurrentPlaybackStatus();
+                if (wasPlaying) { PlayerApp.StartPlayback(); }
+            }
+            else
+            {
+                StartRecord();
+            }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -334,7 +392,6 @@ namespace SpotifyRecorder
             { }
             catch (Exception ex)
             {
-#warning NullReference error while ad?!
                 _logHandle.Report(new LogBox.LogEventError("OnTrackTimeChange event: " + ex.Message));
             }
         }

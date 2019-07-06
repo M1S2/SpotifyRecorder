@@ -33,5 +33,17 @@ namespace SpotifyRecorder.Properties {
                 this["RecSettings"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsPlayerAdblockerEnabled {
+            get {
+                return ((bool)(this["IsPlayerAdblockerEnabled"]));
+            }
+            set {
+                this["IsPlayerAdblockerEnabled"] = value;
+            }
+        }
     }
 }

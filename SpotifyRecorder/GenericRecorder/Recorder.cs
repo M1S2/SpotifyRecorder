@@ -354,9 +354,7 @@ namespace SpotifyRecorder.GenericRecorder
                 if (_wavWriter != null) { _wavWriter.Dispose(); }
                 _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") stopped."));
 
-#warning uncomment
-#if false
-                if (System.IO.File.Exists(FileStrWAV))
+                if (System.IO.File.Exists(FileStrWAV))      //Delete too short records
                 {
                     IWaveSource wavSource = new WaveFileReader(FileStrWAV);
                     TimeSpan wavLength = wavSource.GetLength();
@@ -365,19 +363,19 @@ namespace SpotifyRecorder.GenericRecorder
                     {
                         System.IO.File.Delete(FileStrWAV);
                         DirectoryManager.DeleteEmptyFolders(RecorderRecSettings.BasePath);
-                        RecordState = RecordStates.STOPPED;
                         _logHandle.Report(new LogBox.LogEventWarning("Record (\"" + TrackInfo?.TrackName + "\") deleted, because of wrong length (Length = " + wavLength.ToString() + " s, Expected Range = [" + (TrackInfo?.Duration - AllowedDifferenceToTrackDuration).ToString() + ", " + (TrackInfo?.Duration + AllowedDifferenceToTrackDuration).ToString() + "])."));
+                        RecordState = RecordStates.STOPPED;
                         return;
                     }
                 }
-#endif
+
                 if (!System.IO.File.Exists(FileStrWAV))
                 {
                     RecordState = RecordStates.STOPPED;
                     return;
                 }
 
-                if(NormalizeWAVFile(FileStrWAV) == false) { return; }
+                if(NormalizeWAVFile(FileStrWAV) == false) { RecordState = RecordStates.STOPPED; return; }
                 _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") normalized."));
 
 #warning Remove Player specific parts (Spotify) !!!
@@ -399,13 +397,12 @@ namespace SpotifyRecorder.GenericRecorder
 
                 if (RecorderRecSettings.RecordFormat == RecordFormats.WAV_AND_MP3)
                 {
-                    //Task t = Task.Run(() => ConvertWAVToMP3(FilestrWAV_temp, FilestrMP3, true));    //Run Conversion in new Task
-                    if(ConvertWAVToMP3(FileStrWAV, FileStrMP3) == false) { return; }
+                    if(ConvertWAVToMP3(FileStrWAV, FileStrMP3) == false) { RecordState = RecordStates.STOPPED; return; }
                     _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") converted to MP3."));
                 }
                 else if (RecorderRecSettings.RecordFormat == RecordFormats.MP3)
                 {
-                    if(ConvertWAVToMP3(FileStrWAV, FileStrMP3) == false) { return; }
+                    if(ConvertWAVToMP3(FileStrWAV, FileStrMP3) == false) { RecordState = RecordStates.STOPPED; return; }
                     if (System.IO.File.Exists(FileStrWAV)) { System.IO.File.Delete(FileStrWAV); }
                     _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") converted to MP3 and WAV deleted."));
                 }

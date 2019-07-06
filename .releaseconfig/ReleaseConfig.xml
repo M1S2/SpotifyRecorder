@@ -18,7 +18,7 @@
   <BinaryObjects>
     <BinaryObject xsi:type="BinaryFolder">
       <RemoveWhileBuilding>true</RemoveWhileBuilding>
-      <SourcePath>\Spotify_Recorder\bin\Release</SourcePath>
+      <SourcePath>\SpotifyRecorder\bin\Release</SourcePath>
       <DestinationPath>/bin_Spotify_Recorder</DestinationPath>
       <FileExcludeFilters>
         <string>.exe.config</string>
