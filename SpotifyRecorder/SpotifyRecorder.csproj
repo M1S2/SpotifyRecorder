@@ -178,8 +178,6 @@
     <PostBuildEvent>copy "$(SolutionDir)README.md" "$(TargetDir)README.md"
 copy "$(SolutionDir)CHANGELOG.md" "$(TargetDir)CHANGELOG.md"
 copy "$(SolutionDir)Supplies\lame.exe" "$(TargetDir)lame.exe"
-copy "$(SolutionDir)Supplies\normalize.exe" "$(TargetDir)normalize.exe"
-copy "$(SolutionDir)Supplies\SpotifyPauseFadeOutPoints.xml" "$(TargetDir)SpotifyPauseFadeOutPoints.xml"
-copy "$(SolutionDir)Supplies\SpotifyPlayFadeInPoints.xml" "$(TargetDir)SpotifyPlayFadeInPoints.xml"</PostBuildEvent>
+copy "$(SolutionDir)Supplies\normalize.exe" "$(TargetDir)normalize.exe"</PostBuildEvent>
   </PropertyGroup>
 </Project>
