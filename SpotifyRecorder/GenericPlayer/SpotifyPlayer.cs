@@ -21,6 +21,9 @@ namespace SpotifyRecorder.GenericPlayer
 {
     public class SpotifyPlayer : Player
     {
+        //https://community.spotify.com/t5/Desktop-Windows/Missing-enable-audio-graph-has-stopped-giving-option-to-select/td-p/4726519
+
+
         [DllImport("user32.dll")]
         public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
 
@@ -83,9 +86,6 @@ namespace SpotifyRecorder.GenericPlayer
         }
 
         //***********************************************************************************************************************************************************************************************************
-
-#warning https://community.spotify.com/t5/Desktop-Windows/Missing-enable-audio-graph-has-stopped-giving-option-to-select/td-p/4726519
-#warning Set Spotify output device over windows Sound settings (Integrate to setup project) >> App sound settings >> Spotify output = CABLE Input
 
         /// <summary>
         /// Start the spotify desktop application if it's not running 

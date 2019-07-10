@@ -13,11 +13,12 @@
         xmlns:recorder="clr-namespace:SpotifyRecorder.GenericRecorder"
         mc:Ignorable="d"
         x:Name="mainWindow"
-        Title="Spotify Recorder" Height="1000" Width="900"
+        Title="Spotify Recorder" Height="1000" Width="1200"
         Loaded="MetroWindow_Loaded"
         Closed="MetroWindow_Closed"
         ResizeMode="CanResizeWithGrip"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Icon="AppIcon/SpotifyRecorder_AppIcon.ico">
 
     <Controls:MetroWindow.Resources>
         <logBox:BitmapToImageSourceConverter x:Key="BitmapImageSourceConverter"/>
@@ -131,11 +132,12 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="50"/>
                                             <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="35"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
                                         <!-- see: https://stackoverflow.com/questions/22378456/how-to-get-the-index-of-the-current-itemscontrol-item -->
-                                        <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Text="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource Mode=TemplatedParent}, StringFormat={}#{0}, Converter={StaticResource AddConverter}, ConverterParameter=1}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource GrayBrush3}" FontSize="25"/>
+                                        <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Text="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource Mode=TemplatedParent}, StringFormat={}#{0}, Converter={StaticResource AddConverter}, ConverterParameter=1}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}" FontSize="25"/>
 
                                         <Image Grid.Row="0" Grid.Column="1" Height="25" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Recorder Status">
                                             <Image.Source>
@@ -143,9 +145,18 @@
                                             </Image.Source>
                                         </Image>
                                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding RecordState}" ToolTip="Recorder Status" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource GrayBrush3}" FontSize="14"/>
-                                        <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Text="{Binding RecordFilepathWithoutExtension}" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="14" ToolTip="File Path"/>
+                                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="2" Kind="Music" Height="Auto" Width="Auto" Margin="2,2,10,2" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource GrayBrush3}"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" FontSize="16">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} ({1})">
+                                                    <Binding Path="TrackInfo.TrackName" />
+                                                    <Binding Path="TrackInfo.Artists[0].ArtistName" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding RecordFilepathWithoutExtension}" VerticalAlignment="Center" FontSize="14" ToolTip="File Path" Foreground="{DynamicResource GrayBrush3}"/>
 
-                                        <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Foreground="{DynamicResource GrayBrush3}">
+                                        <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" Foreground="{DynamicResource GrayBrush3}">
                                             <Separator.Visibility>
                                                 <MultiBinding Converter="{StaticResource IndexVisibilityConverter}">
                                                     <Binding Path="Recorders" ElementName="mainWindow"/>

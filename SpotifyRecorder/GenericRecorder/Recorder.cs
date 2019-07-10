@@ -172,7 +172,7 @@ namespace SpotifyRecorder.GenericRecorder
             RecordState = RecordStates.STOPPED;
             RecorderRecSettings = recorderSettings;
             TrackInfo = trackInfo;
-            AllowedDifferenceToTrackDuration = new TimeSpan(0, 0, 1);
+            AllowedDifferenceToTrackDuration = new TimeSpan(0, 0, 2);
             _wasRecordPaused = false;
             MarkPausedFiles = true;
             CreateFilePath();
@@ -193,7 +193,7 @@ namespace SpotifyRecorder.GenericRecorder
             RecorderRecSettings.FileExistMode = RecorderFileExistModes.SKIP;
             TrackInfo = null;
             RecorderRecSettings.RecordFormat = RecordFormats.MP3;
-            AllowedDifferenceToTrackDuration = new TimeSpan(0, 0, 1);
+            AllowedDifferenceToTrackDuration = new TimeSpan(0, 0, 2);
             _wasRecordPaused = false;
             MarkPausedFiles = true;
             CreateFilePath();

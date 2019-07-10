@@ -8,5 +8,11 @@
     <Setting Name="IsPlayerAdblockerEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="AppTheme" Type="System.String" Scope="User">
+      <Value Profile="(Default)">"Dark"</Value>
+    </Setting>
+    <Setting Name="AppAccent" Type="System.String" Scope="User">
+      <Value Profile="(Default)">"Emerald"</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

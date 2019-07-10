@@ -94,6 +94,7 @@ namespace SpotifyRecorder
                 
                 OnPropertyChanged();
                 OnPropertyChanged("AreRecorderSettingsChanged");
+                OnPropertyChanged("Recorders");
             }
         }
 
@@ -260,14 +261,14 @@ namespace SpotifyRecorder
             IsPlayerAdblockerEnabled = Properties.Settings.Default.IsPlayerAdblockerEnabled;
 
             PlayerApp = new SpotifyPlayer(10, this);
-            
+
             await startAndConnectToPlayer();
 
             Recorders = new ObservableCollection<Recorder>();
             BindingOperations.EnableCollectionSynchronization(Recorders, _recordersListLock);
 
-            Recorder tmpRecorder = new Recorder((RecorderSettings)RecSettings.Clone(), PlayerApp.CurrentTrack, _logHandle);
-            Recorders.Add(tmpRecorder);
+            //Recorder tmpRecorder = new Recorder((RecorderSettings)RecSettings.Clone(), PlayerApp.CurrentTrack, _logHandle);
+            //Recorders.Add(tmpRecorder);
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -329,10 +330,10 @@ namespace SpotifyRecorder
         {
             _logHandle.Report(new LogBox.LogEventInfo("Track changed to \"" + e.NewTrack?.TrackName + "\" (" + e.NewTrack?.Artists[0].ArtistName + ")"));
 
-            CurrentRecorder?.StopRecord();
-
             if ((e.NewTrack == null || e.NewTrack?.TrackName == "") && IsPlayerAdblockerEnabled)
             {
+                CurrentRecorder?.StopRecord();
+
                 bool wasPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
                 if(wasPlaying) { PlayerApp.PausePlayback(); }
                 await Task.Delay(300);
@@ -341,6 +342,7 @@ namespace SpotifyRecorder
                 await startAndConnectToPlayer(true);
                 await Task.Delay(300);
                 PlayerApp.UpdateCurrentPlaybackStatus();
+                PlayerApp.NextTrack();      // after closing and reopening spotify opens with the last played track. So skip to the next track
                 if (wasPlaying) { PlayerApp.StartPlayback(); }
             }
             else
@@ -401,6 +403,8 @@ namespace SpotifyRecorder
         private void StartRecord()
         {
             PlayerApp.ListenForEvents = false;
+
+            CurrentRecorder?.StopRecord();
 
             bool isPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
             OnPropertyChanged("AreRecorderSettingsChanged");
