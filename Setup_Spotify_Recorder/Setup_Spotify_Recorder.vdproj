@@ -15,14 +15,14 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_05DD9CB14CDAD2ECEBCDAF5941521CF4"
-        "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
+        "MsmKey" = "8:_0661C75B226043A6B46250ED585428AC"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_0661C75B226043A6B46250ED585428AC"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_088A0362E251691FD14B894CDB20F757"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -75,7 +75,19 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_32C89B8E4D87447B9CF667530E487F2F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_33EB8218A09E4BB58C07191BD82B2359"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3470468F6F114EC0A28DC410A9682CB3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -87,8 +99,44 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3D99F119BBF5AD0902F2C1BC72A96584"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3D99F119BBF5AD0902F2C1BC72A96584"
+        "OwnerKey" = "8:_52BAE7F328DDB3D633A6A818585DBE3A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_45CF1F979C3B4E6B95B554B769DF821B"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_465B3D49B2A64FDFB3EDA986D1167A0D"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_48BF73A80D2843C7AF74ED22D80CF6EA"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4E139BDBD76603F6B307092840955D74"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_52BAE7F328DDB3D633A6A818585DBE3A"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -99,8 +147,26 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_58F5243CA4AEFA67EE5EF20C5D0136D2"
-        "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
+        "MsmKey" = "8:_55D39D19EF7D49F3826551D35AD92904"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5F7F0106AE9F95390BCA5DA25098818C"
+        "OwnerKey" = "8:_FCB8C001C8461BEA94C87B3E7DBC2D85"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5F7F0106AE9F95390BCA5DA25098818C"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5F7F0106AE9F95390BCA5DA25098818C"
+        "OwnerKey" = "8:_9D80F7A205C39D787A898B67438CF142"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -111,8 +177,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_71EC1CE0A523E1527B96A7D81A5F32E4"
-        "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
+        "MsmKey" = "8:_6CA64F373BCD45903F2810A0928461FA"
+        "OwnerKey" = "8:_55D39D19EF7D49F3826551D35AD92904"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6CA64F373BCD45903F2810A0928461FA"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6CA64F373BCD45903F2810A0928461FA"
+        "OwnerKey" = "8:_B689C53F205F1523A366D64100D78696"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -123,20 +201,44 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7E780DA5CE694EE6A8E9EA15990071A3"
+        "MsmKey" = "8:_7CAD7E13D8AF0C07B04F51360B875DAB"
+        "OwnerKey" = "8:_E3020659646E778EA204E29466B62143"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7CAD7E13D8AF0C07B04F51360B875DAB"
+        "OwnerKey" = "8:_BC70B4C488234C8CA964892D93C0290D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7CAD7E13D8AF0C07B04F51360B875DAB"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8048CEB6E4FD4165A4DDEFF873EA4C5F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_84C73D0D21036588F953F517BAEE9DF2"
-        "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
+        "MsmKey" = "8:_9D80F7A205C39D787A898B67438CF142"
+        "OwnerKey" = "8:_E3020659646E778EA204E29466B62143"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_9172D56E6ABF434896C79EDF65145152"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_9D80F7A205C39D787A898B67438CF142"
+        "OwnerKey" = "8:_BC70B4C488234C8CA964892D93C0290D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9D80F7A205C39D787A898B67438CF142"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -159,13 +261,49 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_A4D0AF95D52B33BDD5067E67A2081B2D"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B0232B53517446F3803A2D54BD5101E2"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_B3E59E0F77F7498AAB6CF1C3F2E963BD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_B7696C8BFD4F4B22A3B0C724D8F4C9D9"
+        "MsmKey" = "8:_B671F5F095FDD1CFA18D016F1584E0FE"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B671F5F095FDD1CFA18D016F1584E0FE"
+        "OwnerKey" = "8:_52BAE7F328DDB3D633A6A818585DBE3A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B689C53F205F1523A366D64100D78696"
+        "OwnerKey" = "8:_55D39D19EF7D49F3826551D35AD92904"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B689C53F205F1523A366D64100D78696"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BC70B4C488234C8CA964892D93C0290D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -183,13 +321,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C21AE697755E46058845C56A98D919E0"
+        "MsmKey" = "8:_C22DFC0DEC634A5FAFC3D5B8161A58F9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C22DFC0DEC634A5FAFC3D5B8161A58F9"
+        "MsmKey" = "8:_C50CCE0EE72F4F47A2C85653057D817F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -201,38 +339,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C8CBA1FA8FF8473B9717F9A106BE6030"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_CAD62E71804D4C3AA37DA944F6A61EBE"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
+        "MsmKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_E0834347AAA64B3DABC114434149B4EF"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E27154BED46B43848621302C96C7C4BA"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E45281E467D9468EB17454D1699FF5C0"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_E3020659646E778EA204E29466B62143"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -255,74 +375,116 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E9158D397138DFE7AA46BE7AE3042C50"
-        "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E9158D397138DFE7AA46BE7AE3042C50"
-        "OwnerKey" = "8:_84C73D0D21036588F953F517BAEE9DF2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_EB9065E485D04F1E8D6EE5FA43BEA1B2"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_FB7518C58E5BF18DDC3A0E1D146425F3"
-        "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
+        "MsmKey" = "8:_FCB8C001C8461BEA94C87B3E7DBC2D85"
+        "OwnerKey" = "8:_9D80F7A205C39D787A898B67438CF142"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_FB7518C58E5BF18DDC3A0E1D146425F3"
-        "OwnerKey" = "8:_84C73D0D21036588F953F517BAEE9DF2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D38337F20A1945BF8061BF5734D6C19E"
+        "MsmKey" = "8:_FCB8C001C8461BEA94C87B3E7DBC2D85"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_05DD9CB14CDAD2ECEBCDAF5941521CF4"
+        "OwnerKey" = "8:_BC70B4C488234C8CA964892D93C0290D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_84C73D0D21036588F953F517BAEE9DF2"
+        "OwnerKey" = "8:_32C89B8E4D87447B9CF667530E487F2F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FB7518C58E5BF18DDC3A0E1D146425F3"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_71EC1CE0A523E1527B96A7D81A5F32E4"
+        "OwnerKey" = "8:_4E139BDBD76603F6B307092840955D74"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_58F5243CA4AEFA67EE5EF20C5D0136D2"
+        "OwnerKey" = "8:_52BAE7F328DDB3D633A6A818585DBE3A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E9158D397138DFE7AA46BE7AE3042C50"
+        "OwnerKey" = "8:_3D99F119BBF5AD0902F2C1BC72A96584"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_088A0362E251691FD14B894CDB20F757"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_55D39D19EF7D49F3826551D35AD92904"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B689C53F205F1523A366D64100D78696"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_6CA64F373BCD45903F2810A0928461FA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E3020659646E778EA204E29466B62143"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9D80F7A205C39D787A898B67438CF142"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_FCB8C001C8461BEA94C87B3E7DBC2D85"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5F7F0106AE9F95390BCA5DA25098818C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_7CAD7E13D8AF0C07B04F51360B875DAB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B671F5F095FDD1CFA18D016F1584E0FE"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -448,32 +610,6 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_05DD9CB14CDAD2ECEBCDAF5941521CF4"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:taglib-sharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                }
-            "SourcePath" = "8:taglib-sharp.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0661C75B226043A6B46250ED585428AC"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\VBCABLE_Setup.exe"
@@ -492,6 +628,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_088A0362E251691FD14B894CDB20F757"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CSCore, Version=1.2.1.2, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_088A0362E251691FD14B894CDB20F757"
+                    {
+                    "Name" = "8:CSCore.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:CSCore.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_09C92A5D7C4348AA8454E1E24EF737C0"
@@ -654,12 +821,63 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_32C89B8E4D87447B9CF667530E487F2F"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_32C89B8E4D87447B9CF667530E487F2F"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\SpotifyRecorder\\bin\\Debug\\Newtonsoft.Json.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_33EB8218A09E4BB58C07191BD82B2359"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\vbMmeCable_xp.inf"
             "TargetName" = "8:vbMmeCable_xp.inf"
             "Tag" = "8:"
             "Folder" = "8:_11B4E949A83B4726A7E2A109FDFFB7F5"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3470468F6F114EC0A28DC410A9682CB3"
+            {
+            "SourcePath" = "8:..\\SpotifyRecorder\\bin\\Debug\\README.md"
+            "TargetName" = "8:README.md"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -694,6 +912,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3D99F119BBF5AD0902F2C1BC72A96584"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_3D99F119BBF5AD0902F2C1BC72A96584"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Newtonsoft.Json.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_45CF1F979C3B4E6B95B554B769DF821B"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\vbaudio_cable_win7.sys"
@@ -712,6 +961,108 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_465B3D49B2A64FDFB3EDA986D1167A0D"
+            {
+            "SourcePath" = "8:..\\SpotifyRecorder\\bin\\Debug\\CHANGELOG.md"
+            "TargetName" = "8:CHANGELOG.md"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_48BF73A80D2843C7AF74ED22D80CF6EA"
+            {
+            "SourcePath" = "8:..\\SpotifyRecorder\\bin\\Debug\\lame.exe"
+            "TargetName" = "8:lame.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4E139BDBD76603F6B307092840955D74"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:taglib-sharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_4E139BDBD76603F6B307092840955D74"
+                    {
+                    "Name" = "8:taglib-sharp.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:taglib-sharp.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_52BAE7F328DDB3D633A6A818585DBE3A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:SpotifyAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_52BAE7F328DDB3D633A6A818585DBE3A"
+                    {
+                    "Name" = "8:SpotifyAPI.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:SpotifyAPI.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_55C78F8D919A4F76B3F859CC8A6DE7A5"
@@ -734,15 +1085,51 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_58F5243CA4AEFA67EE5EF20C5D0136D2"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_55D39D19EF7D49F3826551D35AD92904"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AssemblyInfoHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:LogBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_55D39D19EF7D49F3826551D35AD92904"
+                    {
+                    "Name" = "8:LogBox.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
-            "SourcePath" = "8:AssemblyInfoHelper.dll"
+            "SourcePath" = "8:LogBox.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5F7F0106AE9F95390BCA5DA25098818C"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.Xaml.Behaviors, Version=1.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_5F7F0106AE9F95390BCA5DA25098818C"
+                    {
+                    "Name" = "8:Microsoft.Xaml.Behaviors.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.Xaml.Behaviors.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
@@ -780,15 +1167,20 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_71EC1CE0A523E1527B96A7D81A5F32E4"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6CA64F373BCD45903F2810A0928461FA"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CSCore, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:MahApps.Metro.IconPacks.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_6CA64F373BCD45903F2810A0928461FA"
+                    {
+                    "Name" = "8:MahApps.Metro.IconPacks.Core.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
-            "SourcePath" = "8:CSCore.dll"
+            "SourcePath" = "8:MahApps.Metro.IconPacks.Core.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
@@ -826,35 +1218,20 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7E780DA5CE694EE6A8E9EA15990071A3"
-            {
-            "SourcePath" = "8:..\\Spotify_Recorder\\spotify_recorder_icon.ico"
-            "TargetName" = "8:spotify_recorder_icon.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_84C73D0D21036588F953F517BAEE9DF2"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7CAD7E13D8AF0C07B04F51360B875DAB"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SpotifyAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Markdig, Version=0.15.2.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_7CAD7E13D8AF0C07B04F51360B875DAB"
+                    {
+                    "Name" = "8:Markdig.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
-            "SourcePath" = "8:SpotifyAPI.dll"
+            "SourcePath" = "8:Markdig.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
@@ -872,12 +1249,12 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9172D56E6ABF434896C79EDF65145152"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8048CEB6E4FD4165A4DDEFF873EA4C5F"
             {
-            "SourcePath" = "8:Documents\\Restore_default_audio_device.rtf"
-            "TargetName" = "8:Restore_default_audio_device.rtf"
+            "SourcePath" = "8:..\\SpotifyRecorder\\bin\\Debug\\normalize.exe"
+            "TargetName" = "8:normalize.exe"
             "Tag" = "8:"
-            "Folder" = "8:_C39C94F8D2F04B05A0B8D1EB52CD5243"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -890,6 +1267,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9D80F7A205C39D787A898B67438CF142"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_9D80F7A205C39D787A898B67438CF142"
+                    {
+                    "Name" = "8:MahApps.Metro.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:MahApps.Metro.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A19C6F0C79CB4547B8F96ABE810EE6B4"
@@ -952,6 +1360,62 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A4D0AF95D52B33BDD5067E67A2081B2D"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:policy.2.0.taglib-sharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_A4D0AF95D52B33BDD5067E67A2081B2D"
+                    {
+                    "Name" = "8:policy.2.0.taglib-sharp.dll"
+                    "Attributes" = "3:512"
+                    }
+                    "_BA62D65866D9EF49A456F6300A6F9D73"
+                    {
+                    "Name" = "8:policy.2.0.taglib-sharp.config"
+                    "Attributes" = "3:1"
+                    }
+                }
+            "SourcePath" = "8:policy.2.0.taglib-sharp.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B0232B53517446F3803A2D54BD5101E2"
+            {
+            "SourcePath" = "8:Documents\\PostInstallationActions.rtf"
+            "TargetName" = "8:PostInstallationActions.rtf"
+            "Tag" = "8:"
+            "Folder" = "8:_C39C94F8D2F04B05A0B8D1EB52CD5243"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B3E59E0F77F7498AAB6CF1C3F2E963BD"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\vbaudio_cable64_win7.cat"
@@ -972,10 +1436,83 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B7696C8BFD4F4B22A3B0C724D8F4C9D9"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B671F5F095FDD1CFA18D016F1584E0FE"
             {
-            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\normalize.exe"
-            "TargetName" = "8:normalize.exe"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+                "ScatterAssemblies"
+                {
+                    "_B671F5F095FDD1CFA18D016F1584E0FE"
+                    {
+                    "Name" = "8:System.Net.Http.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Net.Http.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B689C53F205F1523A366D64100D78696"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:MahApps.Metro.IconPacks, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_B689C53F205F1523A366D64100D78696"
+                    {
+                    "Name" = "8:MahApps.Metro.IconPacks.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:MahApps.Metro.IconPacks.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BC70B4C488234C8CA964892D93C0290D"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:AssemblyInfoHelper_WPF, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_BC70B4C488234C8CA964892D93C0290D"
+                    {
+                    "Name" = "8:AssemblyInfoHelper_WPF.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\SpotifyRecorder\\bin\\Debug\\AssemblyInfoHelper_WPF.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
             "Condition" = "8:"
@@ -1032,12 +1569,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C21AE697755E46058845C56A98D919E0"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C22DFC0DEC634A5FAFC3D5B8161A58F9"
             {
-            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\lame.exe"
-            "TargetName" = "8:lame.exe"
+            "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\vbaudio_cable_2003.cat"
+            "TargetName" = "8:vbaudio_cable_2003.cat"
             "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Folder" = "8:_11B4E949A83B4726A7E2A109FDFFB7F5"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1052,12 +1589,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C22DFC0DEC634A5FAFC3D5B8161A58F9"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C50CCE0EE72F4F47A2C85653057D817F"
             {
-            "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\vbaudio_cable_2003.cat"
-            "TargetName" = "8:vbaudio_cable_2003.cat"
+            "SourcePath" = "8:..\\SpotifyRecorder\\AppIcon\\SpotifyRecorder_AppIcon.ico"
+            "TargetName" = "8:SpotifyRecorder_AppIcon.ico"
             "Tag" = "8:"
-            "Folder" = "8:_11B4E949A83B4726A7E2A109FDFFB7F5"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1092,26 +1629,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C8CBA1FA8FF8473B9717F9A106BE6030"
-            {
-            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\README.md"
-            "TargetName" = "8:README.md"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CAD62E71804D4C3AA37DA944F6A61EBE"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\vbMmeCable_win7.inf"
@@ -1132,10 +1649,21 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E0834347AAA64B3DABC114434149B4EF"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E3020659646E778EA204E29466B62143"
             {
-            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\CHANGELOG.md"
-            "TargetName" = "8:CHANGELOG.md"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:AssemblyInfoHelper_WPF, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_E3020659646E778EA204E29466B62143"
+                    {
+                    "Name" = "8:AssemblyInfoHelper_WPF.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:AssemblyInfoHelper_WPF.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
             "Condition" = "8:"
@@ -1149,47 +1677,7 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E27154BED46B43848621302C96C7C4BA"
-            {
-            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\SpotifyPlayFadeInPoints.xml"
-            "TargetName" = "8:SpotifyPlayFadeInPoints.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E45281E467D9468EB17454D1699FF5C0"
-            {
-            "SourcePath" = "8:..\\Spotify_Recorder\\bin\\Debug\\SpotifyPauseFadeOutPoints.xml"
-            "TargetName" = "8:SpotifyPauseFadeOutPoints.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E486D1EA3C11459484016E4A99C6050C"
@@ -1252,32 +1740,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E9158D397138DFE7AA46BE7AE3042C50"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
-                "ScatterAssemblies"
-                {
-                }
-            "SourcePath" = "8:System.Net.Http.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EB9065E485D04F1E8D6EE5FA43BEA1B2"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\vbaudio_cable_vista.sys"
@@ -1298,15 +1760,20 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FB7518C58E5BF18DDC3A0E1D146425F3"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FCB8C001C8461BEA94C87B3E7DBC2D85"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_FCB8C001C8461BEA94C87B3E7DBC2D85"
+                    {
+                    "Name" = "8:ControlzEx.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
-            "SourcePath" = "8:Newtonsoft.Json.dll"
+            "SourcePath" = "8:ControlzEx.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
@@ -1424,15 +1891,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SpotifyRecorder"
-        "ProductCode" = "8:{E18842C9-F32E-4728-962C-943F780F29C3}"
-        "PackageCode" = "8:{9BF58197-FFB3-4BBF-9056-93CC367C7979}"
+        "ProductCode" = "8:{DF2CEF00-008C-4430-8339-2F0CA4FED379}"
+        "PackageCode" = "8:{EE1D54A1-0983-40BA-BB83-AB7850B30468}"
         "UpgradeCode" = "8:{D4D50909-FF05-4D6E-B283-F2F6E3080CDE}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.3.0"
+        "ProductVersion" = "8:3.0.0"
         "Manufacturer" = "8:Markus Scheich"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1442,7 +1909,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:Application to record track from Spotify."
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:_7E780DA5CE694EE6A8E9EA15990071A3"
+        "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -1545,46 +2012,46 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_42BFDF218794410CA7913D83799B86D4"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_4C76862373DF418DB2282821B01E86D0"
             {
-            "Name" = "8:Spotify Recorder"
+            "Name" = "8:SpotifyRecorder"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
+            "IconIndex" = "3:32512"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_D38337F20A1945BF8061BF5734D6C19E"
-            "Folder" = "8:_DF81000352144916B4CF431C5B425A45"
-            "WorkingFolder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Icon" = "8:_7E780DA5CE694EE6A8E9EA15990071A3"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_5ED26CB2C55C412AB3EC8D02638909FD"
-            {
-            "Name" = "8:Spotify Recorder"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_D38337F20A1945BF8061BF5734D6C19E"
+            "Target" = "8:_CAEB05772C954B57A50F843ECFF74419"
             "Folder" = "8:_2F1666501B554644812045A3E9531BCA"
             "WorkingFolder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Icon" = "8:_7E780DA5CE694EE6A8E9EA15990071A3"
+            "Icon" = "8:_CAEB05772C954B57A50F843ECFF74419"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_72FBCE73DBB646BDB8FBDFD2AD129B26"
             {
-            "Name" = "8:Uninstall Spotify Recorder"
+            "Name" = "8:Uninstall SpotifyRecorder"
             "Arguments" = "8:/x [ProductCode] /qr"
             "Description" = "8:"
             "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
+            "IconIndex" = "3:32512"
             "Transitive" = "11:FALSE"
             "Target" = "8:_09C92A5D7C4348AA8454E1E24EF737C0"
             "Folder" = "8:_DF81000352144916B4CF431C5B425A45"
             "WorkingFolder" = "8:_14AC44F4B5E74034AD8DBF4E14E75BBF"
-            "Icon" = "8:"
+            "Icon" = "8:_CAEB05772C954B57A50F843ECFF74419"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_807E827A4B954FBFB3AA254521DC2D5B"
+            {
+            "Name" = "8:SpotifyRecorder"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:32512"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_CAEB05772C954B57A50F843ECFF74419"
+            "Folder" = "8:_DF81000352144916B4CF431C5B425A45"
+            "WorkingFolder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Icon" = "8:_CAEB05772C954B57A50F843ECFF74419"
             "Feature" = "8:"
             }
         }
@@ -1597,9 +2064,9 @@
             "Attributes" = "3:3"
                 "Dialogs"
                 {
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_2687B98B70874EB486FC603DE13D27D2"
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_01DD63B4C77C4ED99487C030D6D0FE2C"
                     {
-                    "Sequence" = "3:100"
+                    "Sequence" = "3:120"
                     "DisplayName" = "8:Fertig"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
@@ -1615,6 +2082,53 @@
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
                             "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_0865D145BE47449BB79C64B63DB00540"
+                    {
+                    "Sequence" = "3:110"
+                    "DisplayName" = "8:Infodatei"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdAdminReadmeDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "ReadmeText"
+                            {
+                            "Name" = "8:ReadmeText"
+                            "DisplayName" = "8:#1010"
+                            "Description" = "8:#1110"
+                            "Type" = "3:6"
+                            "ContextData" = "8:"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:2"
+                            "Value" = "8:_B0232B53517446F3803A2D54BD5101E2"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "Sunken"
+                            {
+                            "Name" = "8:Sunken"
+                            "DisplayName" = "8:#1007"
+                            "Description" = "8:#1107"
+                            "Type" = "3:5"
+                            "ContextData" = "8:4;True=4;False=0"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:0"
+                            "Value" = "3:4"
+                            "DefaultValue" = "3:4"
                             "UsePlugInResources" = "11:TRUE"
                             }
                         }
@@ -1771,7 +2285,7 @@
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
                             "Setting" = "3:2"
-                            "Value" = "8:_9172D56E6ABF434896C79EDF65145152"
+                            "Value" = "8:_B0232B53517446F3803A2D54BD5101E2"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "Sunken"
@@ -1783,7 +2297,7 @@
                             "ContextData" = "8:4;True=4;False=0"
                             "Attributes" = "3:0"
                             "Setting" = "3:0"
-                            "Value" = "3:4"
+                            "Value" = "3:0"
                             "DefaultValue" = "3:4"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -2033,9 +2547,9 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D38337F20A1945BF8061BF5734D6C19E"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CAEB05772C954B57A50F843ECFF74419"
             {
-            "SourcePath" = "8:..\\Spotify_Recorder\\obj\\Debug\\Spotify_Recorder.exe"
+            "SourcePath" = "8:..\\SpotifyRecorder\\obj\\Debug\\SpotifyRecorder.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
@@ -2055,7 +2569,7 @@
             "ProjectOutputGroupRegister" = "3:1"
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{DAF633B7-3821-4D13-9BF2-381B72E8677F}"
+            "OutputProjectGuid" = "8:{7358C8FB-485B-40D9-B274-C1185B896A3D}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
