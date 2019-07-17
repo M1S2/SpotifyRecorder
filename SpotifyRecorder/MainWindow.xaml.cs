@@ -261,6 +261,9 @@ namespace SpotifyRecorder
             IsPlayerAdblockerEnabled = Properties.Settings.Default.IsPlayerAdblockerEnabled;
 
             PlayerApp = new SpotifyPlayer(10, this);
+            PlayerApp.OnTrackChange += PlayerApp_OnTrackChange;
+            PlayerApp.OnPlayStateChange += PlayerApp_OnPlayStateChange;
+            PlayerApp.OnTrackTimeChange += PlayerApp_OnTrackTimeChange;
 
             await startAndConnectToPlayer();
 
@@ -291,7 +294,7 @@ namespace SpotifyRecorder
         private async Task startAndConnectToPlayer(bool startMinimized = false)
         {
             if (!PlayerApp.IsPlayerApplicationRunning) { _logHandle.Report(new LogBox.LogEventInfo("Starting " + PlayerApp.PlayerName + " application.")); }
-            bool playerStarted = await PlayerApp.StartPlayerApplication();
+            bool playerStarted = await PlayerApp.StartPlayerApplication(startMinimized);
 
             if (playerStarted)
             {
@@ -303,9 +306,6 @@ namespace SpotifyRecorder
 
                 if (PlayerApp.IsConnected)
                 {
-                    PlayerApp.OnTrackChange += PlayerApp_OnTrackChange;
-                    PlayerApp.OnPlayStateChange += PlayerApp_OnPlayStateChange;
-                    PlayerApp.OnTrackTimeChange += PlayerApp_OnTrackTimeChange;
                     PlayerApp.ListenForEvents = true;
                     PlayerApp.UpdateCurrentPlaybackStatus();
 
@@ -340,10 +340,21 @@ namespace SpotifyRecorder
                 await PlayerApp.ClosePlayerApplication();
                 await Task.Delay(1000);
                 await startAndConnectToPlayer(true);
-                await Task.Delay(300);
-                PlayerApp.UpdateCurrentPlaybackStatus();
-                PlayerApp.NextTrack();      // after closing and reopening spotify opens with the last played track. So skip to the next track
-                if (wasPlaying) { PlayerApp.StartPlayback(); }
+                await Task.Delay(500);
+                if (wasPlaying)
+                {
+                    PlayerApp.NextTrack();      // after closing and reopening spotify opens with the last played track. So skip to the next track
+                    await Task.Delay(200);
+                    PlayerApp.UpdateCurrentPlaybackStatus();
+                    await Task.Delay(200);
+                    PlayerApp.StartPlayback();
+                    PlayerApp.UpdateCurrentPlaybackStatus();
+                    StartRecord();
+                }
+                else
+                {
+                    PlayerApp.UpdateCurrentPlaybackStatus();
+                }
             }
             else
             {
@@ -359,11 +370,11 @@ namespace SpotifyRecorder
 
             PlayerPlaybackStatus status = PlayerApp.CurrentPlaybackStatus;
 
-            if (e.Playing && status.Progress.TotalSeconds <= 1 && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
+            if (e.Playing && status.Progress.TotalSeconds <= 2 && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
             {
                 StartRecord();
             }
-            else if (e.Playing && status.Progress.TotalSeconds > 1 && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
+            else if (e.Playing && status.Progress.TotalSeconds > 2 && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
             {
                 CurrentRecorder?.ResumeRecord();
             }
@@ -381,14 +392,14 @@ namespace SpotifyRecorder
         {
             try
             {
-                PlayerPlaybackStatus status = PlayerApp.CurrentPlaybackStatus;
+                PlayerPlaybackStatus status = PlayerApp?.CurrentPlaybackStatus;
                 if(status == null) { return; }
-                if (status.IsPlaying && status.Progress.TotalSeconds < 1 && status.Track != null && !status.Track.IsAd && _lastTrack.TrackID == status.Track.TrackID && _lastProgress.TotalSeconds > 2)
+                if (status.IsPlaying && status.Progress != null && status.Progress.TotalSeconds < 2 && status.Track != null && !status.Track.IsAd && _lastTrack != null && _lastTrack.TrackID == status.Track.TrackID && _lastProgress.TotalSeconds > 3)
                 {
                     StartRecord();
                 }
                 _lastTrack = status?.Track;
-                _lastProgress = (status == null ? TimeSpan.Zero : status.Progress);
+                _lastProgress = ((status == null || status.Progress == null) ? TimeSpan.Zero : status.Progress);
             }
             catch (ObjectDisposedException)
             { }

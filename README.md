@@ -9,6 +9,8 @@
 
 This application can be used to record songs from Spotify.
 
+## Usage
+
 Configure all neccessary settings (output path, output format, ...) and then arm the recorder.
 
 A new record is started if one of the following conditions is met:

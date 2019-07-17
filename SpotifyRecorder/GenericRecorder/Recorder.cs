@@ -172,7 +172,7 @@ namespace SpotifyRecorder.GenericRecorder
             RecordState = RecordStates.STOPPED;
             RecorderRecSettings = recorderSettings;
             TrackInfo = trackInfo;
-            AllowedDifferenceToTrackDuration = new TimeSpan(0, 0, 2);
+            AllowedDifferenceToTrackDuration = new TimeSpan(0, 0, 10);
             _wasRecordPaused = false;
             MarkPausedFiles = true;
             CreateFilePath();
@@ -193,7 +193,7 @@ namespace SpotifyRecorder.GenericRecorder
             RecorderRecSettings.FileExistMode = RecorderFileExistModes.SKIP;
             TrackInfo = null;
             RecorderRecSettings.RecordFormat = RecordFormats.MP3;
-            AllowedDifferenceToTrackDuration = new TimeSpan(0, 0, 2);
+            AllowedDifferenceToTrackDuration = new TimeSpan(0, 0, 10);
             _wasRecordPaused = false;
             MarkPausedFiles = true;
             CreateFilePath();
@@ -334,85 +334,103 @@ namespace SpotifyRecorder.GenericRecorder
         {
             await Task.Run(() =>
             {
-                if (RecordState == RecordStates.STOPPED) { return; }
-
-                if (_capture != null)
+                try
                 {
-                    try
+                    if (RecordState == RecordStates.STOPPED) { return; }
+
+                    if (_capture != null)
                     {
-                        _capture.Stop();
-                        _capture.Dispose();
+                        try
+                        {
+                            _capture.Stop();
+                            _capture.Dispose();
+                        }
+                        catch (Exception ex)
+                        {
+                            _logHandle.Report(new LogBox.LogEventError("Error while stopping record: " + ex.Message));
+                        }
+
+                        _silenceOut.Stop();
                     }
-                    catch (Exception ex)
+                    if (_silenceOut != null) { _silenceOut.Stop(); _silenceOut.Dispose(); }
+                    if (_wavWriter != null) { _wavWriter.Dispose(); }
+                    _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") stopped."));
+
+                    if (System.IO.File.Exists(FileStrWAV))      //Delete too short records
                     {
-                        _logHandle.Report(new LogBox.LogEventError("Error while stopping record: " + ex.Message));
+                        TimeSpan wavLength;
+
+                        try
+                        {
+                            IWaveSource wavSource = new WaveFileReader(FileStrWAV);
+                            wavLength = wavSource.GetLength();
+                            wavSource.Dispose();
+                        }
+                        catch(Exception ex)
+                        {
+                            wavLength = TimeSpan.Zero;
+                            _logHandle.Report(new LogBox.LogEventError("Error while stopping record: " + ex.Message));
+                        }
+                        
+                        if (TrackInfo?.Duration > TimeSpan.Zero && (wavLength < (TrackInfo?.Duration - AllowedDifferenceToTrackDuration) || wavLength > (TrackInfo?.Duration + AllowedDifferenceToTrackDuration)))
+                        {
+                            System.IO.File.Delete(FileStrWAV);
+                            DirectoryManager.DeleteEmptyFolders(RecorderRecSettings.BasePath);
+                            _logHandle.Report(new LogBox.LogEventWarning("Record (\"" + TrackInfo?.TrackName + "\") deleted, because of wrong length (Length = " + wavLength.ToString() + " s, Expected Range = [" + (TrackInfo?.Duration - AllowedDifferenceToTrackDuration).ToString() + ", " + (TrackInfo?.Duration + AllowedDifferenceToTrackDuration).ToString() + "])."));
+                            RecordState = RecordStates.STOPPED;
+                            return;
+                        }
                     }
 
-                    _silenceOut.Stop();
-                }
-                if (_silenceOut != null) { _silenceOut.Stop(); _silenceOut.Dispose(); }
-                if (_wavWriter != null) { _wavWriter.Dispose(); }
-                _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") stopped."));
-
-                if (System.IO.File.Exists(FileStrWAV))      //Delete too short records
-                {
-                    IWaveSource wavSource = new WaveFileReader(FileStrWAV);
-                    TimeSpan wavLength = wavSource.GetLength();
-                    wavSource.Dispose();
-                    if (TrackInfo?.Duration > TimeSpan.Zero && (wavLength < (TrackInfo?.Duration - AllowedDifferenceToTrackDuration) || wavLength > (TrackInfo?.Duration + AllowedDifferenceToTrackDuration)))
+                    if (!System.IO.File.Exists(FileStrWAV))
                     {
-                        System.IO.File.Delete(FileStrWAV);
-                        DirectoryManager.DeleteEmptyFolders(RecorderRecSettings.BasePath);
-                        _logHandle.Report(new LogBox.LogEventWarning("Record (\"" + TrackInfo?.TrackName + "\") deleted, because of wrong length (Length = " + wavLength.ToString() + " s, Expected Range = [" + (TrackInfo?.Duration - AllowedDifferenceToTrackDuration).ToString() + ", " + (TrackInfo?.Duration + AllowedDifferenceToTrackDuration).ToString() + "])."));
                         RecordState = RecordStates.STOPPED;
                         return;
                     }
-                }
 
-                if (!System.IO.File.Exists(FileStrWAV))
-                {
-                    RecordState = RecordStates.STOPPED;
-                    return;
-                }
-
-                if(NormalizeWAVFile(FileStrWAV) == false) { RecordState = RecordStates.STOPPED; return; }
-                _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") normalized."));
+                    if (NormalizeWAVFile(FileStrWAV) == false) { RecordState = RecordStates.STOPPED; return; }
+                    _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") normalized."));
 
 #warning Remove Player specific parts (Spotify) !!!
-                /*if(_wasRecordPaused && MarkPausedFiles)
-                {
-                    string newFilestrWAV = FilestrWAV.Remove(FilestrWAV.Length - 4, 4) + "_paused.wav";
-                    RemoveSpotifyFades(FilestrWAV, newFilestrWAV);
-                    System.IO.File.Delete(FilestrWAV);
-                    FilestrWAV = newFilestrWAV;
-                    FilestrMP3 = newFilestrWAV.Replace(".wav", ".mp3");
-                    _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + Title + "\") spotify fades removed."));
+                    /*if(_wasRecordPaused && MarkPausedFiles)
+                    {
+                        string newFilestrWAV = FilestrWAV.Remove(FilestrWAV.Length - 4, 4) + "_paused.wav";
+                        RemoveSpotifyFades(FilestrWAV, newFilestrWAV);
+                        System.IO.File.Delete(FilestrWAV);
+                        FilestrWAV = newFilestrWAV;
+                        FilestrMP3 = newFilestrWAV.Replace(".wav", ".mp3");
+                        _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + Title + "\") spotify fades removed."));
+                    }
+                    else if(_wasRecordPaused && !MarkPausedFiles)
+                    {
+
+                        RemoveSpotifyFades(FilestrWAV, FilestrWAV);
+                        _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + Title + "\") spotify fades removed."));
+                    }*/
+
+                    if (RecorderRecSettings.RecordFormat == RecordFormats.WAV_AND_MP3)
+                    {
+                        if (ConvertWAVToMP3(FileStrWAV, FileStrMP3) == false) { RecordState = RecordStates.STOPPED; return; }
+                        _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") converted to MP3."));
+                    }
+                    else if (RecorderRecSettings.RecordFormat == RecordFormats.MP3)
+                    {
+                        if (ConvertWAVToMP3(FileStrWAV, FileStrMP3) == false) { RecordState = RecordStates.STOPPED; return; }
+                        if (System.IO.File.Exists(FileStrWAV)) { System.IO.File.Delete(FileStrWAV); }
+                        _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") converted to MP3 and WAV deleted."));
+                    }
+
+                    AddTrackTags(FileStrWAV, TrackInfo);
+                    AddTrackTags(FileStrMP3, TrackInfo);
+                    _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") tagged."));
+
+                    RecordState = RecordStates.STOPPED;
+                    OnRecorderPostStepsFinished?.Invoke(this, new EventArgs());
                 }
-                else if(_wasRecordPaused && !MarkPausedFiles)
+                catch (Exception ex)
                 {
-
-                    RemoveSpotifyFades(FilestrWAV, FilestrWAV);
-                    _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + Title + "\") spotify fades removed."));
-                }*/
-
-                if (RecorderRecSettings.RecordFormat == RecordFormats.WAV_AND_MP3)
-                {
-                    if(ConvertWAVToMP3(FileStrWAV, FileStrMP3) == false) { RecordState = RecordStates.STOPPED; return; }
-                    _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") converted to MP3."));
+                    _logHandle.Report(new LogBox.LogEventError("Error while stopping record: " + ex.Message));
                 }
-                else if (RecorderRecSettings.RecordFormat == RecordFormats.MP3)
-                {
-                    if(ConvertWAVToMP3(FileStrWAV, FileStrMP3) == false) { RecordState = RecordStates.STOPPED; return; }
-                    if (System.IO.File.Exists(FileStrWAV)) { System.IO.File.Delete(FileStrWAV); }
-                    _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") converted to MP3 and WAV deleted."));
-                }
-
-                AddTrackTags(FileStrWAV, TrackInfo);
-                AddTrackTags(FileStrMP3, TrackInfo);
-                _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") tagged."));
-
-                RecordState = RecordStates.STOPPED;
-                OnRecorderPostStepsFinished?.Invoke(this, new EventArgs());
             });
         }
 
@@ -447,7 +465,14 @@ namespace SpotifyRecorder.GenericRecorder
 
             RecordState = RecordStates.WAV_TO_MP3;
             Directory.CreateDirectory(Path.GetDirectoryName(filenameMP3));
-            System.Diagnostics.Process converter = System.Diagnostics.Process.Start(lame_path, "-V2 \"" + filenameWAV + "\" \"" + filenameMP3 + "\"");
+            System.Diagnostics.ProcessStartInfo processStartInfo = new System.Diagnostics.ProcessStartInfo()
+            {
+                FileName = lame_path,
+                Arguments = "-V2 \"" + filenameWAV + "\" \"" + filenameMP3 + "\"",
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
+            System.Diagnostics.Process converter = System.Diagnostics.Process.Start(processStartInfo);
             converter.WaitForExit();
             return true;
         }
@@ -506,6 +531,7 @@ namespace SpotifyRecorder.GenericRecorder
             {
                 RecordState = RecordStates.ADDING_TAGS;
 
+#warning Tagging WAV file with title with special characters (ä, ö, ü) shows some hyroglyphical characters in file
                 TagLib.File wavFile = TagLib.File.Create(fileName);
                 wavFile.Tag.Title = trackInfo.TrackName;
                 wavFile.Tag.AlbumArtists = trackInfo.Artists.Select(a => a.ArtistName).ToArray();
@@ -558,15 +584,16 @@ namespace SpotifyRecorder.GenericRecorder
 
             RecordState = RecordStates.NORMALIZING;
 
-            System.Diagnostics.Process normalizer;
+            System.Diagnostics.ProcessStartInfo processStartInfo = new System.Diagnostics.ProcessStartInfo() { FileName = normalizer_path, CreateNoWindow = true, UseShellExecute = false };
             if (wavFileNameOriginal != wavFileNameOutput)
             {
-                normalizer = System.Diagnostics.Process.Start(normalizer_path, "-o \"" + wavFileNameOutput + "\" \"" + wavFileNameOriginal + "\"");     //use -o option to specify another output path
+                processStartInfo.Arguments = "-o \"" + wavFileNameOutput + "\" \"" + wavFileNameOriginal + "\"";        //use -o option to specify another output path    
             }
             else
             {
-                normalizer = System.Diagnostics.Process.Start(normalizer_path, "\"" + wavFileNameOriginal + "\"");
+                processStartInfo.Arguments = "\"" + wavFileNameOriginal + "\"";
             }
+            System.Diagnostics.Process normalizer = System.Diagnostics.Process.Start(processStartInfo);
             normalizer.WaitForExit();
             return true;
         }
