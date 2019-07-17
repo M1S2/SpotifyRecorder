@@ -4,6 +4,9 @@ Project: Spotify_Recorder
 
 ## [%version%] - %date%
 
+
+## [v3.0] - 17.07.2019 21:20
+
 - Spotify Web API used to get the users playback state (Local API is out of service since about July 2018).
 - Metro style added using WPF.
 - Generic recorder and player implemented to make the implementation of a new player application easy (if Spotify isn't working anymore like happened with the local API).
