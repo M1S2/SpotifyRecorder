@@ -2,7 +2,7 @@
 
 Project: Spotify_Recorder
 
-## [%version%] - %date%
+## [v3.0] - 17.07.2019 21:20
 
 - Spotify Web API used to get the users playback state (Local API is out of service since about July 2018).
 - Metro style added using WPF.
