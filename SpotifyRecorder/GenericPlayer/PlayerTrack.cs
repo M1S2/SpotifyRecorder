@@ -43,21 +43,6 @@ namespace SpotifyRecorder.GenericPlayer
             set { _trackID = value; OnPropertyChanged(); }
         }
 
-        private string _trackType;
-        /// <summary>
-        /// Type of the track (for example ad, ...)
-        /// </summary>
-        public string TrackType
-        {
-            get { return _trackType; }
-            set { _trackType = value; OnPropertyChanged(); OnPropertyChanged("IsAd"); }
-        }
-
-        /// <summary>
-        /// Is the track an ad?
-        /// </summary>
-        public bool IsAd { get { return TrackType == "ad"; } }
-
         private TimeSpan _duration;
         /// <summary>
         /// Duration of the track
@@ -112,7 +97,6 @@ namespace SpotifyRecorder.GenericPlayer
         {
             PlayerTrack track2 = (PlayerTrack)obj;
             return TrackID == track2.TrackID &&
-                TrackType == track2.TrackType &&
                 Duration == track2.Duration &&
                 TrackName == track2.TrackName &&
                 Artists == track2.Artists &&

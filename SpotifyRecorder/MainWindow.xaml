@@ -197,7 +197,7 @@
                             <ColumnDefinition Width="120"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="3" Text="Ad is playing" FontSize="50" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource GrayBrush3}" Visibility="{Binding PlayerApp.CurrentPlaybackStatus.Track.IsAd, Converter={StaticResource BoolVisibilityConverter}}"/>
+                        <TextBlock Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="3" Text="Ad is playing" FontSize="50" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource GrayBrush3}" Visibility="{Binding PlayerApp.CurrentPlaybackStatus.IsAd, FallbackValue=Collapsed, Converter={StaticResource BoolVisibilityConverter}}"/>
 
                         <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="0" Kind="Music" ToolTip="Track" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
                         <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Track" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.TrackName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
@@ -208,7 +208,8 @@
                         <iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="Album" ToolTip="Album" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
                         <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Album" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.AlbumName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
 
-                        <Image Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" ToolTip="Album Image" Source="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.Images[0], Converter={StaticResource BitmapImageSourceConverter}}"/>
+                        <Rectangle Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Width="{Binding ElementName=albumImage, Path=ActualWidth}" Height="{Binding ElementName=albumImage, Path=ActualHeight}" Fill="White"/>
+                        <Image x:Name="albumImage" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" ToolTip="Album Image" Source="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.Images[0], Converter={StaticResource BitmapImageSourceConverter}}"/>
                         
                         <DockPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4">
                             <Button Width="50" Command="{Binding PlayPauseCommand}" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">

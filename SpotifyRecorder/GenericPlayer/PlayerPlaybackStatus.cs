@@ -38,6 +38,11 @@ namespace SpotifyRecorder.GenericPlayer
         /// </summary>
         public PlayerTrack Track { get; set; }
 
+        /// <summary>
+        /// Is the current track an advertisement (true) or not (false)
+        /// </summary>
+        public bool IsAd { get; set; }
+
         public PlayerPlaybackStatus()
         {
 
@@ -51,7 +56,8 @@ namespace SpotifyRecorder.GenericPlayer
                 DeviceVolumePercent == status2.DeviceVolumePercent &&
                 Progress == status2.Progress &&
                 IsPlaying == status2.IsPlaying &&
-                Track == status2.Track;
+                Track == status2.Track &&
+                IsAd == status2.IsAd;
         }
 
         public override int GetHashCode()

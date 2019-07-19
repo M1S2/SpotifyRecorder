@@ -256,6 +256,7 @@ namespace SpotifyRecorder
 
         private async void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
+#warning Save and load window size and position
             if (Properties.Settings.Default.RecSettings == null) { Properties.Settings.Default.RecSettings = new RecorderSettings(); }
             RecSettings = Properties.Settings.Default.RecSettings;
             IsPlayerAdblockerEnabled = Properties.Settings.Default.IsPlayerAdblockerEnabled;
@@ -264,7 +265,7 @@ namespace SpotifyRecorder
             PlayerApp.OnTrackChange += PlayerApp_OnTrackChange;
             PlayerApp.OnPlayStateChange += PlayerApp_OnPlayStateChange;
             PlayerApp.OnTrackTimeChange += PlayerApp_OnTrackTimeChange;
-
+            
             await startAndConnectToPlayer();
 
             Recorders = new ObservableCollection<Recorder>();
@@ -282,7 +283,10 @@ namespace SpotifyRecorder
             Properties.Settings.Default.IsPlayerAdblockerEnabled = this.IsPlayerAdblockerEnabled;
             Properties.Settings.Default.Save();
 
-            foreach(Recorder rec in Recorders) { rec?.StopRecord(); }
+            if (Recorders != null)
+            {
+                foreach (Recorder rec in Recorders) { rec?.StopRecord(); }
+            }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -326,27 +330,40 @@ namespace SpotifyRecorder
 
         //##############################################################################################################################################################################################
 
+        int i = 0;
+
         private async void PlayerApp_OnTrackChange(object sender, PlayerTrackChangeEventArgs e)
         {
             _logHandle.Report(new LogBox.LogEventInfo("Track changed to \"" + e.NewTrack?.TrackName + "\" (" + e.NewTrack?.Artists[0].ArtistName + ")"));
 
-            if ((e.NewTrack == null || e.NewTrack?.TrackName == "") && IsPlayerAdblockerEnabled)
+            if(i == 0)
+            {
+                i++;
+            }
+            else
+            {
+                PlayerApp.CurrentPlaybackStatus.IsAd = true;
+                i = 0;
+            }
+
+            if (PlayerApp.CurrentPlaybackStatus.IsAd && IsPlayerAdblockerEnabled) // (e.NewTrack == null || e.NewTrack?.TrackName == "") && IsPlayerAdblockerEnabled)
             {
                 CurrentRecorder?.StopRecord();
 
                 bool wasPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
-                if(wasPlaying) { PlayerApp.PausePlayback(); }
+                bool wasMinimized = (ProcessHelper.GetProcessWindowState(PlayerApp.PlayerName).showCmd == ProcessHelper.ShowWindowCommands.Minimized);
+                if (wasPlaying) { PlayerApp.PausePlayback(); }
                 await Task.Delay(300);
                 await PlayerApp.ClosePlayerApplication();
                 await Task.Delay(1000);
-                await startAndConnectToPlayer(true);
-                await Task.Delay(500);
+                await startAndConnectToPlayer(wasMinimized);
+                await Task.Delay(1000);
                 if (wasPlaying)
                 {
-                    PlayerApp.NextTrack();      // after closing and reopening spotify opens with the last played track. So skip to the next track
-                    await Task.Delay(200);
+                    PlayerApp.NextTrack();      // after closing and reopening spotify opens with the last played track. So skip to the next track. Skipping starts the playback
+                    await Task.Delay(500);
                     PlayerApp.UpdateCurrentPlaybackStatus();
-                    await Task.Delay(200);
+                    await Task.Delay(500);
                     PlayerApp.StartPlayback();
                     PlayerApp.UpdateCurrentPlaybackStatus();
                     StartRecord();
@@ -370,15 +387,15 @@ namespace SpotifyRecorder
 
             PlayerPlaybackStatus status = PlayerApp.CurrentPlaybackStatus;
 
-            if (e.Playing && status.Progress.TotalSeconds <= 2 && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
+            if (e.Playing && status.Progress.TotalSeconds <= 2 && PlayerApp.CurrentTrack != null && !status.IsAd)
             {
                 StartRecord();
             }
-            else if (e.Playing && status.Progress.TotalSeconds > 2 && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
+            else if (e.Playing && status.Progress.TotalSeconds > 2 && PlayerApp.CurrentTrack != null && !status.IsAd)
             {
                 CurrentRecorder?.ResumeRecord();
             }
-            else if (!e.Playing && PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
+            else if (!e.Playing && PlayerApp.CurrentTrack != null && !status.IsAd)
             {
                 CurrentRecorder?.PauseRecord();
             }
@@ -394,7 +411,7 @@ namespace SpotifyRecorder
             {
                 PlayerPlaybackStatus status = PlayerApp?.CurrentPlaybackStatus;
                 if(status == null) { return; }
-                if (status.IsPlaying && status.Progress != null && status.Progress.TotalSeconds < 2 && status.Track != null && !status.Track.IsAd && _lastTrack != null && _lastTrack.TrackID == status.Track.TrackID && _lastProgress.TotalSeconds > 3)
+                if (status.IsPlaying && status.Progress != null && status.Progress.TotalSeconds < 2 && status.Track != null && !status.IsAd && _lastTrack != null && _lastTrack.TrackID == status.Track.TrackID && _lastProgress.TotalSeconds > 3)
                 {
                     StartRecord();
                 }
@@ -431,7 +448,7 @@ namespace SpotifyRecorder
             tmpRecorder.OnRecorderPostStepsFinished += TmpRecorder_OnRecorderPostStepsFinished;
             Recorders.Add(tmpRecorder);
             
-            if (PlayerApp.CurrentTrack != null && !PlayerApp.CurrentTrack.IsAd)
+            if (PlayerApp.CurrentTrack != null && !PlayerApp.CurrentPlaybackStatus.IsAd)
             {
                 tmpRecorder?.StartRecord();
             }

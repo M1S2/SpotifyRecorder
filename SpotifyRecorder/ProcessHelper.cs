@@ -104,5 +104,52 @@ namespace SpotifyRecorder
             }
             return fullProcessPaths;
         }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        /// <summary>
+        /// Get the window state for the window of the given process
+        /// </summary>
+        /// <param name="processName">Name of the process (without .exe)</param>
+        /// <returns>window state structure</returns>
+        /// see: https://stackoverflow.com/questions/11065026/get-window-state-of-another-process
+        public static WINDOWPLACEMENT GetProcessWindowState(string processName)
+        {
+            List<Process> processes = FindProcess(processName, true);
+            if(processes.Count == 0) { return new WINDOWPLACEMENT(); }
+            return GetPlacement(processes.First().MainWindowHandle);
+        }
+
+        private static WINDOWPLACEMENT GetPlacement(IntPtr hwnd)
+        {
+            WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
+            placement.length = System.Runtime.InteropServices.Marshal.SizeOf(placement);
+            GetWindowPlacement(hwnd, ref placement);
+            return placement;
+        }
+
+        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+        internal static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
+
+        [Serializable]
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        internal struct WINDOWPLACEMENT
+        {
+            public int length;
+            public int flags;
+            public ShowWindowCommands showCmd;
+            public System.Drawing.Point ptMinPosition;
+            public System.Drawing.Point ptMaxPosition;
+            public System.Drawing.Rectangle rcNormalPosition;
+        }
+
+        internal enum ShowWindowCommands : int
+        {
+            Hide = 0,
+            Normal = 1,
+            Minimized = 2,
+            Maximized = 3,
+        }
     }
 }

@@ -160,8 +160,9 @@ namespace SpotifyRecorder.GenericPlayer
         /// <summary>
         /// Connect to the player
         /// </summary>
+        /// <param name="timeout_ms">Connection timeout in ms</param>
         /// <returns>true on connection success, otherwise false</returns>
-        public abstract Task<bool> Connect();
+        public abstract Task<bool> Connect(int timeout_ms = 5000);
 
         //***********************************************************************************************************************************************************************************************************
 
@@ -255,7 +256,6 @@ namespace SpotifyRecorder.GenericPlayer
                 _eventTimer.Start();
                 return;
             }
-#warning Improve advertisement handling
             if (CurrentPlaybackStatus.IsPlaying && _tmpPlaybackStatus.Track != null && CurrentPlaybackStatus.Track == null)
             {
                 OnTrackChange?.Invoke(this, new PlayerTrackChangeEventArgs()
@@ -266,7 +266,7 @@ namespace SpotifyRecorder.GenericPlayer
             }
             if (CurrentPlaybackStatus.Track != null && _tmpPlaybackStatus.Track != null)
             {
-                if (CurrentPlaybackStatus.Track?.TrackID != _tmpPlaybackStatus.Track?.TrackID || CurrentPlaybackStatus.Track.TrackType == "other" && CurrentPlaybackStatus.Track.Duration != _tmpPlaybackStatus.Track.Duration)
+                if (CurrentPlaybackStatus.Track?.TrackID != _tmpPlaybackStatus.Track?.TrackID || CurrentPlaybackStatus.Track.Duration != _tmpPlaybackStatus.Track.Duration)
                 {
                     OnTrackChange?.Invoke(this, new PlayerTrackChangeEventArgs()
                     {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Drawing;
@@ -80,7 +81,8 @@ namespace SpotifyRecorder.GenericPlayer
                 DeviceVolumePercent = (_spotifyPlayback.Device == null ? -1 : _spotifyPlayback.Device.VolumePercent),
                 IsPlaying = _spotifyPlayback.IsPlaying,
                 Progress = new TimeSpan(0, 0, 0, 0, _spotifyPlayback.ProgressMs),
-                Track = convertSpotifyTrackToPlayerTrack(_spotifyPlayback.Item)
+                Track = convertSpotifyTrackToPlayerTrack(_spotifyPlayback.Item),
+                IsAd = _spotifyPlayback.CurrentlyPlayingType == TrackType.Ad
             };
             CurrentPlaybackStatus = playerPlayback;
         }
@@ -117,70 +119,35 @@ namespace SpotifyRecorder.GenericPlayer
 
         //***********************************************************************************************************************************************************************************************************
 
-        //ImplicitGrantAuth auth;
-
         /// <summary>
         /// Connect to the Spotify Web API
         /// </summary>
+        /// <param name="timeout_ms">Connection timeout in ms</param>
         /// <returns>true on connection success, otherwise false</returns>
-        /// see: https://github.com/JohnnyCrazy/SpotifyAPI-NET/issues/254
-        public override async Task<bool> Connect()
+        /// see: https://johnnycrazy.github.io/SpotifyAPI-NET/SpotifyWebAPI/auth/#implicitgrantauth
+        /// Use https://developer.spotify.com/dashboard/ to get a Client ID 
+        /// It should be noted, "http://localhost:8000" must be whitelisted in your dashboard after getting your own client key
+        public override async Task<bool> Connect(int timeout_ms = 5000)
         {
-            /*auth = new ImplicitGrantAuth() //new AutorizationCodeAuth()
+            await Task.Run(() =>
             {
-                ClientId = "ab0969d9fab2486182e57bfbe8590df4",
-                RedirectUri = "http://localhost:8000",
-                Scope = Scope.UserReadPlaybackState,
-                ShowDialog = false
-            };
-            auth.StartHttpServer(8000);
-            auth.OnResponseReceivedEvent += Auth_OnResponseReceivedEvent;
-            auth.DoAuth();
-
-            return true;*/
-
-
-            WebAPIFactory webApiFactory = new WebAPIFactory(
-                "http://localhost",
-                8000,
-                // Spotify API Client ID goes here, you SHOULD get your own at https://developer.spotify.com/dashboard/
-                // It should be noted, "http://localhost:8000" must be whitelisted in your dashboard after getting your own client key
-                "ab0969d9fab2486182e57bfbe8590df4",
-                Scope.UserReadPlaybackState,
-                //Scope.UserReadPrivate | Scope.UserReadEmail | Scope.PlaylistReadPrivate | Scope.UserLibraryRead |
-                //Scope.UserFollowRead | Scope.UserReadBirthdate | Scope.UserTopRead | Scope.PlaylistReadCollaborative |
-                //Scope.UserReadRecentlyPlayed | Scope.UserReadPlaybackState | Scope.UserModifyPlaybackState,
-                new SpotifyAPI.ProxyConfig());
-
-            try
-            {
-                _spotifyWeb = await webApiFactory.GetWebApi();
-            }
-            catch (Exception)
-            {
-                IsConnected = false;
-                return false;
-            }
+                _spotifyWeb = null;
+                ManualResetEvent waitforAuthFinish = new ManualResetEvent(false);
+                ImplicitGrantAuth auth = new ImplicitGrantAuth("ab0969d9fab2486182e57bfbe8590df4", "http://localhost:8000", "http://localhost:8000", Scope.UserReadPlaybackState);
+                auth.AuthReceived += (sender, payload) =>
+                {
+                    auth.Stop(); // `sender` is also the auth instance
+                    _spotifyWeb = new SpotifyWebAPI() { TokenType = payload.TokenType, AccessToken = payload.AccessToken };
+                    waitforAuthFinish.Set();
+                };
+                auth.Start(); // Starts an internal HTTP Server
+                auth.OpenBrowser();
+                waitforAuthFinish.WaitOne(timeout_ms);
+            });
 
             if (_spotifyWeb == null) { IsConnected = false; return false; }
-
-            IsConnected = true;
-
-            return true;
+            else { IsConnected = true; return true; }           
         }
-
-        /*private void Auth_OnResponseReceivedEvent(Token token, string state)
-        //private void Auth_OnResponseReceivedEvent(AutorizationCodeAuthResponse response)
-        {
-            auth.StopHttpServer();
-
-            //Token token = auth.ExchangeAuthCode(response.Code, "");
-            SpotifyWebAPI api = new SpotifyWebAPI
-            {
-                AccessToken = token.AccessToken,
-                TokenType = token.TokenType
-            };
-        }*/
 
         //***********************************************************************************************************************************************************************************************************
 
@@ -263,7 +230,6 @@ namespace SpotifyRecorder.GenericPlayer
             {
                 TrackID = track.Id,
                 Duration = new TimeSpan(0, 0, 0, 0, track.DurationMs),
-                TrackType = track.Type,
                 TrackName = track.Name,
                 Artists = track.Artists.Select(a => new PlayerArtist(a.Name, a.Id)).ToList(),
                 Album = new PlayerAlbum(track.Album.Name, track.Album.Id, track.Album.ReleaseDate, track.Album.Images.Select(i => getBitmapFromUrl(i.Url)).ToList())
