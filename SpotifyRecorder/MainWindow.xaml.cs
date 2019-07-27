@@ -20,6 +20,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using SpotifyRecorder.GenericPlayer;
 using SpotifyRecorder.GenericRecorder;
+using SpotifyRecorder.WindowTheme;
 
 namespace SpotifyRecorder
 {
@@ -48,7 +49,7 @@ namespace SpotifyRecorder
 
         //##############################################################################################################################################################################################
 
-        private IProgress<LogBox.LogEvent> _logHandle;
+        public IProgress<LogBox.LogEvent> _logHandle;
 
         private Player _playerApp;
         public Player PlayerApp
@@ -147,8 +148,8 @@ namespace SpotifyRecorder
                 {
                     _connectCommand = new WindowTheme.RelayCommand(async param =>
                     {
-                        await startAndConnectToPlayer();
-                    }); //, param => { return PlayerApp?.IsConnected == false; });
+                        await ((App)Application.Current).StartAndConnectToPlayer(true);
+                    });
                 }
                 return _connectCommand;
             }
@@ -250,37 +251,44 @@ namespace SpotifyRecorder
             {
                 logBox1.LogEvent(progressValue);
             });
+
+            PlayerApp = new SpotifyPlayer(10, this);
         }
 
         //***********************************************************************************************************************************************************************************************************
 
-        private async void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        protected override void OnSourceInitialized(EventArgs e)
         {
-#warning Save and load window size and position
+            base.OnSourceInitialized(e);
+            this.SetPlacementString(Properties.Settings.Default.MainWindowPlacement);
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
             if (Properties.Settings.Default.RecSettings == null) { Properties.Settings.Default.RecSettings = new RecorderSettings(); }
             RecSettings = Properties.Settings.Default.RecSettings;
             IsPlayerAdblockerEnabled = Properties.Settings.Default.IsPlayerAdblockerEnabled;
-
-            PlayerApp = new SpotifyPlayer(10, this);
+            
             PlayerApp.OnTrackChange += PlayerApp_OnTrackChange;
             PlayerApp.OnPlayStateChange += PlayerApp_OnPlayStateChange;
             PlayerApp.OnTrackTimeChange += PlayerApp_OnTrackTimeChange;
             
-            await startAndConnectToPlayer();
-
             Recorders = new ObservableCollection<Recorder>();
             BindingOperations.EnableCollectionSynchronization(Recorders, _recordersListLock);
 
-            //Recorder tmpRecorder = new Recorder((RecorderSettings)RecSettings.Clone(), PlayerApp.CurrentTrack, _logHandle);
+            //Recorder tmpRecorder = new SpotifyRecorderImplementierung((RecorderSettings)RecSettings.Clone(), PlayerApp.CurrentTrack, _logHandle);
             //Recorders.Add(tmpRecorder);
         }
 
         //***********************************************************************************************************************************************************************************************************
 
-        private void MetroWindow_Closed(object sender, EventArgs e)
+        private void MetroWindow_Closing(object sender, EventArgs e)
         {
             Properties.Settings.Default.RecSettings = this.RecSettings;
             Properties.Settings.Default.IsPlayerAdblockerEnabled = this.IsPlayerAdblockerEnabled;
+            Properties.Settings.Default.MainWindowPlacement = this.GetPlacementString();
             Properties.Settings.Default.Save();
 
             if (Recorders != null)
@@ -289,61 +297,20 @@ namespace SpotifyRecorder
             }
         }
 
-        //***********************************************************************************************************************************************************************************************************
-
-        /// <summary>
-        /// Start the player application if it's not running and connect to it
-        /// </summary>
-        /// <param name="startMinimized">true -> start player minimized; false -> start normal</param>
-        private async Task startAndConnectToPlayer(bool startMinimized = false)
-        {
-            if (!PlayerApp.IsPlayerApplicationRunning) { _logHandle.Report(new LogBox.LogEventInfo("Starting " + PlayerApp.PlayerName + " application.")); }
-            bool playerStarted = await PlayerApp.StartPlayerApplication(startMinimized);
-
-            if (playerStarted)
-            {
-                _logHandle.Report(new LogBox.LogEventInfo("Connecting..."));
-                await PlayerApp.Connect();
-
-                if (PlayerApp.IsConnected) { _logHandle.Report(new LogBox.LogEventInfo("Connected successfully.")); }
-                else { _logHandle.Report(new LogBox.LogEventWarning("Connection failed.")); }
-
-                if (PlayerApp.IsConnected)
-                {
-                    PlayerApp.ListenForEvents = true;
-                    PlayerApp.UpdateCurrentPlaybackStatus();
-
-                    /*if (PlayerApp.CurrentPlaybackStatus == null || !PlayerApp.CurrentPlaybackStatus.IsPlaying)   // If no track is running, start and stop the playback to get the correct track infos
-                    {
-                        PlayerApp.ToggleMuteState();
-                        await Task.Delay(300);
-                        PlayerApp.TogglePlayPause();
-                        await Task.Delay(300);
-                        PlayerApp.TogglePlayPause();
-                        await Task.Delay(300);
-                        PlayerApp.ToggleMuteState();
-                        PlayerApp.UpdateCurrentPlaybackStatus();
-                    }*/
-                }
-            }
-        }
-
         //##############################################################################################################################################################################################
-
-        int i = 0;
-
+        
         private async void PlayerApp_OnTrackChange(object sender, PlayerTrackChangeEventArgs e)
         {
-            _logHandle.Report(new LogBox.LogEventInfo("Track changed to \"" + e.NewTrack?.TrackName + "\" (" + e.NewTrack?.Artists[0].ArtistName + ")"));
+            //PlayerApp.CurrentPlaybackStatus.IsAd = true;
 
-            if(i == 0)
+
+            if (PlayerApp.CurrentPlaybackStatus.IsAd)
             {
-                i++;
+                _logHandle.Report(new LogBox.LogEventInfo("Advertisement is playing"));
             }
             else
             {
-                PlayerApp.CurrentPlaybackStatus.IsAd = true;
-                i = 0;
+                _logHandle.Report(new LogBox.LogEventInfo("Track changed to \"" + e.NewTrack?.TrackName + "\" (" + e.NewTrack?.Artists[0].ArtistName + ")"));
             }
 
             if (PlayerApp.CurrentPlaybackStatus.IsAd && IsPlayerAdblockerEnabled) // (e.NewTrack == null || e.NewTrack?.TrackName == "") && IsPlayerAdblockerEnabled)
@@ -351,13 +318,13 @@ namespace SpotifyRecorder
                 CurrentRecorder?.StopRecord();
 
                 bool wasPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
-                bool wasMinimized = (ProcessHelper.GetProcessWindowState(PlayerApp.PlayerName).showCmd == ProcessHelper.ShowWindowCommands.Minimized);
+                bool wasMinimized = (ProcessHelper.GetProcessWindowState(PlayerApp.PlayerName).showCmd == WindowTheme.WindowPlacement.ShowWindowStates.Minimized);
                 if (wasPlaying) { PlayerApp.PausePlayback(); }
                 await Task.Delay(300);
                 await PlayerApp.ClosePlayerApplication();
                 await Task.Delay(1000);
-                await startAndConnectToPlayer(wasMinimized);
-                await Task.Delay(1000);
+                await ((App)Application.Current).StartAndConnectToPlayer(wasMinimized);
+                await Task.Delay(1500);
                 if (wasPlaying)
                 {
                     PlayerApp.NextTrack();      // after closing and reopening spotify opens with the last played track. So skip to the next track. Skipping starts the playback
@@ -444,7 +411,7 @@ namespace SpotifyRecorder
             
             if (!isPlaying) { return; }
 
-            Recorder tmpRecorder = new Recorder((RecorderSettings)RecSettings.Clone(), PlayerApp.CurrentTrack, _logHandle);
+            Recorder tmpRecorder = new SpotifyRecorderImplementierung((RecorderSettings)RecSettings.Clone(), PlayerApp.CurrentTrack, _logHandle);
             tmpRecorder.OnRecorderPostStepsFinished += TmpRecorder_OnRecorderPostStepsFinished;
             Recorders.Add(tmpRecorder);
             

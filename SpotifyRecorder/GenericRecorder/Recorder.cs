@@ -25,7 +25,7 @@ namespace SpotifyRecorder.GenericRecorder
     /// <summary>
     /// Class that can be used to record any sound from the soundcard
     /// </summary>
-    public class Recorder : INotifyPropertyChanged
+    public abstract class Recorder : INotifyPropertyChanged
     {
         #region INotifyPropertyChanged implementation
         /// <summary>
@@ -93,7 +93,7 @@ namespace SpotifyRecorder.GenericRecorder
         public RecordStates RecordState  
         {
             get { return _recordState; }
-            private set { _recordState = value; OnPropertyChanged(); }
+            protected set { _recordState = value; OnPropertyChanged(); }
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -117,7 +117,7 @@ namespace SpotifyRecorder.GenericRecorder
         public string RecordFilepathWithoutExtension
         {
             get { return _recordFilepathWithoutExtension; }
-            private set { _recordFilepathWithoutExtension = value; OnPropertyChanged(); }
+            protected set { _recordFilepathWithoutExtension = value; OnPropertyChanged(); }
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -132,6 +132,18 @@ namespace SpotifyRecorder.GenericRecorder
             set { _markPausedFiles = value; OnPropertyChanged(); }
         }
 
+        //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        private bool _wasRecordPause;
+        /// <summary>
+        /// true -> the record was paused at least once; false -> the record wasn't paused
+        /// </summary>
+        public bool WasRecordPaused
+        {
+            get { return _wasRecordPause; }
+            set { _wasRecordPause = value; OnPropertyChanged(); }
+        }
+
         #endregion
 
         //***********************************************************************************************************************************************************************************************************
@@ -141,15 +153,19 @@ namespace SpotifyRecorder.GenericRecorder
         /// </summary>
         public event EventHandler OnRecorderPostStepsFinished;
 
+        /// <summary>
+        /// Event that gets called after normalizing (while stopping) and before convertion to mp3.
+        /// </summary>
+        public event EventHandler RecorderPostSteps;
+
         //***********************************************************************************************************************************************************************************************************
 
-        private string FileStrWAV { get { return RecordFilepathWithoutExtension + ".wav"; } }
-        private string FileStrMP3 { get { return RecordFilepathWithoutExtension + ".mp3"; } }
+        protected string FileStrWAV { get { return RecordFilepathWithoutExtension + ".wav"; } }
+        protected string FileStrMP3 { get { return RecordFilepathWithoutExtension + ".mp3"; } }
 
-        private IProgress<LogBox.LogEvent> _logHandle;
+        protected IProgress<LogBox.LogEvent> _logHandle;
 
-        private bool _wasRecordPaused;                                      // true -> the record was paused at least once; false -> the record wasn't paused
-        private List<double> _recordPauseTimes_s = new List<double>();      // list with times when the record was paused
+        protected List<double> _recordPauseTimes_s = new List<double>();      // list with times when the record was paused
 
         private WasapiCapture _capture;
         private WaveWriter _wavWriter;
@@ -173,7 +189,7 @@ namespace SpotifyRecorder.GenericRecorder
             RecorderRecSettings = recorderSettings;
             TrackInfo = trackInfo;
             AllowedDifferenceToTrackDuration = new TimeSpan(0, 0, 10);
-            _wasRecordPaused = false;
+            WasRecordPaused = false;
             MarkPausedFiles = true;
             CreateFilePath();
         }
@@ -194,7 +210,7 @@ namespace SpotifyRecorder.GenericRecorder
             TrackInfo = null;
             RecorderRecSettings.RecordFormat = RecordFormats.MP3;
             AllowedDifferenceToTrackDuration = new TimeSpan(0, 0, 10);
-            _wasRecordPaused = false;
+            WasRecordPaused = false;
             MarkPausedFiles = true;
             CreateFilePath();
         }
@@ -288,7 +304,7 @@ namespace SpotifyRecorder.GenericRecorder
 
             RecordState = RecordStates.RECORDING;
             _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") started."));
-            _wasRecordPaused = false;
+            WasRecordPaused = false;
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -303,7 +319,7 @@ namespace SpotifyRecorder.GenericRecorder
                 _silenceOut.Pause();
                 RecordState = RecordStates.PAUSED;
                 _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") paused."));
-                _wasRecordPaused = true;
+                WasRecordPaused = true;
 
                 double recordLength_s = (_wavWriterPositionBytes / _wavWriterFormat.BytesPerSecond);
                 _recordPauseTimes_s.Add(recordLength_s);
@@ -391,22 +407,7 @@ namespace SpotifyRecorder.GenericRecorder
                     if (NormalizeWAVFile(FileStrWAV) == false) { RecordState = RecordStates.STOPPED; return; }
                     _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") normalized."));
 
-#warning Remove Player specific parts (Spotify) !!!
-                    /*if(_wasRecordPaused && MarkPausedFiles)
-                    {
-                        string newFilestrWAV = FilestrWAV.Remove(FilestrWAV.Length - 4, 4) + "_paused.wav";
-                        RemoveSpotifyFades(FilestrWAV, newFilestrWAV);
-                        System.IO.File.Delete(FilestrWAV);
-                        FilestrWAV = newFilestrWAV;
-                        FilestrMP3 = newFilestrWAV.Replace(".wav", ".mp3");
-                        _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + Title + "\") spotify fades removed."));
-                    }
-                    else if(_wasRecordPaused && !MarkPausedFiles)
-                    {
-
-                        RemoveSpotifyFades(FilestrWAV, FilestrWAV);
-                        _logHandle.Report(new LogBox.LogEventInfo("Record (\"" + Title + "\") spotify fades removed."));
-                    }*/
+                    RecorderPostSteps?.Invoke(this, new EventArgs());
 
                     if (RecorderRecSettings.RecordFormat == RecordFormats.WAV_AND_MP3)
                     {
@@ -531,7 +532,7 @@ namespace SpotifyRecorder.GenericRecorder
             {
                 RecordState = RecordStates.ADDING_TAGS;
 
-#warning Tagging WAV file with title with special characters (ä, ö, ü) shows some hyroglyphical characters in file
+#warning Tagging WAV file with title with special characters (ä, ö, ü) shows some hyroglyphical characters in file (seems to be a display problem of windows explorer (using no unicode))
                 TagLib.File wavFile = TagLib.File.Create(fileName);
                 wavFile.Tag.Title = trackInfo.TrackName;
                 wavFile.Tag.AlbumArtists = trackInfo.Artists.Select(a => a.ArtistName).ToArray();
@@ -600,45 +601,5 @@ namespace SpotifyRecorder.GenericRecorder
 
 #endregion
 
-        //***********************************************************************************************************************************************************************************************************
-        /*
-#region Remove spotify fades
-
-        /// <summary>
-        /// Find all places where the record was paused and remove the fade outs and fade ins that spotify applies when pausing and resuming a playback.
-        /// </summary>
-        /// <param name="inputWavFileName">WAV file to remove fades</param>
-        /// <param name="outputWavFileName">WAV file with removed fades</param>
-        private void RemoveSpotifyFades(string inputWavFileName, string outputWavFileName)
-        {
-            RecordState = RecordStates.REMOVING_FADES;
-            
-            string spotifyPauseFadeOutPointsPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\SpotifyPauseFadeOutPoints.xml";
-            string spotifyPlayFadeInPointsPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\SpotifyPlayFadeInPoints.xml";
-
-            WaveFile file = new WaveFile(inputWavFileName);
-            List<SilenceParts> silence = file.RemoveSilence(200, -1, 0.0001);
-
-            double allowedPauseSilenceDifference_ms = 500;
-            List<FadeSettings> fades = new List<FadeSettings>();
-            foreach (SilenceParts sil in silence)
-            {
-                List<double> validPauseTimes = _recordPauseTimes_s.Where(p => ((p * 1000) > (sil.Original_Start_ms - allowedPauseSilenceDifference_ms)) && ((p * 1000) < (sil.Original_Start_ms + allowedPauseSilenceDifference_ms))).ToList();
-                if (validPauseTimes.Count() == 0)   //Only remove fades if the difference between the current silencePart and any of the pauseTimes is small enough
-                {
-                    continue;
-                }
-
-                FadeSettings fadeOutSettings = new FadeSettings(sil.New_Start_ms, FadeTypes.UNDO_CUSTOM, spotifyPauseFadeOutPointsPath, AudioChannels.RIGHT_AND_LEFT);
-                fadeOutSettings.FadeStartTime_ms -= fadeOutSettings.FadePoints.Last().X;
-                fades.Add(fadeOutSettings);
-                fades.Add(new FadeSettings(sil.New_Start_ms, FadeTypes.UNDO_CUSTOM, spotifyPlayFadeInPointsPath, AudioChannels.RIGHT_AND_LEFT));
-            }
-            file.ApplyFading(fades);
-            file.SaveFile(outputWavFileName);
-        }
-
-#endregion
-    */
     }
 }

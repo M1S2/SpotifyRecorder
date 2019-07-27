@@ -15,7 +15,7 @@
         x:Name="mainWindow"
         Title="Spotify Recorder" Height="1000" Width="1200"
         Loaded="MetroWindow_Loaded"
-        Closed="MetroWindow_Closed"
+        Closing="MetroWindow_Closing"
         ResizeMode="CanResizeWithGrip"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Icon="AppIcon/SpotifyRecorder_AppIcon.ico">

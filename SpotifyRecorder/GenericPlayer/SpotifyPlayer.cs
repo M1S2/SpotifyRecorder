@@ -94,15 +94,16 @@ namespace SpotifyRecorder.GenericPlayer
         /// </summary>
         /// <param name="minimized">true -> start minimized; otherwise false</param>
         /// <returns>true -> started successful, false -> error while starting application</returns>
-        public override Task<bool> StartPlayerApplication(bool minimized = false)
+        public async override Task<bool> StartPlayerApplication(bool minimized = false)
         {
             bool startResult = true;
             if (!IsPlayerApplicationRunning)
             {
-                startResult = ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", (minimized ? "--minimized" : ""));     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify
-                System.Threading.Thread.Sleep(2000);        //Wait some time before connecting to spotify
+                startResult = await ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", (minimized ? "--minimized" : ""));     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify
+                //startResult = await ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", "", (minimized ? ProcessWindowStyle.Minimized : ProcessWindowStyle.Maximized));     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify
+                await Task.Delay(2000);        //Wait some time before connecting to spotify
             }
-            return Task.FromResult(startResult);
+            return startResult;
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -127,7 +128,7 @@ namespace SpotifyRecorder.GenericPlayer
         /// see: https://johnnycrazy.github.io/SpotifyAPI-NET/SpotifyWebAPI/auth/#implicitgrantauth
         /// Use https://developer.spotify.com/dashboard/ to get a Client ID 
         /// It should be noted, "http://localhost:8000" must be whitelisted in your dashboard after getting your own client key
-        public override async Task<bool> Connect(int timeout_ms = 5000)
+        public override async Task<bool> Connect(int timeout_ms = 10000)
         {
             await Task.Run(() =>
             {

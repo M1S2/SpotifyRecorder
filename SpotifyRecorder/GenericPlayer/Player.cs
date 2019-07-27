@@ -162,7 +162,7 @@ namespace SpotifyRecorder.GenericPlayer
         /// </summary>
         /// <param name="timeout_ms">Connection timeout in ms</param>
         /// <returns>true on connection success, otherwise false</returns>
-        public abstract Task<bool> Connect(int timeout_ms = 5000);
+        public abstract Task<bool> Connect(int timeout_ms = 10000);
 
         //***********************************************************************************************************************************************************************************************************
 

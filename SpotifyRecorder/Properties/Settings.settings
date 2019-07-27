@@ -14,5 +14,8 @@
     <Setting Name="AppAccent" Type="System.String" Scope="User">
       <Value Profile="(Default)">"Emerald"</Value>
     </Setting>
+    <Setting Name="MainWindowPlacement" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
