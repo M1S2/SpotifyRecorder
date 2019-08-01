@@ -301,8 +301,7 @@ namespace SpotifyRecorder
         
         private async void PlayerApp_OnTrackChange(object sender, PlayerTrackChangeEventArgs e)
         {
-            //PlayerApp.CurrentPlaybackStatus.IsAd = true;
-
+            PlayerApp.CurrentPlaybackStatus.IsAd = true;
 
             if (PlayerApp.CurrentPlaybackStatus.IsAd)
             {
@@ -327,12 +326,12 @@ namespace SpotifyRecorder
                 await Task.Delay(1500);
                 if (wasPlaying)
                 {
-                    PlayerApp.NextTrack();      // after closing and reopening spotify opens with the last played track. So skip to the next track. Skipping starts the playback
+                    PlayerApp.NextTrack();      // after closing and reopening spotify opens with the last played track. So skip to the next track. Skipping already starts the playback.
                     await Task.Delay(500);
                     PlayerApp.UpdateCurrentPlaybackStatus();
-                    await Task.Delay(500);
+                    /*await Task.Delay(500);
                     PlayerApp.StartPlayback();
-                    PlayerApp.UpdateCurrentPlaybackStatus();
+                    PlayerApp.UpdateCurrentPlaybackStatus();*/
                     StartRecord();
                 }
                 else
