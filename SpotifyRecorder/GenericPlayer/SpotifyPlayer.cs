@@ -11,6 +11,7 @@ using System.Net;
 using System.Diagnostics;
 using System.Windows;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Auth;
 using SpotifyAPI.Web.Enums;
@@ -142,13 +143,13 @@ namespace SpotifyRecorder.GenericPlayer
                     waitforAuthFinish.Set();
                 };
                 auth.Start(); // Starts an internal HTTP Server
-                auth.OpenBrowser();
+                //auth.OpenBrowser();
 
-                
+                setWebBrowserVersion();
                 string url = auth.GetUri();
                 //Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
 
-                string chromePath = @"C:\\Program Files (x86)\\Google\\Chrome\\Application\\";
+                //string chromePath = @"C:\\Program Files (x86)\\Google\\Chrome\\Application\\";
                 //Process.Start(new ProcessStartInfo("cmd", $"/c start /D \"{chromePath}\" \"chrome.exe\" --new-window {url}"));//$"--new-window {url}"));
                 //see Chrome command line switches: https://peter.sh/experiments/chromium-command-line-switches/#load-extension
 
@@ -160,7 +161,7 @@ namespace SpotifyRecorder.GenericPlayer
                 //process.CloseMainWindow();
                 //process.Close();
 
-                
+
 
                 //WebClient webClient = new WebClient();
                 //string response = webClient.DownloadString(url);
@@ -170,14 +171,14 @@ namespace SpotifyRecorder.GenericPlayer
                 //httpClient.DefaultRequestHeaders.Add("user-agent", "Chrome/75.0.3770.142");
                 //string response = await httpClient.GetStringAsync(url);
 
-                /*Thread newThread = new Thread(new ThreadStart(() => 
+                Thread newThread = new Thread(new ThreadStart(() => 
                 {
-                    System.Windows.Forms.WebBrowser webBrowser = new System.Windows.Forms.WebBrowser();
-                    webBrowser.Navigate(redirect);
+                    System.Windows.Controls.WebBrowser webBrowser = new System.Windows.Controls.WebBrowser();
+                    webBrowser.Navigate(url);
                 }));
                 newThread.SetApartmentState(ApartmentState.STA);
-                newThread.Start();*/
-
+                newThread.Start();
+                
 
                 waitforAuthFinish.WaitOne(timeout_ms);
             });
@@ -189,6 +190,23 @@ namespace SpotifyRecorder.GenericPlayer
 
         //***********************************************************************************************************************************************************************************************************
 
+        /// <summary>
+        /// Set a registry key for the current user to use Internet Explorer 11 for rendering using the WebBrowser control
+        /// </summary>
+        //see: https://stackoverflow.com/questions/17922308/use-latest-version-of-internet-explorer-in-the-webbrowser-control
+        private void setWebBrowserVersion()
+        {
+            RegistryKey regKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION", RegistryKeyPermissionCheck.ReadWriteSubTree);
+
+            string processName = System.Diagnostics.Process.GetCurrentProcess().ProcessName + ".exe";
+
+            if (regKey.GetValue(processName) == null)
+            {
+                regKey.SetValue(processName, 11001, RegistryValueKind.DWord);       //11001 = Internet Explorer 11. Webpages are displayed in IE11 edge mode, regardless of the !DOCTYPE directive.
+            }
+        }
+
+        //***********************************************************************************************************************************************************************************************************
 
 #warning TEST!!!
         //see: https://stackoverflow.com/questions/704956/getting-the-redirected-url-from-the-original-url
