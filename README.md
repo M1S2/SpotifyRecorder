@@ -1,6 +1,6 @@
 # SpotifyRecorder
 
-Version: %version%
+Version: v3.1.0
 
 ## Purpose
 
