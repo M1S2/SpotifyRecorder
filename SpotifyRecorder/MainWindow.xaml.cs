@@ -129,7 +129,7 @@ namespace SpotifyRecorder
                 {
                     _infoCommand = new WindowTheme.RelayCommand(param =>
                     {
-                        AssemblyInfoHelper_WPF.WindowAssemblyInfo windowAssemblyInfo = new AssemblyInfoHelper_WPF.WindowAssemblyInfo();
+                        AssemblyInfoHelper.WindowAssemblyInfo windowAssemblyInfo = new AssemblyInfoHelper.WindowAssemblyInfo();
                         windowAssemblyInfo.ShowDialog();
                     });
                 }

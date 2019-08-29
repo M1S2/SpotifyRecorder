@@ -1,9 +1,6 @@
-# README 
+# SpotifyRecorder
 
-|
-| ---------| -----------------------------------------|
-| Project: | Spotify_Recorder                   |
-| Version: | %version%                                |
+Version: %version%
 
 ## Purpose
 
