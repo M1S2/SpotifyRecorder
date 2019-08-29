@@ -2,6 +2,9 @@
 
 ## [%version%] - %date%
 
+
+## [v3.1.0] - 29.08.2019 21:31
+
 - Splash screen added
 - Saving window position
 - Adblocker improved
