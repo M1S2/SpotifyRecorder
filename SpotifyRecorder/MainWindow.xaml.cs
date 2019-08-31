@@ -301,7 +301,7 @@ namespace SpotifyRecorder
         
         private async void PlayerApp_OnTrackChange(object sender, PlayerTrackChangeEventArgs e)
         {
-            PlayerApp.CurrentPlaybackStatus.IsAd = true;
+            //PlayerApp.CurrentPlaybackStatus.IsAd = true;      //Use this for ad blocker testing
 
             if (PlayerApp.CurrentPlaybackStatus.IsAd)
             {

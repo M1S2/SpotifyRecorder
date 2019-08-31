@@ -2,9 +2,11 @@
 
 ## [%version%] - %date%
 
+- Fixed bug in v3.1.0
 
 ## [v3.1.0] - 29.08.2019 21:31
 
+**This version contains a bug (Ad is always recogniced when the track is changed)**
 - Splash screen added
 - Saving window position
 - Adblocker improved
