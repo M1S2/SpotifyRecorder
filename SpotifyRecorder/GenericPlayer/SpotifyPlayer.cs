@@ -125,68 +125,106 @@ namespace SpotifyRecorder.GenericPlayer
         /// Connect to the Spotify Web API
         /// </summary>
         /// <param name="timeout_ms">Connection timeout in ms</param>
+        /// <param name="forceReauthenticate">if true, force the user to reauthenticate to the player application</param>
         /// <returns>true on connection success, otherwise false</returns>
         /// see: https://johnnycrazy.github.io/SpotifyAPI-NET/SpotifyWebAPI/auth/#implicitgrantauth
         /// Use https://developer.spotify.com/dashboard/ to get a Client ID 
         /// It should be noted, "http://localhost:8000" must be whitelisted in your dashboard after getting your own client key
-        public override async Task<bool> Connect(int timeout_ms = 10000)
+        public override async Task<bool> Connect(int timeout_ms = 10000, bool forceReauthenticate = false)
         {
-            await Task.Run(async() =>
+            await Task.Run(() =>
             {
+                bool useExternalBrowser = false;
+
                 _spotifyWeb = null;
-                ManualResetEvent waitforAuthFinish = new ManualResetEvent(false);
+                ManualResetEvent waitForAuthFinish = new ManualResetEvent(false);
+                ManualResetEvent waitForWindowClosed = new ManualResetEvent(false);
                 ImplicitGrantAuth auth = new ImplicitGrantAuth("ab0969d9fab2486182e57bfbe8590df4", "http://localhost:8000", "http://localhost:8000", Scope.UserReadPlaybackState);
-                auth.AuthReceived += (sender, payload) =>
-                {
-                    auth.Stop(); // `sender` is also the auth instance
-                    _spotifyWeb = new SpotifyWebAPI() { TokenType = payload.TokenType, AccessToken = payload.AccessToken };
-                    waitforAuthFinish.Set();
-                };
-                auth.Start(); // Starts an internal HTTP Server
-                //auth.OpenBrowser();
-
-                setWebBrowserVersion();
-                string url = auth.GetUri();
-                //Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
-
-                //string chromePath = @"C:\\Program Files (x86)\\Google\\Chrome\\Application\\";
-                //Process.Start(new ProcessStartInfo("cmd", $"/c start /D \"{chromePath}\" \"chrome.exe\" --new-window {url}"));//$"--new-window {url}"));
-                //see Chrome command line switches: https://peter.sh/experiments/chromium-command-line-switches/#load-extension
-
-                //Process process = new Process(); //= Process.Start(new ProcessStartInfo(chromePath + "chrome.exe", $"--new-window {url}"));
-                //process.StartInfo.FileName = chromePath + "chrome.exe";
-                //process.StartInfo.Arguments = $"--new-window {url}";
-                //process.Start();
-                //int id = process.Id;
-                //process.CloseMainWindow();
-                //process.Close();
-
-
-
-                //WebClient webClient = new WebClient();
-                //string response = webClient.DownloadString(url);
-
-
-                //System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
-                //httpClient.DefaultRequestHeaders.Add("user-agent", "Chrome/75.0.3770.142");
-                //string response = await httpClient.GetStringAsync(url);
-
-                Thread newThread = new Thread(new ThreadStart(() => 
-                {
-                    System.Windows.Controls.WebBrowser webBrowser = new System.Windows.Controls.WebBrowser();
-                    webBrowser.Navigate(url);
-                }));
-                newThread.SetApartmentState(ApartmentState.STA);
-                newThread.Start();
                 
+                if (useExternalBrowser)
+                {
+                    auth.AuthReceived += (sender, payload) =>
+                    {
+                        auth.Stop(); // `sender` is also the auth instance
+                        _spotifyWeb = new SpotifyWebAPI() { TokenType = payload.TokenType, AccessToken = payload.AccessToken };
+                        waitForAuthFinish.Set();
+                    };
+                    auth.Start(); // Starts an internal HTTP Server
+                    auth.OpenBrowser();
 
-                waitforAuthFinish.WaitOne(timeout_ms);
+                    waitForAuthFinish.WaitOne(timeout_ms);
+                }
+                else
+                {
+                    auth.ShowDialog = forceReauthenticate;
+                    setWebBrowserVersion();
+                    string url = auth.GetUri();
+                    //string url2 = GetFinalRedirect(url);
+
+                    bool userInteractionWaiting = false;
+
+                    Thread newThread = new Thread(new ThreadStart(() =>
+                    {
+                        Window authWindow = new Window();
+                        System.Windows.Forms.WebBrowser webBrowser = new System.Windows.Forms.WebBrowser();
+                        System.Windows.Forms.Integration.WindowsFormsHost host = new System.Windows.Forms.Integration.WindowsFormsHost();
+
+                        host.Child = webBrowser;
+                        authWindow.Content = host;
+                        webBrowser.ScriptErrorsSuppressed = true;
+                        authWindow.WindowState = forceReauthenticate ? WindowState.Normal : WindowState.Minimized;
+                        userInteractionWaiting = forceReauthenticate;
+
+                        bool authWindowClosedByProgram = false;
+
+                        webBrowser.Navigated += (sender, args) =>   // webBrowser.DocumentCompleted += (sender, args) =>
+                        {
+                            string urlFinal = args.Url.ToString();
+                            if (urlFinal.Contains("access_token"))
+                            {
+                                string accessToken = "", tokenType = "";
+
+                                System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"(\?|\&|#)([^=]+)\=([^&]+)");
+                                System.Text.RegularExpressions.MatchCollection matches = regex.Matches(urlFinal);
+                                foreach (System.Text.RegularExpressions.Match match in matches)
+                                {
+                                    if (match.Value.Contains("access_token")) { accessToken = match.Value.Replace("#access_token=", ""); }
+                                    else if (match.Value.Contains("token_type")) { tokenType = match.Value.Replace("&token_type=", ""); }
+                                }
+                                
+                                _spotifyWeb = new SpotifyWebAPI() { TokenType = tokenType, AccessToken = accessToken };
+                                waitForAuthFinish.Set();
+
+                                authWindowClosedByProgram = true;
+                                authWindow.Close();
+                            }
+                            else
+                            {
+                                authWindow.WindowState = WindowState.Normal;
+                                userInteractionWaiting = true;
+                            }
+                        };
+
+                        authWindow.Closed += (sender, args) =>
+                        {
+                            waitForWindowClosed.Set();
+                            if (!authWindowClosedByProgram) { waitForAuthFinish.Set(); }
+                        };
+
+                        webBrowser.Navigate(url);
+                        authWindow.ShowDialog();
+                    }));
+                    newThread.SetApartmentState(ApartmentState.STA);
+                    newThread.Start();
+
+                    waitForAuthFinish.WaitOne(timeout_ms);
+                    if (userInteractionWaiting) { waitForWindowClosed.WaitOne(); }
+                }
             });
 
             if (_spotifyWeb == null) { IsConnected = false; return false; }
             else { IsConnected = true; return true; }           
         }
-
 
         //***********************************************************************************************************************************************************************************************************
 
@@ -200,75 +238,75 @@ namespace SpotifyRecorder.GenericPlayer
 
             string processName = System.Diagnostics.Process.GetCurrentProcess().ProcessName + ".exe";
 
-            if (regKey.GetValue(processName) == null)
-            {
+            //if (regKey.GetValue(processName) == null)
+            //{
                 regKey.SetValue(processName, 11001, RegistryValueKind.DWord);       //11001 = Internet Explorer 11. Webpages are displayed in IE11 edge mode, regardless of the !DOCTYPE directive.
-            }
+            //}
         }
 
         //***********************************************************************************************************************************************************************************************************
 
-#warning TEST!!!
-        //see: https://stackoverflow.com/questions/704956/getting-the-redirected-url-from-the-original-url
-        public string GetFinalRedirect(string url)
-        {
-            if (string.IsNullOrWhiteSpace(url))
-                return url;
+//#warning TEST!!!
+//        //see: https://stackoverflow.com/questions/704956/getting-the-redirected-url-from-the-original-url
+//        public string GetFinalRedirect(string url)
+//        {
+//            if (string.IsNullOrWhiteSpace(url))
+//                return url;
 
-            int maxRedirCount = 8;  // prevent infinite loops
-            string newUrl = url;
-            do
-            {
-                HttpWebRequest req = null;
-                HttpWebResponse resp = null;
-                try
-                {
-                    req = (HttpWebRequest)HttpWebRequest.Create(url);
-                    req.Method = "HEAD";
-                    req.AllowAutoRedirect = false;
-                    resp = (HttpWebResponse)req.GetResponse();
-                    switch (resp.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                            return newUrl;
-                        case HttpStatusCode.Redirect:
-                        case HttpStatusCode.MovedPermanently:
-                        case HttpStatusCode.RedirectKeepVerb:
-                        case HttpStatusCode.RedirectMethod:
-                            newUrl = resp.Headers["Location"];
-                            if (newUrl == null)
-                                return url;
+//            int maxRedirCount = 8;  // prevent infinite loops
+//            string newUrl = url;
+//            do
+//            {
+//                HttpWebRequest req = null;
+//                HttpWebResponse resp = null;
+//                try
+//                {
+//                    req = (HttpWebRequest)HttpWebRequest.Create(url);
+//                    req.Method = "HEAD";
+//                    req.AllowAutoRedirect = false;
+//                    resp = (HttpWebResponse)req.GetResponse();
+//                    switch (resp.StatusCode)
+//                    {
+//                        case HttpStatusCode.OK:
+//                            return newUrl;
+//                        case HttpStatusCode.Redirect:
+//                        case HttpStatusCode.MovedPermanently:
+//                        case HttpStatusCode.RedirectKeepVerb:
+//                        case HttpStatusCode.RedirectMethod:
+//                            newUrl = resp.Headers["Location"];
+//                            if (newUrl == null)
+//                                return url;
 
-                            if (newUrl.IndexOf("://", System.StringComparison.Ordinal) == -1)
-                            {
-                                // Doesn't have a URL Schema, meaning it's a relative or absolute URL
-                                Uri u = new Uri(new Uri(url), newUrl);
-                                newUrl = u.ToString();
-                            }
-                            break;
-                        default:
-                            return newUrl;
-                    }
-                    url = newUrl;
-                }
-                catch (WebException)
-                {
-                    // Return the last known good URL
-                    return newUrl;
-                }
-                catch (Exception ex)
-                {
-                    return null;
-                }
-                finally
-                {
-                    if (resp != null)
-                        resp.Close();
-                }
-            } while (maxRedirCount-- > 0);
+//                            if (newUrl.IndexOf("://", System.StringComparison.Ordinal) == -1)
+//                            {
+//                                // Doesn't have a URL Schema, meaning it's a relative or absolute URL
+//                                Uri u = new Uri(new Uri(url), newUrl);
+//                                newUrl = u.ToString();
+//                            }
+//                            break;
+//                        default:
+//                            return newUrl;
+//                    }
+//                    url = newUrl;
+//                }
+//                catch (WebException)
+//                {
+//                    // Return the last known good URL
+//                    return newUrl;
+//                }
+//                catch (Exception ex)
+//                {
+//                    return null;
+//                }
+//                finally
+//                {
+//                    if (resp != null)
+//                        resp.Close();
+//                }
+//            } while (maxRedirCount-- > 0);
 
-            return newUrl;
-        }
+//            return newUrl;
+//        }
 
         //***********************************************************************************************************************************************************************************************************
 

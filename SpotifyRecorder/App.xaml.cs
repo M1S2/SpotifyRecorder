@@ -51,7 +51,8 @@ namespace SpotifyRecorder
         /// Start the player application if it's not running and connect to it
         /// </summary>
         /// <param name="startMinimized">true -> start player minimized; false -> start normal</param>
-        public async Task StartAndConnectToPlayer(bool startMinimized = true)
+        /// <param name="forceReauthenticate">if true, force the user to reauthenticate to the player application</param>
+        public async Task StartAndConnectToPlayer(bool startMinimized = true, bool forceReauthenticate = false)
         {
             bool playerStarted = true;
             if (!main.PlayerApp.IsPlayerApplicationRunning)
@@ -65,7 +66,7 @@ namespace SpotifyRecorder
             {
                 main._logHandle.Report(new LogBox.LogEventInfo("Connecting..."));
                 if (splash != null) { splash.StatusString = "Connecting to player ..."; }
-                await main.PlayerApp.Connect(10000);
+                await main.PlayerApp.Connect(30000, forceReauthenticate);
 
                 if (main.PlayerApp.IsConnected)
                 {
