@@ -11,6 +11,7 @@ using System.Net;
 using System.Diagnostics;
 using System.Windows;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using Microsoft.Win32;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Auth;
@@ -157,43 +158,38 @@ namespace SpotifyRecorder.GenericPlayer
                 else
                 {
                     auth.ShowDialog = forceReauthenticate;
-                    setWebBrowserVersion();
-                    string url = auth.GetUri();
-                    //string url2 = GetFinalRedirect(url);
+                    string url = auth.GetUri();                 // URL to spotify login page
 
                     bool userInteractionWaiting = false;
 
-                    Thread newThread = new Thread(new ThreadStart(() =>
+                    Thread newThread = new Thread(new ThreadStart(() =>         // Need to use a new thread with ApartmentState STA, otherwise WebBrowser control can't be used like that
                     {
                         Window authWindow = new Window();
-                        System.Windows.Forms.WebBrowser webBrowser = new System.Windows.Forms.WebBrowser();
-                        System.Windows.Forms.Integration.WindowsFormsHost host = new System.Windows.Forms.Integration.WindowsFormsHost();
-
-                        host.Child = webBrowser;
-                        authWindow.Content = host;
-                        webBrowser.ScriptErrorsSuppressed = true;
+                        System.Windows.Controls.WebBrowser webBrowser = new System.Windows.Controls.WebBrowser();
+                        authWindow.Title = "Spotify Authentication";
+                        authWindow.Content = webBrowser;
                         authWindow.WindowState = forceReauthenticate ? WindowState.Normal : WindowState.Minimized;
                         userInteractionWaiting = forceReauthenticate;
 
                         bool authWindowClosedByProgram = false;
 
-                        webBrowser.Navigated += (sender, args) =>   // webBrowser.DocumentCompleted += (sender, args) =>
+                        webBrowser.Navigated += (sender, args) =>
                         {
-                            string urlFinal = args.Url.ToString();
-                            if (urlFinal.Contains("access_token"))
+                            string urlFinal = args.Uri.ToString();      // URL maybe containing the access_token
+                            if (urlFinal.Contains("access_token"))      // Authentication finished when the URL contains the access_token
                             {
                                 string accessToken = "", tokenType = "";
 
-                                System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"(\?|\&|#)([^=]+)\=([^&]+)");
-                                System.Text.RegularExpressions.MatchCollection matches = regex.Matches(urlFinal);
-                                foreach (System.Text.RegularExpressions.Match match in matches)
+                                Regex regex = new Regex(@"(\?|\&|#)([^=]+)\=([^&]+)");      // Extract the fields from the returned URL
+                                MatchCollection matches = regex.Matches(urlFinal);
+                                foreach (Match match in matches)
                                 {
                                     if (match.Value.Contains("access_token")) { accessToken = match.Value.Replace("#access_token=", ""); }
                                     else if (match.Value.Contains("token_type")) { tokenType = match.Value.Replace("&token_type=", ""); }
                                 }
                                 
                                 _spotifyWeb = new SpotifyWebAPI() { TokenType = tokenType, AccessToken = accessToken };
-                                waitForAuthFinish.Set();
+                                waitForAuthFinish.Set();        // Signal that the authentication finished
 
                                 authWindowClosedByProgram = true;
                                 authWindow.Close();
@@ -211,102 +207,20 @@ namespace SpotifyRecorder.GenericPlayer
                             if (!authWindowClosedByProgram) { waitForAuthFinish.Set(); }
                         };
 
-                        webBrowser.Navigate(url);
+                        webBrowser.Navigate(url);       // Navigate to spotifys login page to begin authentication. If credentials exist, you are redirected to an URL containing the access_token.
                         authWindow.ShowDialog();
                     }));
                     newThread.SetApartmentState(ApartmentState.STA);
                     newThread.Start();
 
                     waitForAuthFinish.WaitOne(timeout_ms);
-                    if (userInteractionWaiting) { waitForWindowClosed.WaitOne(); }
+                    if (userInteractionWaiting) { waitForWindowClosed.WaitOne(); waitForAuthFinish.WaitOne(timeout_ms); }
                 }
             });
 
             if (_spotifyWeb == null) { IsConnected = false; return false; }
             else { IsConnected = true; return true; }           
         }
-
-        //***********************************************************************************************************************************************************************************************************
-
-        /// <summary>
-        /// Set a registry key for the current user to use Internet Explorer 11 for rendering using the WebBrowser control
-        /// </summary>
-        //see: https://stackoverflow.com/questions/17922308/use-latest-version-of-internet-explorer-in-the-webbrowser-control
-        private void setWebBrowserVersion()
-        {
-            RegistryKey regKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION", RegistryKeyPermissionCheck.ReadWriteSubTree);
-
-            string processName = System.Diagnostics.Process.GetCurrentProcess().ProcessName + ".exe";
-
-            //if (regKey.GetValue(processName) == null)
-            //{
-                regKey.SetValue(processName, 11001, RegistryValueKind.DWord);       //11001 = Internet Explorer 11. Webpages are displayed in IE11 edge mode, regardless of the !DOCTYPE directive.
-            //}
-        }
-
-        //***********************************************************************************************************************************************************************************************************
-
-//#warning TEST!!!
-//        //see: https://stackoverflow.com/questions/704956/getting-the-redirected-url-from-the-original-url
-//        public string GetFinalRedirect(string url)
-//        {
-//            if (string.IsNullOrWhiteSpace(url))
-//                return url;
-
-//            int maxRedirCount = 8;  // prevent infinite loops
-//            string newUrl = url;
-//            do
-//            {
-//                HttpWebRequest req = null;
-//                HttpWebResponse resp = null;
-//                try
-//                {
-//                    req = (HttpWebRequest)HttpWebRequest.Create(url);
-//                    req.Method = "HEAD";
-//                    req.AllowAutoRedirect = false;
-//                    resp = (HttpWebResponse)req.GetResponse();
-//                    switch (resp.StatusCode)
-//                    {
-//                        case HttpStatusCode.OK:
-//                            return newUrl;
-//                        case HttpStatusCode.Redirect:
-//                        case HttpStatusCode.MovedPermanently:
-//                        case HttpStatusCode.RedirectKeepVerb:
-//                        case HttpStatusCode.RedirectMethod:
-//                            newUrl = resp.Headers["Location"];
-//                            if (newUrl == null)
-//                                return url;
-
-//                            if (newUrl.IndexOf("://", System.StringComparison.Ordinal) == -1)
-//                            {
-//                                // Doesn't have a URL Schema, meaning it's a relative or absolute URL
-//                                Uri u = new Uri(new Uri(url), newUrl);
-//                                newUrl = u.ToString();
-//                            }
-//                            break;
-//                        default:
-//                            return newUrl;
-//                    }
-//                    url = newUrl;
-//                }
-//                catch (WebException)
-//                {
-//                    // Return the last known good URL
-//                    return newUrl;
-//                }
-//                catch (Exception ex)
-//                {
-//                    return null;
-//                }
-//                finally
-//                {
-//                    if (resp != null)
-//                        resp.Close();
-//                }
-//            } while (maxRedirCount-- > 0);
-
-//            return newUrl;
-//        }
 
         //***********************************************************************************************************************************************************************************************************
 
