@@ -101,8 +101,7 @@ namespace SpotifyRecorder.GenericPlayer
             bool startResult = true;
             if (!IsPlayerApplicationRunning)
             {
-                startResult = await ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", (minimized ? "--minimized" : ""));     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify
-                //startResult = await ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", "", (minimized ? ProcessWindowStyle.Minimized : ProcessWindowStyle.Maximized));     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify
+                startResult = await ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", (minimized ? "--minimized" : ""), (minimized ? ProcessWindowStyle.Normal : ProcessWindowStyle.Maximized));     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify
                 await Task.Delay(2000);        //Wait some time before connecting to spotify
             }
             return startResult;

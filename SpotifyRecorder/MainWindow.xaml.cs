@@ -21,6 +21,7 @@ using MahApps.Metro.Controls.Dialogs;
 using SpotifyRecorder.GenericPlayer;
 using SpotifyRecorder.GenericRecorder;
 using SpotifyRecorder.WindowTheme;
+using LogBox.LogEvents;
 
 namespace SpotifyRecorder
 {
@@ -49,7 +50,7 @@ namespace SpotifyRecorder
 
         //##############################################################################################################################################################################################
 
-        public IProgress<LogBox.LogEvent> _logHandle;
+        public IProgress<LogEvent> _logHandle;
 
         private Player _playerApp;
         public Player PlayerApp
@@ -78,7 +79,7 @@ namespace SpotifyRecorder
             set
             {
                 _isRecorderArmed = value;
-                logBox1.LogEvent(new LogBox.LogEventInfo("SpotifyRecorder " + (_isRecorderArmed ? "armed." : "disarmed.")));
+                logBox1.LogEvent(new LogEventInfo("SpotifyRecorder " + (_isRecorderArmed ? "armed." : "disarmed.")));
                 OnPropertyChanged();
             }
         }
@@ -247,7 +248,7 @@ namespace SpotifyRecorder
             InitializeComponent();
 
             logBox1.AutoScrollToLastLogEntry = true;
-            _logHandle = new Progress<LogBox.LogEvent>(progressValue =>
+            _logHandle = new Progress<LogEvent>(progressValue =>
             {
                 logBox1.LogEvent(progressValue);
             });
@@ -305,11 +306,11 @@ namespace SpotifyRecorder
 
             if (PlayerApp.CurrentPlaybackStatus.IsAd)
             {
-                _logHandle.Report(new LogBox.LogEventInfo("Advertisement is playing"));
+                _logHandle.Report(new LogEventInfo("Advertisement is playing"));
             }
             else
             {
-                _logHandle.Report(new LogBox.LogEventInfo("Track changed to \"" + e.NewTrack?.TrackName + "\" (" + e.NewTrack?.Artists[0].ArtistName + ")"));
+                _logHandle.Report(new LogEventInfo("Track changed to \"" + e.NewTrack?.TrackName + "\" (" + e.NewTrack?.Artists[0].ArtistName + ")"));
             }
 
             if (PlayerApp.CurrentPlaybackStatus.IsAd && IsPlayerAdblockerEnabled) // (e.NewTrack == null || e.NewTrack?.TrackName == "") && IsPlayerAdblockerEnabled)
@@ -349,7 +350,7 @@ namespace SpotifyRecorder
 
         private void PlayerApp_OnPlayStateChange(object sender, PlayerPlayStateEventArgs e)
         {
-            _logHandle.Report(new LogBox.LogEventInfo(PlayerApp.PlayerName + " playback " + (e.Playing ? "started" : "paused")));
+            _logHandle.Report(new LogEventInfo(PlayerApp.PlayerName + " playback " + (e.Playing ? "started" : "paused")));
 
             PlayerPlaybackStatus status = PlayerApp.CurrentPlaybackStatus;
 
@@ -388,7 +389,7 @@ namespace SpotifyRecorder
             { }
             catch (Exception ex)
             {
-                _logHandle.Report(new LogBox.LogEventError("OnTrackTimeChange event: " + ex.Message));
+                _logHandle.Report(new LogEventError("OnTrackTimeChange event: " + ex.Message));
             }
         }
 

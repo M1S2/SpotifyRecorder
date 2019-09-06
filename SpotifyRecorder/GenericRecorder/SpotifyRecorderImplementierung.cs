@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SpotifyRecorder.GenericRecorder;
 using SpotifyRecorder.WaveFile;
+using LogBox.LogEvents;
 
 namespace SpotifyRecorder.GenericRecorder
 {
@@ -16,7 +17,7 @@ namespace SpotifyRecorder.GenericRecorder
         /// <param name="recorderSettings">Settings for the recorder</param>
         /// <param name="trackInfo">Track info of the record</param>
         /// <param name="logHandle">Handle that is used to write log entries</param>
-        public SpotifyRecorderImplementierung(RecorderSettings recorderSettings, GenericPlayer.PlayerTrack trackInfo, IProgress<LogBox.LogEvent> logHandle) : base(recorderSettings, trackInfo, logHandle)
+        public SpotifyRecorderImplementierung(RecorderSettings recorderSettings, GenericPlayer.PlayerTrack trackInfo, IProgress<LogEvent> logHandle) : base(recorderSettings, trackInfo, logHandle)
         {
             RecorderPostSteps += SpotifyRecorderImplementierung_RecorderPostSteps;
         }
@@ -27,7 +28,7 @@ namespace SpotifyRecorder.GenericRecorder
         /// Constructor of the SpotifyRecorderImplementierung class
         /// </summary>
         /// <param name="logHandle">Handle that is used to write log entries</param>
-        public SpotifyRecorderImplementierung(IProgress<LogBox.LogEvent> logHandle) : base(logHandle)
+        public SpotifyRecorderImplementierung(IProgress<LogEvent> logHandle) : base(logHandle)
         {
             RecorderPostSteps += SpotifyRecorderImplementierung_RecorderPostSteps;
         }

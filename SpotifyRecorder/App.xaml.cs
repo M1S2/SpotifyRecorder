@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Threading;
 using System.Diagnostics;
+using LogBox.LogEvents;
 
 namespace SpotifyRecorder
 {
@@ -57,20 +58,20 @@ namespace SpotifyRecorder
             bool playerStarted = true;
             if (!main.PlayerApp.IsPlayerApplicationRunning)
             {
-                main._logHandle.Report(new LogBox.LogEventInfo("Starting " + main.PlayerApp.PlayerName + " application."));
+                main._logHandle.Report(new LogEventInfo("Starting " + main.PlayerApp.PlayerName + " application."));
                 if (splash != null) { splash.StatusString = "Starting player application ..."; }
                 playerStarted = await main.PlayerApp.StartPlayerApplication(startMinimized);
             }            
 
             if (playerStarted)
             {
-                main._logHandle.Report(new LogBox.LogEventInfo("Connecting..."));
+                main._logHandle.Report(new LogEventInfo("Connecting..."));
                 if (splash != null) { splash.StatusString = "Connecting to player ..."; }
                 await main.PlayerApp.Connect(30000, forceReauthenticate);
 
                 if (main.PlayerApp.IsConnected)
                 {
-                    main._logHandle.Report(new LogBox.LogEventInfo("Connected successfully."));
+                    main._logHandle.Report(new LogEventInfo("Connected successfully."));
                     if (splash != null) { splash.StatusString = "Connected successfully"; }
 
                     main.PlayerApp.ListenForEvents = true;
@@ -78,7 +79,7 @@ namespace SpotifyRecorder
                 }
                 else
                 {
-                    main._logHandle.Report(new LogBox.LogEventWarning("Connection failed."));
+                    main._logHandle.Report(new LogEventWarning("Connection failed."));
                     if (splash != null) { splash.StatusString = "Connection failed"; }
                 }
             }
