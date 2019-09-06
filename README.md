@@ -1,10 +1,17 @@
 # SpotifyRecorder
 
-Version: %version%
-
-## Purpose
+![GitHub Release Version](https://img.shields.io/github/v/release/M1S2/SpotifyRecorder)
+[![GitHub License](https://img.shields.io/github/license/M1S2/SpotifyRecorder)](LICENSE.md)
 
 This application can be used to record songs from Spotify.
+
+## Installation
+
+1. Download the latest release from [here](https://github.com/M1S2/SpotifyRecorder/releases/latest).
+2. Extract the downloaded zip file.
+3. Do one of the following:
+a) Call setup.exe in the bin_Setup folder to install the SpotifyRecorder. This installs the required VB-Audio cable.
+b) Alternatively to 3a. you can copy the bin folder to any location on your computer. Then you have to install and setup the VB-Audio cable by yourself.
 
 ## Usage
 
