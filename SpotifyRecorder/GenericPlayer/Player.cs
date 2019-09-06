@@ -161,8 +161,9 @@ namespace SpotifyRecorder.GenericPlayer
         /// Connect to the player
         /// </summary>
         /// <param name="timeout_ms">Connection timeout in ms</param>
+        /// <param name="forceReauthenticate">if true, force the user to reauthenticate to the player application</param>
         /// <returns>true on connection success, otherwise false</returns>
-        public abstract Task<bool> Connect(int timeout_ms = 10000);
+        public abstract Task<bool> Connect(int timeout_ms = 10000, bool forceReauthenticate = false);
 
         //***********************************************************************************************************************************************************************************************************
 

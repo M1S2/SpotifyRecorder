@@ -11,6 +11,8 @@ using System.Net;
 using System.Diagnostics;
 using System.Windows;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+using Microsoft.Win32;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Auth;
 using SpotifyAPI.Web.Enums;
@@ -124,26 +126,96 @@ namespace SpotifyRecorder.GenericPlayer
         /// Connect to the Spotify Web API
         /// </summary>
         /// <param name="timeout_ms">Connection timeout in ms</param>
+        /// <param name="forceReauthenticate">if true, force the user to reauthenticate to the player application</param>
         /// <returns>true on connection success, otherwise false</returns>
         /// see: https://johnnycrazy.github.io/SpotifyAPI-NET/SpotifyWebAPI/auth/#implicitgrantauth
         /// Use https://developer.spotify.com/dashboard/ to get a Client ID 
         /// It should be noted, "http://localhost:8000" must be whitelisted in your dashboard after getting your own client key
-        public override async Task<bool> Connect(int timeout_ms = 10000)
+        public override async Task<bool> Connect(int timeout_ms = 10000, bool forceReauthenticate = false)
         {
             await Task.Run(() =>
             {
+                bool useExternalBrowser = false;
+
                 _spotifyWeb = null;
-                ManualResetEvent waitforAuthFinish = new ManualResetEvent(false);
+                ManualResetEvent waitForAuthFinish = new ManualResetEvent(false);
+                ManualResetEvent waitForWindowClosed = new ManualResetEvent(false);
                 ImplicitGrantAuth auth = new ImplicitGrantAuth("ab0969d9fab2486182e57bfbe8590df4", "http://localhost:8000", "http://localhost:8000", Scope.UserReadPlaybackState);
-                auth.AuthReceived += (sender, payload) =>
+                
+                if (useExternalBrowser)
                 {
-                    auth.Stop(); // `sender` is also the auth instance
-                    _spotifyWeb = new SpotifyWebAPI() { TokenType = payload.TokenType, AccessToken = payload.AccessToken };
-                    waitforAuthFinish.Set();
-                };
-                auth.Start(); // Starts an internal HTTP Server
-                auth.OpenBrowser();
-                waitforAuthFinish.WaitOne(timeout_ms);
+                    auth.AuthReceived += (sender, payload) =>
+                    {
+                        auth.Stop(); // `sender` is also the auth instance
+                        _spotifyWeb = new SpotifyWebAPI() { TokenType = payload.TokenType, AccessToken = payload.AccessToken };
+                        waitForAuthFinish.Set();
+                    };
+                    auth.Start(); // Starts an internal HTTP Server
+                    auth.OpenBrowser();
+
+                    waitForAuthFinish.WaitOne(timeout_ms);
+                }
+                else
+                {
+                    auth.ShowDialog = forceReauthenticate;
+                    string url = auth.GetUri();                 // URL to spotify login page
+
+                    bool userInteractionWaiting = false;
+
+                    Thread newThread = new Thread(new ThreadStart(() =>         // Need to use a new thread with ApartmentState STA, otherwise WebBrowser control can't be used like that
+                    {
+                        Window authWindow = new Window();
+                        System.Windows.Controls.WebBrowser webBrowser = new System.Windows.Controls.WebBrowser();
+                        authWindow.Title = "Spotify Authentication";
+                        authWindow.Content = webBrowser;
+                        authWindow.WindowState = forceReauthenticate ? WindowState.Normal : WindowState.Minimized;
+                        userInteractionWaiting = forceReauthenticate;
+
+                        bool authWindowClosedByProgram = false;
+
+                        webBrowser.Navigated += (sender, args) =>
+                        {
+                            string urlFinal = args.Uri.ToString();      // URL maybe containing the access_token
+                            if (urlFinal.Contains("access_token"))      // Authentication finished when the URL contains the access_token
+                            {
+                                string accessToken = "", tokenType = "";
+
+                                Regex regex = new Regex(@"(\?|\&|#)([^=]+)\=([^&]+)");      // Extract the fields from the returned URL
+                                MatchCollection matches = regex.Matches(urlFinal);
+                                foreach (Match match in matches)
+                                {
+                                    if (match.Value.Contains("access_token")) { accessToken = match.Value.Replace("#access_token=", ""); }
+                                    else if (match.Value.Contains("token_type")) { tokenType = match.Value.Replace("&token_type=", ""); }
+                                }
+                                
+                                _spotifyWeb = new SpotifyWebAPI() { TokenType = tokenType, AccessToken = accessToken };
+                                waitForAuthFinish.Set();        // Signal that the authentication finished
+
+                                authWindowClosedByProgram = true;
+                                authWindow.Close();
+                            }
+                            else
+                            {
+                                authWindow.WindowState = WindowState.Normal;
+                                userInteractionWaiting = true;
+                            }
+                        };
+
+                        authWindow.Closed += (sender, args) =>
+                        {
+                            waitForWindowClosed.Set();
+                            if (!authWindowClosedByProgram) { waitForAuthFinish.Set(); }
+                        };
+
+                        webBrowser.Navigate(url);       // Navigate to spotifys login page to begin authentication. If credentials exist, you are redirected to an URL containing the access_token.
+                        authWindow.ShowDialog();
+                    }));
+                    newThread.SetApartmentState(ApartmentState.STA);
+                    newThread.Start();
+
+                    waitForAuthFinish.WaitOne(timeout_ms);
+                    if (userInteractionWaiting) { waitForWindowClosed.WaitOne(); waitForAuthFinish.WaitOne(timeout_ms); }
+                }
             });
 
             if (_spotifyWeb == null) { IsConnected = false; return false; }

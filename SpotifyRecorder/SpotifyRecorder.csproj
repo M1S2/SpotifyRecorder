@@ -40,9 +40,6 @@
     <Reference Include="AssemblyInfoHelper, Version=4.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AssemblyInfoHelper.4.1.1\lib\net452\AssemblyInfoHelper.dll</HintPath>
     </Reference>
-    <Reference Include="AssemblyInfoHelper_WPF">
-      <HintPath>..\AssemblyInfoProject\bin\AssemblyInfoHelper_WPF.dll</HintPath>
-    </Reference>
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.4.0.0\lib\net462\ControlzEx.dll</HintPath>
     </Reference>
@@ -113,6 +110,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

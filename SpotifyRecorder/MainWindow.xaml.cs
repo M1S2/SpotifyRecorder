@@ -148,7 +148,7 @@ namespace SpotifyRecorder
                 {
                     _connectCommand = new WindowTheme.RelayCommand(async param =>
                     {
-                        await ((App)Application.Current).StartAndConnectToPlayer(true);
+                        await ((App)Application.Current).StartAndConnectToPlayer(true, true);
                     });
                 }
                 return _connectCommand;
