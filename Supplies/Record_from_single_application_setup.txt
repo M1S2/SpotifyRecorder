@@ -1,3 +1,0 @@
-1. VB Cable installieren
-2. Rechtsklick Lautsprechersymbol Taskleiste > Aufnahmegeräte > CABLE Output auswählen > Eigenschaften > Abhören > Dieses Gerät als Wiedergabequelle verwenden
-3. Spotify mit "C:\Users\V17\AppData\Roaming\Spotify\Spotify.exe --enable-audio-graph" starten und unter Eigenschaften > erweitert Wiedergabegerät zu VB-Cable ändern
