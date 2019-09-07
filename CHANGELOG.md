@@ -3,6 +3,7 @@
 ## [%version%] - %date%
 
 - Fixed bug in v3.1.0
+- Connecting to Spotify is now silent because it doesn't use the default browser anymore. An internal WebBrowser is used.
 
 ## [v3.1.0] - 29.08.2019 21:31
 
