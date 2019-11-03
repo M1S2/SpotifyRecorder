@@ -90,7 +90,17 @@ namespace SpotifyRecorder.GenericPlayer
             get { return _album; }
             set { _album = value; OnPropertyChanged(); }
         }
-        
+
+        private PlayerPlaylist _playlist;
+        /// <summary>
+        /// Playlist that the track belongs to
+        /// </summary>
+        public PlayerPlaylist Playlist
+        {
+            get { return _playlist; }
+            set { _playlist = value; OnPropertyChanged(); }
+        }
+
         public PlayerTrack()
         {
 

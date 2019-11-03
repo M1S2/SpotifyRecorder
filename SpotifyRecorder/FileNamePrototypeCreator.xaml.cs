@@ -95,6 +95,22 @@ namespace SpotifyRecorder
             }
         }
 
+        private ICommand _insertPlaylistCommand;
+        public ICommand InsertPlaylistCommand
+        {
+            get
+            {
+                if (_insertPlaylistCommand == null)
+                {
+                    _insertPlaylistCommand = new WindowTheme.RelayCommand(param =>
+                    {
+                        InsertTextAtCursor(txt_Prototype, PROTOTYPSTRING_PLAYLIST);
+                    });
+                }
+                return _insertPlaylistCommand;
+            }
+        }
+
         private ICommand _insertDirectorySeparatorCommand;
         public ICommand InsertDirectorySeparatorCommand
         {
@@ -136,6 +152,7 @@ namespace SpotifyRecorder
         public const string PROTOTYPSTRING_TITLE = "{Title}";
         public const string PROTOTYPSTRING_INTERPRET = "{Interpret}";
         public const string PROTOTYPSTRING_ALBUM = "{Album}";
+        public const string PROTOTYPSTRING_PLAYLIST = "{Playlist}";
         public const string PROTOTYPSTRING_DEFAULT = PROTOTYPSTRING_RECORDPATH + @"\" + PROTOTYPSTRING_INTERPRET + " - " + PROTOTYPSTRING_TITLE;
 
         //***********************************************************************************************************************************************************************************************************
@@ -144,6 +161,7 @@ namespace SpotifyRecorder
         private string _title = "";
         private string _interpret = "";
         private string _album = "";
+        private string _playlist = "";
         private RecorderFileExistModes _fileExistMode = RecorderFileExistModes.SKIP;
 
         //***********************************************************************************************************************************************************************************************************
@@ -165,7 +183,7 @@ namespace SpotifyRecorder
         /// </summary>
         public string SampleFileName
         {
-            get { return GetCompleteFileNameWithoutExtension(FileNamePrototype, _recordPath, _title, _interpret, _album, _fileExistMode); }
+            get { return GetCompleteFileNameWithoutExtension(FileNamePrototype, _recordPath, _title, _interpret, _album, _playlist, _fileExistMode); }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -248,9 +266,10 @@ namespace SpotifyRecorder
         /// <param name="title">text for the PROTOTYPSTRING_TITLE placheolder</param>
         /// <param name="interpret">text for the PROTOTYPSTRING_INTERPRET placeholder</param>
         /// <param name="album">text for the PROTOTYPSTRING_ALBUM placeholder</param>
+        /// <param name="playlist">text for the PROTOTYPSTRING_PLAYLIST placeholder</param>
         /// <param name="fileExistMode">What should be done if the file already exists. Skip and don't record anything, override the existing file, create a new file with another filename (number appended)</param>
         /// <returns>file name string</returns>
-        public static string GetCompleteFileNameWithoutExtension(string filenamePrototype, string recordPath, string title, string interpret, string album, RecorderFileExistModes fileExistMode)
+        public static string GetCompleteFileNameWithoutExtension(string filenamePrototype, string recordPath, string title, string interpret, string album, string playlist, RecorderFileExistModes fileExistMode)
         {
             if(filenamePrototype == null) { return ""; }
             string filename = filenamePrototype;
@@ -258,6 +277,7 @@ namespace SpotifyRecorder
             if (title != null) { filename = Regex.Replace(filename, PROTOTYPSTRING_TITLE, title, RegexOptions.IgnoreCase); }
             if (interpret != null) { filename = Regex.Replace(filename, PROTOTYPSTRING_INTERPRET, interpret, RegexOptions.IgnoreCase); }
             if (album != null) { filename = Regex.Replace(filename, PROTOTYPSTRING_ALBUM, album, RegexOptions.IgnoreCase); }
+            if (playlist != null) { filename = Regex.Replace(filename, PROTOTYPSTRING_PLAYLIST, playlist, RegexOptions.IgnoreCase); }
 
             try
             {
@@ -280,7 +300,7 @@ namespace SpotifyRecorder
             }
             catch (Exception)
             {
-                filename = GetCompleteFileNameWithoutExtension(PROTOTYPSTRING_DEFAULT, recordPath, title, interpret, album, fileExistMode);
+                filename = GetCompleteFileNameWithoutExtension(PROTOTYPSTRING_DEFAULT, recordPath, title, interpret, album, playlist, fileExistMode);
             }
 
             filename = RemoveIllegalFileNamePathCharacters(filename);
@@ -299,6 +319,7 @@ namespace SpotifyRecorder
             _title = "No Title";
             _interpret = "No Interpret";
             _album = "No Album";
+            _playlist = "No Playlist";
             _fileExistMode = RecorderFileExistModes.SKIP;
             FileNamePrototype = PROTOTYPSTRING_DEFAULT;
         }
@@ -311,14 +332,16 @@ namespace SpotifyRecorder
         /// <param name="title">title</param>
         /// <param name="interpret">interpret</param>
         /// <param name="album">album name</param>
+        /// <param name="playlist">playlist name</param>
         /// <param name="fileExistMode">What should be done if the file already exists. Skip and don't record anything, override the existing file, create a new file with another filename (number appended)</param>
-        public FileNamePrototypeCreator(string fileNamePrototype, string recordPath, string title, string interpret, string album, RecorderFileExistModes fileExistMode)
+        public FileNamePrototypeCreator(string fileNamePrototype, string recordPath, string title, string interpret, string album, string playlist, RecorderFileExistModes fileExistMode)
         {
             InitializeComponent();
             _recordPath = recordPath;
             _title = title;
             _interpret = interpret;
             _album = album;
+            _playlist = playlist;
             _fileExistMode = fileExistMode;
             FileNamePrototype = fileNamePrototype;
         }

@@ -29,6 +29,7 @@
         <converters:IndexToVisibilityConverter x:Key="IndexVisibilityConverter"/>
         <converters:RecorderStateToIconConverter x:Key="RecorderStateIconConverter"/>
         <converters:AdditionConverter x:Key="AddConverter"/>
+        <converters:NullToVisibilityConverter x:Key="NullVisibilityConverter"/>
 
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="18"/>
@@ -188,6 +189,7 @@
                             <RowDefinition Height="35"/>
                             <RowDefinition Height="35"/>
                             <RowDefinition Height="35"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="250"/>
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
@@ -204,14 +206,17 @@
 
                         <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Account" ToolTip="Artist" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
                         <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Artist" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.CombinedArtistsString}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-
+                        
                         <iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="Album" ToolTip="Album" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
                         <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Album" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.AlbumName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
 
-                        <Rectangle Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Width="{Binding ElementName=albumImage, Path=ActualWidth}" Height="{Binding ElementName=albumImage, Path=ActualHeight}" Fill="White"/>
-                        <Image x:Name="albumImage" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" ToolTip="Album Image" Source="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.Images[0], Converter={StaticResource BitmapImageSourceConverter}}"/>
+                        <iconPacks:PackIconMaterial Grid.Row="3" Grid.Column="0" Kind="PlaylistPlay" ToolTip="Playlist" Height="35" Width="35" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}" Visibility="{Binding PlayerApp.CurrentPlaybackStatus.Playlist, Converter={StaticResource NullVisibilityConverter}}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Playlist" Text="{Binding PlayerApp.CurrentPlaybackStatus.Playlist.PlaylistName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Visibility="{Binding PlayerApp.CurrentPlaybackStatus.Playlist, Converter={StaticResource NullVisibilityConverter}}"/>
+
+                        <Rectangle Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Width="{Binding ElementName=albumImage, Path=ActualWidth}" Height="{Binding ElementName=albumImage, Path=ActualHeight}" Fill="White"/>
+                        <Image x:Name="albumImage" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" ToolTip="Album Image" Source="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.Images[0], Converter={StaticResource BitmapImageSourceConverter}}"/>
                         
-                        <DockPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4">
+                        <DockPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4">
                             <Button Width="50" Command="{Binding PlayPauseCommand}" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
                                 <Image Height="Auto" Width="Auto" Margin="10">
                                     <Image.Source>

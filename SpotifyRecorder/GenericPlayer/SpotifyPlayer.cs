@@ -76,6 +76,15 @@ namespace SpotifyRecorder.GenericPlayer
         {
             if (_spotifyWeb == null) { return; }
             PlaybackContext _spotifyPlayback = _spotifyWeb.GetPlayback();
+
+            string playlistID = "", playlistName = "";
+
+            if (_spotifyPlayback.Context != null && _spotifyPlayback.Context.Type == "playlist")
+            {
+                playlistID = _spotifyPlayback.Context.Uri.Split(':').Last();
+                playlistName = _spotifyWeb.GetPlaylist(playlistId: playlistID, fields: "name").Name;
+            }
+
             PlayerPlaybackStatus playerPlayback = new PlayerPlaybackStatus()
             {
                 DeviceName = _spotifyPlayback.Device?.Name,
@@ -84,8 +93,10 @@ namespace SpotifyRecorder.GenericPlayer
                 IsPlaying = _spotifyPlayback.IsPlaying,
                 Progress = new TimeSpan(0, 0, 0, 0, _spotifyPlayback.ProgressMs),
                 Track = convertSpotifyTrackToPlayerTrack(_spotifyPlayback.Item),
-                IsAd = _spotifyPlayback.CurrentlyPlayingType == TrackType.Ad
+                IsAd = _spotifyPlayback.CurrentlyPlayingType == TrackType.Ad,
+                Playlist = playlistID != "" ? new PlayerPlaylist(playlistName, playlistID) : null
             };
+            if (playerPlayback.Track != null) { playerPlayback.Track.Playlist = playerPlayback.Playlist; }
             CurrentPlaybackStatus = playerPlayback;
         }
 

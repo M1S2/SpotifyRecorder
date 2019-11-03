@@ -185,7 +185,7 @@ namespace SpotifyRecorder
                 {
                     _openFileNamePrototypeCommand = new WindowTheme.RelayCommand(param =>
                     {
-                        FileNamePrototypeCreator fileNamePrototypeCreator = new FileNamePrototypeCreator(RecSettings.FileNamePrototype, RecSettings.BasePath, PlayerApp.CurrentTrack?.TrackName, PlayerApp.CurrentTrack?.CombinedArtistsString, PlayerApp.CurrentTrack?.Album.AlbumName, RecSettings.FileExistMode);
+                        FileNamePrototypeCreator fileNamePrototypeCreator = new FileNamePrototypeCreator(RecSettings.FileNamePrototype, RecSettings.BasePath, PlayerApp.CurrentTrack?.TrackName, PlayerApp.CurrentTrack?.CombinedArtistsString, PlayerApp.CurrentTrack?.Album.AlbumName, PlayerApp.CurrentPlaybackStatus.Playlist?.PlaylistName, RecSettings.FileExistMode);
                         if(fileNamePrototypeCreator.ShowDialog().Value == true)
                         {
                             RecSettings.FileNamePrototype = fileNamePrototypeCreator.FileNamePrototype;

@@ -43,9 +43,13 @@ namespace SpotifyRecorder.GenericPlayer
         /// </summary>
         public bool IsAd { get; set; }
 
+        /// <summary>
+        /// Playback playlist
+        /// </summary>
+        public PlayerPlaylist Playlist { get; set; }
+
         public PlayerPlaybackStatus()
         {
-
         }
 
         public override bool Equals(object obj)
@@ -57,7 +61,8 @@ namespace SpotifyRecorder.GenericPlayer
                 Progress == status2.Progress &&
                 IsPlaying == status2.IsPlaying &&
                 Track == status2.Track &&
-                IsAd == status2.IsAd;
+                IsAd == status2.IsAd &&
+                Playlist == status2.Playlist;
         }
 
         public override int GetHashCode()

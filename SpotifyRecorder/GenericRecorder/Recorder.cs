@@ -226,7 +226,7 @@ namespace SpotifyRecorder.GenericRecorder
             if (TrackInfo == null) { RecordFilepathWithoutExtension = ""; }
             else
             {
-                RecordFilepathWithoutExtension = FileNamePrototypeCreator.GetCompleteFileNameWithoutExtension(RecorderRecSettings.FileNamePrototype, RecorderRecSettings.BasePath, TrackInfo?.TrackName, ((TrackInfo?.Artists == null ||TrackInfo?.Artists.Count == 0) ? "" : TrackInfo?.CombinedArtistsString), TrackInfo?.Album?.AlbumName, RecorderRecSettings.FileExistMode);
+                RecordFilepathWithoutExtension = FileNamePrototypeCreator.GetCompleteFileNameWithoutExtension(RecorderRecSettings.FileNamePrototype, RecorderRecSettings.BasePath, TrackInfo?.TrackName, ((TrackInfo?.Artists == null ||TrackInfo?.Artists.Count == 0) ? "" : TrackInfo?.CombinedArtistsString), TrackInfo?.Album?.AlbumName, TrackInfo?.Playlist?.PlaylistName, RecorderRecSettings.FileExistMode);
             }
         }
 

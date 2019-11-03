@@ -27,6 +27,7 @@
             <Button Margin="5" Padding="15,0,15,0" Content=" {Title}" Command="{Binding InsertTitleCommand}"/>
             <Button Margin="5" Padding="15,0,15,0" Content=" {Interpret}" Command="{Binding InsertInterpretCommand}"/>
             <Button Margin="5" Padding="15,0,15,0" Content=" {Album}" Command="{Binding InsertAlbumCommand}"/>
+            <Button Margin="5" Padding="15,0,15,0" Content=" {Playlist}" Command="{Binding InsertPlaylistCommand}"/>
             <Button Margin="5" Padding="15,0,15,0" Content="\" Command="{Binding InsertDirectorySeparatorCommand}"/>
         </StackPanel>
         <TextBlock Grid.Row="2" VerticalAlignment="Center" Text="{Binding SampleFileName, Mode=OneWay}"/>
