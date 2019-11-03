@@ -70,7 +70,15 @@ namespace SpotifyRecorder.GenericPlayer
         public List<PlayerArtist> Artists
         {
             get { return _artists; }
-            set { _artists = value; OnPropertyChanged(); }
+            set { _artists = value; OnPropertyChanged(); OnPropertyChanged("CombinedArtistsString"); }
+        }
+
+        /// <summary>
+        /// A string with all artists combined (joined with " & ")
+        /// </summary>
+        public string CombinedArtistsString
+        {
+            get { return string.Join(" & ", Artists?.Select(a => a.ArtistName)); }
         }
 
         private PlayerAlbum _album;

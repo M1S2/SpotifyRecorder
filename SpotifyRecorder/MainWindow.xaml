@@ -70,7 +70,7 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="0" Margin="5">
+        <ScrollViewer Grid.Row="0" Margin="5" VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical">
                 <Border Margin="5" BorderBrush="{DynamicResource AccentBaseColorBrush}" BorderThickness="1" CornerRadius="5">
                     <Grid Margin="5">
@@ -150,7 +150,7 @@
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0} ({1})">
                                                     <Binding Path="TrackInfo.TrackName" />
-                                                    <Binding Path="TrackInfo.Artists[0].ArtistName" />
+                                                    <Binding Path="TrackInfo.CombinedArtistsString" />
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
@@ -203,7 +203,7 @@
                         <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Track" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.TrackName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
 
                         <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Account" ToolTip="Artist" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Artist" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.Artists[0].ArtistName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Artist" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.CombinedArtistsString}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
 
                         <iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="Album" ToolTip="Album" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
                         <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Album" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.AlbumName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>

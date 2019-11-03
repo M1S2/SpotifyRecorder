@@ -185,7 +185,7 @@ namespace SpotifyRecorder
                 {
                     _openFileNamePrototypeCommand = new WindowTheme.RelayCommand(param =>
                     {
-                        FileNamePrototypeCreator fileNamePrototypeCreator = new FileNamePrototypeCreator(RecSettings.FileNamePrototype, RecSettings.BasePath, PlayerApp.CurrentTrack?.TrackName, PlayerApp.CurrentTrack?.Artists[0].ArtistName, PlayerApp.CurrentTrack?.Album.AlbumName, RecSettings.FileExistMode);
+                        FileNamePrototypeCreator fileNamePrototypeCreator = new FileNamePrototypeCreator(RecSettings.FileNamePrototype, RecSettings.BasePath, PlayerApp.CurrentTrack?.TrackName, PlayerApp.CurrentTrack?.CombinedArtistsString, PlayerApp.CurrentTrack?.Album.AlbumName, RecSettings.FileExistMode);
                         if(fileNamePrototypeCreator.ShowDialog().Value == true)
                         {
                             RecSettings.FileNamePrototype = fileNamePrototypeCreator.FileNamePrototype;
@@ -271,7 +271,9 @@ namespace SpotifyRecorder
             if (Properties.Settings.Default.RecSettings == null) { Properties.Settings.Default.RecSettings = new RecorderSettings(); }
             RecSettings = Properties.Settings.Default.RecSettings;
             IsPlayerAdblockerEnabled = Properties.Settings.Default.IsPlayerAdblockerEnabled;
-            
+
+            _logHandle.Report(new LogEventInfo("Track \"" + PlayerApp.CurrentTrack?.TrackName + "\" (" + PlayerApp.CurrentTrack?.CombinedArtistsString + ")"));
+
             PlayerApp.OnTrackChange += PlayerApp_OnTrackChange;
             PlayerApp.OnPlayStateChange += PlayerApp_OnPlayStateChange;
             PlayerApp.OnTrackTimeChange += PlayerApp_OnTrackTimeChange;
@@ -302,6 +304,7 @@ namespace SpotifyRecorder
         
         private async void PlayerApp_OnTrackChange(object sender, PlayerTrackChangeEventArgs e)
         {
+            //#warning TESTCODE
             //PlayerApp.CurrentPlaybackStatus.IsAd = true;      //Use this for ad blocker testing
 
             if (PlayerApp.CurrentPlaybackStatus.IsAd)
@@ -310,7 +313,7 @@ namespace SpotifyRecorder
             }
             else
             {
-                _logHandle.Report(new LogEventInfo("Track changed to \"" + e.NewTrack?.TrackName + "\" (" + e.NewTrack?.Artists[0].ArtistName + ")"));
+                _logHandle.Report(new LogEventInfo("Track changed to \"" + e.NewTrack?.TrackName + "\" (" + e.NewTrack?.CombinedArtistsString + ")"));
             }
 
             if (PlayerApp.CurrentPlaybackStatus.IsAd && IsPlayerAdblockerEnabled) // (e.NewTrack == null || e.NewTrack?.TrackName == "") && IsPlayerAdblockerEnabled)
@@ -327,12 +330,16 @@ namespace SpotifyRecorder
                 await Task.Delay(1500);
                 if (wasPlaying)
                 {
+                    PlayerApp.ListenForEvents = false;
                     PlayerApp.NextTrack();      // after closing and reopening spotify opens with the last played track. So skip to the next track. Skipping already starts the playback.
                     await Task.Delay(500);
+                    PlayerApp.ListenForEvents = true;
                     PlayerApp.UpdateCurrentPlaybackStatus();
                     /*await Task.Delay(500);
                     PlayerApp.StartPlayback();
                     PlayerApp.UpdateCurrentPlaybackStatus();*/
+
+                    _logHandle.Report(new LogEventInfo("Track \"" + PlayerApp.CurrentTrack?.TrackName + "\" (" + PlayerApp.CurrentTrack?.CombinedArtistsString + ")"));
                     StartRecord();
                 }
                 else
@@ -398,18 +405,23 @@ namespace SpotifyRecorder
         private void StartRecord()
         {
             PlayerApp.ListenForEvents = false;
-
-            CurrentRecorder?.StopRecord();
-
+            
             bool isPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
             OnPropertyChanged("AreRecorderSettingsChanged");
 
             if (!isPlaying || !IsRecorderArmed)     //Only start a new record if music is playing and the recorder is armed
             {
+                PlayerApp.ListenForEvents = true;
                 return;
             }
-            
-            if (!isPlaying) { return; }
+
+            if (Recorders.Count > 0 && Recorders.Select(r => r.TrackInfo.TrackID).Contains(PlayerApp.CurrentTrack.TrackID))
+            {
+                PlayerApp.ListenForEvents = true;
+                return;
+            }
+
+            CurrentRecorder?.StopRecord();
 
             Recorder tmpRecorder = new SpotifyRecorderImplementierung((RecorderSettings)RecSettings.Clone(), PlayerApp.CurrentTrack, _logHandle);
             tmpRecorder.OnRecorderPostStepsFinished += TmpRecorder_OnRecorderPostStepsFinished;
