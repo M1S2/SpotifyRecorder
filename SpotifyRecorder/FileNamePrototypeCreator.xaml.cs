@@ -273,11 +273,18 @@ namespace SpotifyRecorder
         {
             if(filenamePrototype == null) { return ""; }
             string filename = filenamePrototype;
-            if (recordPath != null) { filename = Regex.Replace(filename, PROTOTYPSTRING_RECORDPATH, recordPath, RegexOptions.IgnoreCase); }
-            if (title != null) { filename = Regex.Replace(filename, PROTOTYPSTRING_TITLE, title, RegexOptions.IgnoreCase); }
-            if (interpret != null) { filename = Regex.Replace(filename, PROTOTYPSTRING_INTERPRET, interpret, RegexOptions.IgnoreCase); }
-            if (album != null) { filename = Regex.Replace(filename, PROTOTYPSTRING_ALBUM, album, RegexOptions.IgnoreCase); }
-            if (playlist != null) { filename = Regex.Replace(filename, PROTOTYPSTRING_PLAYLIST, playlist, RegexOptions.IgnoreCase); }
+
+            if (string.IsNullOrEmpty(recordPath)) { recordPath = "NoRecordPath"; }
+            if (string.IsNullOrEmpty(title)) { title = "NoTitle"; }
+            if (string.IsNullOrEmpty(interpret)) { interpret = "NoInterpret"; }
+            if (string.IsNullOrEmpty(album)) { album = "NoAlbum"; }
+            if (string.IsNullOrEmpty(playlist)) { playlist = "NoPlaylist"; }
+
+            filename = Regex.Replace(filename, PROTOTYPSTRING_RECORDPATH, recordPath, RegexOptions.IgnoreCase);
+            filename = Regex.Replace(filename, PROTOTYPSTRING_TITLE, title, RegexOptions.IgnoreCase);
+            filename = Regex.Replace(filename, PROTOTYPSTRING_INTERPRET, interpret, RegexOptions.IgnoreCase);
+            filename = Regex.Replace(filename, PROTOTYPSTRING_ALBUM, album, RegexOptions.IgnoreCase);
+            filename = Regex.Replace(filename, PROTOTYPSTRING_PLAYLIST, playlist, RegexOptions.IgnoreCase);
 
             try
             {

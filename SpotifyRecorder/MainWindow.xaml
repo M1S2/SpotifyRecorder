@@ -11,6 +11,7 @@
         xmlns:logBox="clr-namespace:LogBox;assembly=LogBox"
         xmlns:converters="clr-namespace:SpotifyRecorder.Converters"
         xmlns:recorder="clr-namespace:SpotifyRecorder.GenericRecorder"
+        xmlns:assemblyInfoHelper="clr-namespace:AssemblyInfoHelper;assembly=AssemblyInfoHelper"
         mc:Ignorable="d"
         x:Name="mainWindow"
         Title="Spotify Recorder" Height="1000" Width="1200"
@@ -58,9 +59,8 @@
             <Button Command="{Binding ConnectCommand}" ToolTip="Connect to player application">
                 <iconPacks:PackIconMaterial Width="22" Height="22" Kind="LinkVariant" Foreground="{DynamicResource IdealForegroundColorBrush}"/>
             </Button>
-            <Button Command="{Binding InfoCommand}" ToolTip="About this application">
-                <iconPacks:PackIconModern Width="22" Height="22" Kind="InformationCircle" Foreground="{DynamicResource IdealForegroundColorBrush}"/>
-            </Button>
+
+            <assemblyInfoHelper:AppInfoButton EnableNewVersionNotification="True"/>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
 

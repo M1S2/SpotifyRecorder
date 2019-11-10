@@ -121,25 +121,6 @@ namespace SpotifyRecorder
 
         #region Commands
 
-        private ICommand _infoCommand;
-        public ICommand InfoCommand
-        {
-            get
-            {
-                if (_infoCommand == null)
-                {
-                    _infoCommand = new WindowTheme.RelayCommand(param =>
-                    {
-                        AssemblyInfoHelper.WindowAssemblyInfo windowAssemblyInfo = new AssemblyInfoHelper.WindowAssemblyInfo();
-                        windowAssemblyInfo.ShowDialog();
-                    });
-                }
-                return _infoCommand;
-            }
-        }
-
-        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
         private ICommand _connectCommand;
         public ICommand ConnectCommand
         {
@@ -409,6 +390,8 @@ namespace SpotifyRecorder
             bool isPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
             OnPropertyChanged("AreRecorderSettingsChanged");
 
+            CurrentRecorder?.StopRecord();
+
             if (!isPlaying || !IsRecorderArmed)     //Only start a new record if music is playing and the recorder is armed
             {
                 PlayerApp.ListenForEvents = true;
@@ -420,9 +403,7 @@ namespace SpotifyRecorder
                 PlayerApp.ListenForEvents = true;
                 return;
             }
-
-            CurrentRecorder?.StopRecord();
-
+            
             Recorder tmpRecorder = new SpotifyRecorderImplementierung((RecorderSettings)RecSettings.Clone(), PlayerApp.CurrentTrack, _logHandle);
             tmpRecorder.OnRecorderPostStepsFinished += TmpRecorder_OnRecorderPostStepsFinished;
             Recorders.Add(tmpRecorder);
