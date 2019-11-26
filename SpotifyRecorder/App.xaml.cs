@@ -60,9 +60,9 @@ namespace SpotifyRecorder
             {
                 main._logHandle.Report(new LogEventInfo("Starting " + main.PlayerApp.PlayerName + " application."));
                 if (splash != null) { splash.StatusString = "Starting player application ..."; }
-                playerStarted = await main.PlayerApp.StartPlayerApplication(startMinimized);
-            }            
-
+            }
+            playerStarted = await main.PlayerApp.StartPlayerApplication(startMinimized);
+                        
             if (playerStarted)
             {
                 main._logHandle.Report(new LogEventInfo("Connecting..."));

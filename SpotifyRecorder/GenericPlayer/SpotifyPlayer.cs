@@ -28,16 +28,19 @@ namespace SpotifyRecorder.GenericPlayer
 
 
         [DllImport("user32.dll")]
-        public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
+        public static extern int SendMessage(IntPtr hWnd, int uMsg, int wParam, int lParam);
 
-        // see: https://docs.microsoft.com/de-de/windows/desktop/inputdev/virtual-key-codes
-        private const uint KEYEVENTF_EXTENDEDKEY = 0x0001;
-        private const int VK_MEDIA_PLAY_PAUSE = 0xB3;
-        private const int VK_MEDIA_NEXT_TRACK = 0xB0;
-        private const int VK_MEDIA_PREV_TRACK = 0xB1;
-        private const int VK_VOLUME_MUTE = 0xAD;
+        private const int WM_APPCOMMAND = 0x0319;
+
+        // see: https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-appcommand
+        // Tryout commands with WinSpy++
+        private const int APPCOMMAND_MEDIA_PLAY_PAUSE = 0xE0000;
+        private const int APPCOMMAND_MEDIA_NEXTTRACK = 0xB0000;
+        private const int APPCOMMAND_MEDIA_PREVIOUSTRACK = 0xC0000;
+        private const int APPCOMMAND_VOLUME_MUTE = 0x80000;
 
         private SpotifyWebAPI _spotifyWeb;
+        private Process _spotifyProcess;
 
         //***********************************************************************************************************************************************************************************************************
 
@@ -115,6 +118,9 @@ namespace SpotifyRecorder.GenericPlayer
                 startResult = await ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", (minimized ? "--minimized" : ""), (minimized ? ProcessWindowStyle.Normal : ProcessWindowStyle.Maximized));     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify
                 await Task.Delay(2000);        //Wait some time before connecting to spotify
             }
+
+            _spotifyProcess = ProcessHelper.FindProcess("Spotify", true).FirstOrDefault();
+
             return startResult;
         }
 
@@ -229,7 +235,7 @@ namespace SpotifyRecorder.GenericPlayer
             });
 
             if (_spotifyWeb == null) { IsConnected = false; return false; }
-            else { IsConnected = true; return true; }           
+            else { IsConnected = true; return true; }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -259,10 +265,14 @@ namespace SpotifyRecorder.GenericPlayer
         /// <summary>
         /// Toggle between play and pause playback state. If the player is playing the playback is paused. If the player is paused the playback is started again.
         /// </summary>
-        /// see: https://stackoverflow.com/questions/1645815/how-can-i-programmatically-generate-keypress-events-in-c
+        /// https://stackoverflow.com/questions/17842612/vb-simulate-a-key-press
+        /// https://stackoverflow.com/questions/7181978/special-keys-on-keyboards/7182076#7182076
         public override void TogglePlayPause()
-        {
-            keybd_event((byte)VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_EXTENDEDKEY | 0, 0);
+        {                        
+            if (_spotifyProcess != null)
+            {
+                SendMessage(_spotifyProcess.MainWindowHandle, WM_APPCOMMAND, 0, APPCOMMAND_MEDIA_PLAY_PAUSE);
+            }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -273,7 +283,10 @@ namespace SpotifyRecorder.GenericPlayer
         /// see: https://stackoverflow.com/questions/1645815/how-can-i-programmatically-generate-keypress-events-in-c
         public override void ToggleMuteState()
         {
-            keybd_event((byte)VK_VOLUME_MUTE, 0, KEYEVENTF_EXTENDEDKEY | 0, 0);
+            if (_spotifyProcess != null)
+            {
+                SendMessage(_spotifyProcess.MainWindowHandle, WM_APPCOMMAND, 0, APPCOMMAND_VOLUME_MUTE);
+            }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -281,10 +294,12 @@ namespace SpotifyRecorder.GenericPlayer
         /// <summary>
         /// Skip to the next track
         /// </summary>
-        /// see: https://stackoverflow.com/questions/1645815/how-can-i-programmatically-generate-keypress-events-in-c
         public override void NextTrack()
         {
-            keybd_event((byte)VK_MEDIA_NEXT_TRACK, 0, KEYEVENTF_EXTENDEDKEY | 0, 0);
+            if (_spotifyProcess != null)
+            {
+                SendMessage(_spotifyProcess.MainWindowHandle, WM_APPCOMMAND, 0, APPCOMMAND_MEDIA_NEXTTRACK);
+            }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -292,10 +307,12 @@ namespace SpotifyRecorder.GenericPlayer
         /// <summary>
         /// Skip to the previous track
         /// </summary>
-        /// see: https://stackoverflow.com/questions/1645815/how-can-i-programmatically-generate-keypress-events-in-c
         public override void PreviousTrack()
         {
-            keybd_event((byte)VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_EXTENDEDKEY | 0, 0);
+            if (_spotifyProcess != null)
+            {
+                SendMessage(_spotifyProcess.MainWindowHandle, WM_APPCOMMAND, 0, APPCOMMAND_MEDIA_PREVIOUSTRACK);
+            }
         }
 
         //***********************************************************************************************************************************************************************************************************
