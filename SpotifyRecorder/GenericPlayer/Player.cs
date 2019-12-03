@@ -56,6 +56,11 @@ namespace SpotifyRecorder.GenericPlayer
         /// </summary>
         public event EventHandler<PlayerTrackTimeChangeEventArgs> OnTrackTimeChange;
 
+        /// <summary>
+        /// Event gets triggered, when the connection token expires
+        /// </summary>
+        public event EventHandler<PlayerConnectionTokenExpiredEventArgs> OnPlayerConnectionTokenExpired;
+
         //***********************************************************************************************************************************************************************************************************
 
         /// <summary>
@@ -102,6 +107,28 @@ namespace SpotifyRecorder.GenericPlayer
         {
             get { return _isConnected; }
             protected set { _isConnected = value; OnPropertyChanged(); }
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        private TimeSpan _connectionTokenExpirationTime;
+        /// <summary>
+        /// The time in seconds that the connection token is valid
+        /// </summary>
+        public TimeSpan ConnectionTokenExpirationTime
+        {
+            get { return _connectionTokenExpirationTime; }
+            protected set { _connectionTokenExpirationTime = value; OnPropertyChanged(); }
+        }
+
+        private bool _isConnectionTokenExpired;
+        /// <summary>
+        /// Is the connection token expired
+        /// </summary>
+        public bool IsConnectionTokenExpired
+        {
+            get { return _isConnectionTokenExpired; }
+            set { _isConnectionTokenExpired = value; OnPropertyChanged(); }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -154,6 +181,7 @@ namespace SpotifyRecorder.GenericPlayer
 
         private PlayerPlaybackStatus _tmpPlaybackStatus;
         private Timer _eventTimer;
+        private Timer _tokenTimer;
 
         //***********************************************************************************************************************************************************************************************************
 
@@ -232,12 +260,38 @@ namespace SpotifyRecorder.GenericPlayer
         public abstract void PreviousTrack();
 
         //***********************************************************************************************************************************************************************************************************
-        
+
+        /// <summary>
+        /// Start the token timer. If the timer expires, raise the OnPlayerConnectionTokenExpired event. You have to call this function again on the next connection.
+        /// </summary>
+        public void StartTokenTimer()
+        {
+            if(ConnectionTokenExpirationTime <= TimeSpan.Zero) { return; }
+            IsConnectionTokenExpired = false;
+            _tokenTimer = new Timer() { Interval = ConnectionTokenExpirationTime.TotalMilliseconds, AutoReset = false, Enabled = false };
+            _tokenTimer.Elapsed += _tokenTimer_Elapsed;
+            _tokenTimer.Start();
+        }
+
+        /// <summary>
+        /// Check if the connection token has expired
+        /// </summary>
+        private void _tokenTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            IsConnectionTokenExpired = true;
+            OnPlayerConnectionTokenExpired?.Invoke(this, new PlayerConnectionTokenExpiredEventArgs()
+            {
+                ConnectionTokenExpirationTime = this.ConnectionTokenExpirationTime
+            });
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
         /// <summary>
         /// Check if an event has to be raised.
         /// </summary>
         private void ElapsedTick(object sender, ElapsedEventArgs e)
-        {
+        {            
             if (_tmpPlaybackStatus == null)
             {
                 UpdateCurrentPlaybackStatus();
@@ -298,6 +352,7 @@ namespace SpotifyRecorder.GenericPlayer
                     TrackTime = CurrentPlaybackStatus.Progress
                 });
             }
+            
             _tmpPlaybackStatus = CurrentPlaybackStatus;
             _eventTimer.Start();
             OnPropertyChanged("CurrentPlaybackStatus");

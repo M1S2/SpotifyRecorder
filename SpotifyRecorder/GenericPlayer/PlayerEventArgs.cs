@@ -39,4 +39,12 @@ namespace SpotifyRecorder.GenericPlayer
     {
         public TimeSpan TrackTime { get; set; }
     }
+
+    /// <summary>
+    /// Event gets triggered, when the connection token expires
+    /// </summary>
+    public class PlayerConnectionTokenExpiredEventArgs
+    {
+        public TimeSpan ConnectionTokenExpirationTime { get; set; }
+    }
 }

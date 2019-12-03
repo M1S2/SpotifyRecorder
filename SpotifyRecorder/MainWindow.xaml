@@ -245,6 +245,13 @@
                     </Image.Source>
                 </Image>
             </StatusBarItem>
+
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding PlayerApp.IsConnectionTokenExpired, FallbackValue=Hidden, TargetNullValue=Hidden, Converter={StaticResource BoolVisibilityConverter}}">
+                    <iconPacks:PackIconModern Margin="10,0,10,0" VerticalAlignment="Center" Kind="TimerAlert" Foreground="{DynamicResource IdealForegroundColorBrush}"/>
+                    <TextBlock Text="Connection Token Expired. Will be renewed automatically." FontSize="14"/>
+                </StackPanel>
+            </StatusBarItem>
         </StatusBar>
     </Grid>
 </Controls:MetroWindow>

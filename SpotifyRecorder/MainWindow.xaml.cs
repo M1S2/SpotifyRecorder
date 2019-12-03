@@ -258,7 +258,8 @@ namespace SpotifyRecorder
             PlayerApp.OnTrackChange += PlayerApp_OnTrackChange;
             PlayerApp.OnPlayStateChange += PlayerApp_OnPlayStateChange;
             PlayerApp.OnTrackTimeChange += PlayerApp_OnTrackTimeChange;
-            
+            PlayerApp.OnPlayerConnectionTokenExpired += PlayerApp_OnPlayerConnectionTokenExpired;
+
             Recorders = new ObservableCollection<Recorder>();
             BindingOperations.EnableCollectionSynchronization(Recorders, _recordersListLock);
 
@@ -288,37 +289,39 @@ namespace SpotifyRecorder
             //#warning TESTCODE
             //PlayerApp.CurrentPlaybackStatus.IsAd = true;      //Use this for ad blocker testing
 
-            if (PlayerApp.CurrentPlaybackStatus.IsAd)
-            {
-                _logHandle.Report(new LogEventInfo("Advertisement is playing"));
-            }
-            else
-            {
-                _logHandle.Report(new LogEventInfo("Track changed to \"" + e.NewTrack?.TrackName + "\" (" + e.NewTrack?.CombinedArtistsString + ")"));
-            }
+            if (PlayerApp.CurrentPlaybackStatus.IsAd) { _logHandle.Report(new LogEventInfo("Advertisement is playing")); }
+            else { _logHandle.Report(new LogEventInfo("Track changed to \"" + e.NewTrack?.TrackName + "\" (" + e.NewTrack?.CombinedArtistsString + ")")); }
 
-            if (PlayerApp.CurrentPlaybackStatus.IsAd && IsPlayerAdblockerEnabled) // (e.NewTrack == null || e.NewTrack?.TrackName == "") && IsPlayerAdblockerEnabled)
+            bool blockAd = PlayerApp.CurrentPlaybackStatus.IsAd && IsPlayerAdblockerEnabled;
+
+            if (blockAd || PlayerApp.IsConnectionTokenExpired)
             {
+                if(PlayerApp.IsConnectionTokenExpired) { PlayerApp.IsConnectionTokenExpired = false; }
+
                 CurrentRecorder?.StopRecord();
-
                 bool wasPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
                 bool wasMinimized = (ProcessHelper.GetProcessWindowState(PlayerApp.PlayerName).showCmd == WindowTheme.WindowPlacement.ShowWindowStates.Minimized);
                 if (wasPlaying) { PlayerApp.PausePlayback(); }
-                await Task.Delay(300);
-                await PlayerApp.ClosePlayerApplication();
-                await Task.Delay(1000);
+
+                if (blockAd)
+                {
+                    await Task.Delay(300);
+                    await PlayerApp.ClosePlayerApplication();
+                    await Task.Delay(1000);
+                }
+
                 await ((App)Application.Current).StartAndConnectToPlayer(wasMinimized);
                 await Task.Delay(1500);
                 if (wasPlaying)
                 {
                     PlayerApp.ListenForEvents = false;
-                    PlayerApp.NextTrack();      // after closing and reopening spotify opens with the last played track. So skip to the next track. Skipping already starts the playback.
+
+                    if (blockAd) { PlayerApp.NextTrack(); }     // after closing and reopening spotify opens with the last played track. So skip to the next track. Skipping already starts the playback.
+                    else { PlayerApp.StartPlayback(); }
+
                     await Task.Delay(500);
                     PlayerApp.ListenForEvents = true;
                     PlayerApp.UpdateCurrentPlaybackStatus();
-                    /*await Task.Delay(500);
-                    PlayerApp.StartPlayback();
-                    PlayerApp.UpdateCurrentPlaybackStatus();*/
 
                     _logHandle.Report(new LogEventInfo("Track \"" + PlayerApp.CurrentTrack?.TrackName + "\" (" + PlayerApp.CurrentTrack?.CombinedArtistsString + ")"));
                     StartRecord();
@@ -378,6 +381,23 @@ namespace SpotifyRecorder
             catch (Exception ex)
             {
                 _logHandle.Report(new LogEventError("OnTrackTimeChange event: " + ex.Message));
+            }
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        private async void PlayerApp_OnPlayerConnectionTokenExpired(object sender, PlayerConnectionTokenExpiredEventArgs e)
+        {
+            _logHandle.Report(new LogEventInfo("Connection token expired (was valid for " + e.ConnectionTokenExpirationTime.TotalSeconds.ToString() + " s)."));
+            if (!IsRecorderArmed && CurrentRecorder?.RecordState != RecordStates.RECORDING && CurrentRecorder?.RecordState != RecordStates.PAUSED)
+            {
+                PlayerApp.IsConnectionTokenExpired = false;
+                bool wasMinimized = (ProcessHelper.GetProcessWindowState(PlayerApp.PlayerName).showCmd == WindowTheme.WindowPlacement.ShowWindowStates.Minimized);
+                await ((App)Application.Current).StartAndConnectToPlayer(wasMinimized);
+            }
+            else
+            {
+                // Nothing to do here. Handle the token expired event in the Track changed event (when the recorder is armed or the recorder is recording).
             }
         }
 

@@ -2,6 +2,9 @@
 
 ## [%version%] - %date%
 
+- Show playlist name and multiple artists if present
+- Change active media player Issue  [#2](https://github.com/M1S2/SpotifyRecorder/issues/2) fixed
+- Renew access token Issue [#3](https://github.com/M1S2/SpotifyRecorder/issues/3) fixed
 
 ## [v3.2.0] - 07.09.2019 20:19
 

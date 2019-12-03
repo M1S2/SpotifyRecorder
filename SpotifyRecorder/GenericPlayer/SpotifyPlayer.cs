@@ -85,7 +85,7 @@ namespace SpotifyRecorder.GenericPlayer
             if (_spotifyPlayback.Context != null && _spotifyPlayback.Context.Type == "playlist")
             {
                 playlistID = _spotifyPlayback.Context.Uri.Split(':').Last();
-                playlistName = _spotifyWeb.GetPlaylist(playlistId: playlistID, fields: "name").Name;
+                playlistName = _spotifyWeb?.GetPlaylist(playlistId: playlistID, fields: "name").Name;
             }
 
             PlayerPlaybackStatus playerPlayback = new PlayerPlaybackStatus()
@@ -202,8 +202,9 @@ namespace SpotifyRecorder.GenericPlayer
                                 {
                                     if (match.Value.Contains("access_token")) { accessToken = match.Value.Replace("#access_token=", ""); }
                                     else if (match.Value.Contains("token_type")) { tokenType = match.Value.Replace("&token_type=", ""); }
+                                    else if (match.Value.Contains("expires_in")) { ConnectionTokenExpirationTime = new TimeSpan(0,0, int.Parse(match.Value.Replace("&expires_in=", ""))); }
                                 }
-                                
+
                                 _spotifyWeb = new SpotifyWebAPI() { TokenType = tokenType, AccessToken = accessToken };
                                 waitForAuthFinish.Set();        // Signal that the authentication finished
 
@@ -235,7 +236,7 @@ namespace SpotifyRecorder.GenericPlayer
             });
 
             if (_spotifyWeb == null) { IsConnected = false; return false; }
-            else { IsConnected = true; return true; }
+            else { StartTokenTimer(); IsConnected = true; return true; }
         }
 
         //***********************************************************************************************************************************************************************************************************

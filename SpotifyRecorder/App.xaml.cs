@@ -17,7 +17,7 @@ namespace SpotifyRecorder
     /// see: https://www.c-sharpcorner.com/UploadFile/07c1e7/create-splash-screen-in-wpf/
     public partial class App : Application
     {
-        private const int MINIMUM_SPLASH_TIME = 5000; // Milliseconds
+        private const int MINIMUM_SPLASH_TIME = 2000; // Milliseconds
 
         private MainWindow main;
         private SplashScreen splash;
