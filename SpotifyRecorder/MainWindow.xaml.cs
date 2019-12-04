@@ -66,7 +66,12 @@ namespace SpotifyRecorder
             get { return _recorders; }
             set { _recorders = value; OnPropertyChanged(); OnPropertyChanged("CurrentRecorder"); OnPropertyChanged("AreRecorderSettingsChanged"); }
         }
-        
+
+        private void Recorders_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged("Recorders"); OnPropertyChanged("CurrentRecorder"); OnPropertyChanged("AreRecorderSettingsChanged");
+        }
+
         public Recorder CurrentRecorder
         {
             get { return (Recorders == null || Recorders.Count == 0) ? null : Recorders.Last(); }
@@ -157,6 +162,25 @@ namespace SpotifyRecorder
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+        private ICommand _openSettingsFlyoutCommand;
+        public ICommand OpenSettingsFlyoutCommand
+        {
+            get
+            {
+                if (_openSettingsFlyoutCommand == null)
+                {
+                    _openSettingsFlyoutCommand = new WindowTheme.RelayCommand(param =>
+                    {
+                        Flyout flyout = this.Flyouts.Items[0] as Flyout;
+                        flyout.IsOpen = !flyout.IsOpen;
+                    });
+                }
+                return _openSettingsFlyoutCommand;
+            }
+        }
+        
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
         private ICommand _openFileNamePrototypeCommand;
         public ICommand OpenFileNamePrototypeCommand
         {
@@ -166,7 +190,7 @@ namespace SpotifyRecorder
                 {
                     _openFileNamePrototypeCommand = new WindowTheme.RelayCommand(param =>
                     {
-                        FileNamePrototypeCreator fileNamePrototypeCreator = new FileNamePrototypeCreator(RecSettings.FileNamePrototype, RecSettings.BasePath, PlayerApp.CurrentTrack?.TrackName, PlayerApp.CurrentTrack?.CombinedArtistsString, PlayerApp.CurrentTrack?.Album.AlbumName, PlayerApp.CurrentPlaybackStatus.Playlist?.PlaylistName, RecSettings.FileExistMode);
+                        FileNamePrototypeCreator fileNamePrototypeCreator = new FileNamePrototypeCreator(RecSettings.FileNamePrototype, RecSettings.BasePath, PlayerApp.CurrentTrack?.TrackName, PlayerApp.CurrentTrack?.CombinedArtistsString, PlayerApp.CurrentTrack?.Album.AlbumName, PlayerApp.CurrentPlaybackStatus?.Playlist?.PlaylistName, RecSettings.FileExistMode);
                         if(fileNamePrototypeCreator.ShowDialog().Value == true)
                         {
                             RecSettings.FileNamePrototype = fileNamePrototypeCreator.FileNamePrototype;
@@ -262,6 +286,7 @@ namespace SpotifyRecorder
 
             Recorders = new ObservableCollection<Recorder>();
             BindingOperations.EnableCollectionSynchronization(Recorders, _recordersListLock);
+            Recorders.CollectionChanged += Recorders_CollectionChanged;
 
             //Recorder tmpRecorder = new SpotifyRecorderImplementierung((RecorderSettings)RecSettings.Clone(), PlayerApp.CurrentTrack, _logHandle);
             //Recorders.Add(tmpRecorder);

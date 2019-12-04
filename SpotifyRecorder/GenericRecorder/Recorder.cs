@@ -397,15 +397,19 @@ namespace SpotifyRecorder.GenericRecorder
 
                     if (System.IO.File.Exists(FileStrWAV))      //Delete too short records
                     {
-                        TimeSpan wavLength;
+                        TimeSpan wavLength = TimeSpan.Zero;
 
                         try
                         {
-                            IWaveSource wavSource = new WaveFileReader(FileStrWAV);
-                            wavLength = wavSource.GetLength();
-                            wavSource?.Dispose();
+                            FileInfo fileInfo = new FileInfo(FileStrWAV);
+                            if (fileInfo.Length > 44)       //"Empty" files are 44 bytes big
+                            {
+                                IWaveSource wavSource = new WaveFileReader(FileStrWAV);
+                                wavLength = wavSource.GetLength();
+                                wavSource?.Dispose();
+                            }
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             wavLength = TimeSpan.Zero;
                             _logHandle.Report(new LogEventError("Error while stopping record: " + ex.Message));

@@ -55,14 +55,68 @@
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <windowTheming:WindowThemeUserControl/>
-
+            
             <Button Command="{Binding ConnectCommand}" ToolTip="Connect to player application">
                 <iconPacks:PackIconMaterial Width="22" Height="22" Kind="LinkVariant" Foreground="{DynamicResource IdealForegroundColorBrush}"/>
+            </Button>
+
+            <Button Command="{Binding OpenSettingsFlyoutCommand}" ToolTip="Open settings">
+                <iconPacks:PackIconMaterial Width="22" Height="22" Kind="Settings" Foreground="{DynamicResource IdealForegroundColorBrush}"/>
             </Button>
 
             <assemblyInfoHelper:AppInfoButton EnableNewVersionNotification="True"/>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
+
+    <!-- *************************************************************************************************************************************************************************** -->
+    
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl>
+            <Controls:Flyout AreAnimationsEnabled="True" Header="Settings" Position="Right" Width="650" Margin="0,30,0,0" IsPinned="False" Theme="Inverse">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="35"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="90"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Background="{DynamicResource AccentBaseColorBrush}" Visibility="{Binding AreRecorderSettingsChanged, Converter={StaticResource BoolVisibilityConverter}}">
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Margin="2" Width="150" Content="Reset to current settings" Style="{DynamicResource SquareButtonStyle}" Controls:ControlsHelper.ContentCharacterCasing="Normal" Command="{Binding ResetRecSettingsCommand}"/>
+                            <TextBlock DockPanel.Dock="Left" Padding="5" Text="Currently a recorder is running. All changes are used for the next record." Foreground="{DynamicResource IdealForegroundColorBrush}"/>
+                        </DockPanel>
+                    </Border>
+
+                    <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="FolderOpen" ToolTip="Base Path" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" ToolTip="Recorder Base Path" Text="{Binding RecSettings.BasePath}" VerticalAlignment="Center"/>
+                    <Button Grid.Row="1" Grid.Column="2" Margin="10,2,10,2" Style="{DynamicResource SquareButtonStyle}" Command="{Binding ChooseRecorderBasePathCommand}">
+                        <iconPacks:Modern Kind="Edit"/>
+                    </Button>
+
+                    <iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="CodeTags" ToolTip="File Name Prototype" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" ToolTip="File Name Prototype" Text="{Binding RecSettings.FileNamePrototype, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                    <Button Grid.Row="2" Grid.Column="2" Margin="10,2,10,2" Style="{DynamicResource SquareButtonStyle}" Command="{Binding OpenFileNamePrototypeCommand}">
+                        <iconPacks:Modern Kind="Edit"/>
+                    </Button>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="MP3&#10;   WAV" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}" FontSize="12" FontWeight="Black"/>
+                    <ComboBox Grid.Row="3" Grid.Column="1" ToolTip="Record Format" ItemsSource="{Binding Source={StaticResource valuesEnumRecorderFormats}}" SelectedItem="{Binding RecSettings.RecordFormat}" VerticalAlignment="Center"/>
+
+                    <iconPacks:PackIconMaterial Grid.Row="4" Grid.Column="0" Kind="FileQuestion" ToolTip="File Exists Mode" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                    <ComboBox Grid.Row="4" Grid.Column="1" ToolTip="File Exists Mode" ItemsSource="{Binding Source={StaticResource valuesEnumRecorderFileExistModes}}" SelectedItem="{Binding RecSettings.FileExistMode}" VerticalAlignment="Center"/>
+                </Grid>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
+
+    <!-- *************************************************************************************************************************************************************************** -->
 
     <Grid>
         <Grid.RowDefinitions>
@@ -76,13 +130,8 @@
                 <Border Margin="5" BorderBrush="{DynamicResource AccentBaseColorBrush}" BorderThickness="1" CornerRadius="5">
                     <Grid Margin="5">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="35"/>
-                            <RowDefinition Height="35"/>
-                            <RowDefinition Height="35"/>
                             <RowDefinition Height="35"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="35"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="55"/>
@@ -90,32 +139,18 @@
                             <ColumnDefinition Width="90"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Background="{DynamicResource AccentBaseColorBrush}" Visibility="{Binding AreRecorderSettingsChanged, Converter={StaticResource BoolVisibilityConverter}}">
-                            <DockPanel>
-                                <Button DockPanel.Dock="Right" Margin="2" Width="150" Content="Reset to current settings" Style="{DynamicResource SquareButtonStyle}" Controls:ControlsHelper.ContentCharacterCasing="Normal" Command="{Binding ResetRecSettingsCommand}"/>
-                                <TextBlock DockPanel.Dock="Left" Padding="5" Text="Currently a recorder is running. All changes are used for the next record." Foreground="{DynamicResource IdealForegroundColorBrush}"/>
-                            </DockPanel>
-                        </Border>
+                        <ToggleButton Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Width="70" Height="70" VerticalAlignment="Top" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" IsChecked="{Binding IsRecorderArmed, Mode=TwoWay}">
+                            <Image Height="Auto" Width="Auto" Margin="10">
+                                <Image.Source>
+                                    <DrawingImage Drawing="{Binding IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}, Mode=OneWay, FallbackValue=False, TargetNullValue=False, Converter={StaticResource IsArmedIconConverter}}"/>
+                                </Image.Source>
+                            </Image>
+                        </ToggleButton>
 
-                        <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="FolderOpen" ToolTip="Base Path" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" ToolTip="Recorder Base Path" Text="{Binding RecSettings.BasePath}" VerticalAlignment="Center"/>
-                        <Button Grid.Row="1" Grid.Column="2" Margin="10,2,10,2" Style="{DynamicResource SquareButtonStyle}" Command="{Binding ChooseRecorderBasePathCommand}">
-                            <iconPacks:Modern Kind="Edit"/>
-                        </Button>
-
-                        <iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="CodeTags" ToolTip="File Name Prototype" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" ToolTip="File Name Prototype" Text="{Binding RecSettings.FileNamePrototype, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
-                        <Button Grid.Row="2" Grid.Column="2" Margin="10,2,10,2" Style="{DynamicResource SquareButtonStyle}" Command="{Binding OpenFileNamePrototypeCommand}">
-                            <iconPacks:Modern Kind="Edit"/>
-                        </Button>
-
-                        <TextBlock Grid.Row="3" Grid.Column="0" Text="MP3&#10;   WAV" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}" FontSize="12" FontWeight="Black"/>
-                        <ComboBox Grid.Row="3" Grid.Column="1" ToolTip="Record Format" ItemsSource="{Binding Source={StaticResource valuesEnumRecorderFormats}}" SelectedItem="{Binding RecSettings.RecordFormat}" VerticalAlignment="Center"/>
-
-                        <iconPacks:PackIconMaterial Grid.Row="4" Grid.Column="0" Kind="FileQuestion" ToolTip="File Exists Mode" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
-                        <ComboBox Grid.Row="4" Grid.Column="1" ToolTip="File Exists Mode" ItemsSource="{Binding Source={StaticResource valuesEnumRecorderFileExistModes}}" SelectedItem="{Binding RecSettings.FileExistMode}" VerticalAlignment="Center"/>
-
-                        <ItemsControl Grid.Row="5" Grid.Column="1" Margin="0,5,0,5" ItemsSource="{Binding Recorders}" BorderThickness="1" BorderBrush="{DynamicResource AccentBaseColorBrush}" AlternationCount="10">
+                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="0" Kind="Reload" ToolTip="Player adblocker" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        <Controls:ToggleSwitch Grid.Row="0" Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" OnLabel="Adblocker active" OffLabel="Adblocker inactive" IsChecked="{Binding IsPlayerAdblockerEnabled}"/>
+                        
+                        <ItemsControl Grid.Row="1" Grid.Column="1" Margin="0,5,0,5" ItemsSource="{Binding Recorders}" BorderThickness="1" BorderBrush="{DynamicResource AccentBaseColorBrush}" AlternationCount="10" Visibility="{Binding CurrentRecorder, Converter={StaticResource NullVisibilityConverter}}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Vertical"/>
@@ -170,19 +205,11 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <ToggleButton Grid.Row="5" Grid.RowSpan="2" Grid.Column="2" Width="70" Height="70" VerticalAlignment="Bottom" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" IsChecked="{Binding IsRecorderArmed, Mode=TwoWay}">
-                            <Image Height="Auto" Width="Auto" Margin="10">
-                                <Image.Source>
-                                    <DrawingImage Drawing="{Binding IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}, Mode=OneWay, FallbackValue=False, TargetNullValue=False, Converter={StaticResource IsArmedIconConverter}}"/>
-                                </Image.Source>
-                            </Image>
-                        </ToggleButton>
-
-                        <iconPacks:PackIconMaterial Grid.Row="6" Grid.Column="0" Kind="Reload" ToolTip="Player adblocker" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
-                        <Controls:ToggleSwitch Grid.Row="6" Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" OnLabel="Adblocker active" OffLabel="Adblocker inactive" IsChecked="{Binding IsPlayerAdblockerEnabled}"/>
                     </Grid>
                 </Border>
 
+                <!-- *************************************************************************************************************************************************************************** -->
+                
                 <Border Margin="5" BorderBrush="{DynamicResource AccentBaseColorBrush}" BorderThickness="1" CornerRadius="5">
                     <Grid Margin="5">
                         <Grid.RowDefinitions>
@@ -233,6 +260,8 @@
             </StackPanel>
         </ScrollViewer>
 
+        <!-- *************************************************************************************************************************************************************************** -->
+        
         <GridSplitter ResizeDirection="Rows" Grid.Row="1" Height="5" Margin="0,5,0,5" ShowsPreview="False" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#FFB2B2B2"/>
 
         <logBox:LogBoxControl Grid.Row="1" x:Name="logBox1" Margin="5,15,5,5" EnableImageLogs="False"/>
