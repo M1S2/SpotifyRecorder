@@ -85,6 +85,7 @@ namespace SpotifyRecorder
             {
                 _isRecorderArmed = value;
                 logBox1.LogEvent(new LogEventInfo("SpotifyRecorder " + (_isRecorderArmed ? "armed." : "disarmed.")));
+                CleanupRecordersList();
                 OnPropertyChanged();
             }
         }
@@ -120,6 +121,13 @@ namespace SpotifyRecorder
         {
             get { return _isPlayerAdblockerEnabled; }
             set { _isPlayerAdblockerEnabled = value; OnPropertyChanged(); }
+        }
+
+        private List<string> _recorderDeviceNames;
+        public List<string> RecorderDeviceNames
+        {
+            get { return _recorderDeviceNames; }
+            set { _recorderDeviceNames = value; OnPropertyChanged(); }
         }
 
         //##############################################################################################################################################################################################
@@ -173,6 +181,8 @@ namespace SpotifyRecorder
                     {
                         Flyout flyout = this.Flyouts.Items[0] as Flyout;
                         flyout.IsOpen = !flyout.IsOpen;
+
+                        if (flyout.IsOpen) { RecorderDeviceNames = Recorder.GetRecordingDeviceNames(); }
                     });
                 }
                 return _openSettingsFlyoutCommand;

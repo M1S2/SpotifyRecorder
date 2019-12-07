@@ -72,10 +72,11 @@
     
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <Controls:Flyout AreAnimationsEnabled="True" Header="Settings" Position="Right" Width="650" Margin="0,30,0,0" IsPinned="False" Theme="Inverse">
+            <Controls:Flyout AreAnimationsEnabled="True" Header="Settings" Position="Right" Width="850" Margin="0,30,0,0" IsPinned="False" Theme="Inverse">
                 <Grid Margin="5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="35"/>
                         <RowDefinition Height="35"/>
                         <RowDefinition Height="35"/>
                         <RowDefinition Height="35"/>
@@ -111,6 +112,9 @@
 
                     <iconPacks:PackIconMaterial Grid.Row="4" Grid.Column="0" Kind="FileQuestion" ToolTip="File Exists Mode" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
                     <ComboBox Grid.Row="4" Grid.Column="1" ToolTip="File Exists Mode" ItemsSource="{Binding Source={StaticResource valuesEnumRecorderFileExistModes}}" SelectedItem="{Binding RecSettings.FileExistMode}" VerticalAlignment="Center"/>
+
+                    <iconPacks:PackIconFontAwesome Grid.Row="5" Grid.Column="0" Kind="VolumeUpSolid" ToolTip="Recorder device" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                    <ComboBox Grid.Row="5" Grid.Column="1" ToolTip="Recorder device" ItemsSource="{Binding RecorderDeviceNames}" SelectedItem="{Binding RecSettings.RecorderDeviceName, Mode=TwoWay}" VerticalAlignment="Center"/>
                 </Grid>
             </Controls:Flyout>
         </Controls:FlyoutsControl>

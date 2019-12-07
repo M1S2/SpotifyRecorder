@@ -48,6 +48,21 @@ namespace SpotifyRecorder.GenericRecorder
 
         //##############################################################################################################################################################################################
 
+        /// <summary>
+        /// Return a list with all active capture device names
+        /// </summary>
+        /// <returns>List with all active capture device names</returns>
+        public static List<string> GetRecordingDeviceNames()
+        {
+            MMDeviceEnumerator devEnumerator = new MMDeviceEnumerator();
+            MMDeviceCollection mMDevices = devEnumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active);
+            List<string> deviceNames = mMDevices.Select(d => d.FriendlyName).ToList();
+            deviceNames.Add("Default playback device");
+            return deviceNames;
+        }
+
+        //##############################################################################################################################################################################################
+
         #region Recorder Properties
 
         private GenericPlayer.PlayerTrack _trackInfo;
@@ -271,10 +286,19 @@ namespace SpotifyRecorder.GenericRecorder
                 MMDeviceEnumerator devEnumerator = new MMDeviceEnumerator();
                 MMDeviceCollection mMDevices = devEnumerator.EnumAudioEndpoints(DataFlow.All, DeviceState.All);
 
-                MMDevice dev = mMDevices.Where(d => d.DeviceState == DeviceState.Active && d.FriendlyName.StartsWith("CABLE Input"))?.First();
+                MMDevice dev;
+                if(RecorderRecSettings.RecorderDeviceName.ToLower().Contains("default"))
+                {
+                    dev = devEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                }
+                else
+                {
+                    dev = mMDevices.Where(d => d.DeviceState == DeviceState.Active && d.FriendlyName == RecorderRecSettings.RecorderDeviceName)?.First();
+                }
+
                 if (dev == null)
                 {
-                    _logHandle.Report(new LogEventError("Record (\"" + TrackInfo?.TrackName + "\") not started, because device \"CABLE Input\" wasn't found. Make sure that \"VB Cable\" is installed correctly."));
+                    _logHandle.Report(new LogEventError("Record (\"" + TrackInfo?.TrackName + "\") not started, because device \"" + RecorderRecSettings.RecorderDeviceName + "\" wasn't found." + (RecorderRecSettings.RecorderDeviceName.Contains("CABLE Input") ? " Make sure that \"VB Cable\" is installed correctly." : "")));
                     return;
                 }
 

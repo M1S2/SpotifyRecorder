@@ -240,9 +240,9 @@ namespace SpotifyRecorder
             string corrected_file_name = filepath;
 
             string[] filename_split = filepath.Split('\\', '/');
-
             string file_name = (filename_split.Length > 0 ? filename_split.Last() : System.IO.Path.GetFileName(filepath));
-            string directory_name = System.IO.Path.GetDirectoryName(filepath.Remove(filepath.LastIndexOf(file_name))); //filepath.Replace(file_name, ""));
+            string drive_name = System.IO.Path.GetPathRoot(filepath);
+            string directory_name = System.IO.Path.GetDirectoryName(filepath.Remove(filepath.LastIndexOf(file_name))).Replace(drive_name, ""); //filepath.Replace(file_name, ""));
 
             foreach (char c in System.IO.Path.GetInvalidFileNameChars())
             {
@@ -252,7 +252,8 @@ namespace SpotifyRecorder
             {
                 directory_name = directory_name.Replace(c.ToString(), "");
             }
-            corrected_file_name = System.IO.Path.Combine(directory_name, file_name);
+            directory_name = directory_name.Replace(":", "");
+            corrected_file_name = System.IO.Path.Combine(drive_name, directory_name, file_name);
             return corrected_file_name;
         }
 

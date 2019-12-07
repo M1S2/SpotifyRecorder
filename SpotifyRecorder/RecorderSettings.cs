@@ -60,6 +60,13 @@ namespace SpotifyRecorder
             set { _recordFormat = value; OnPropertyChanged(); }
         }
 
+        private string _recorderDeviceName;
+        public string RecorderDeviceName
+        {
+            get { return _recorderDeviceName; }
+            set { _recorderDeviceName = value; OnPropertyChanged(); }
+        }
+
         //##############################################################################################################################################################################################
 
         public RecorderSettings()
@@ -67,7 +74,8 @@ namespace SpotifyRecorder
             BasePath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
             FileNamePrototype = FileNamePrototypeCreator.PROTOTYPSTRING_DEFAULT;
             FileExistMode = RecorderFileExistModes.SKIP;
-            RecordFormat = RecordFormats.MP3;            
+            RecordFormat = RecordFormats.MP3;
+            RecorderDeviceName = "CABLE Input (VB-Audio Virtual Cable)";
         }
 
         public object Clone() => this.MemberwiseClone();
@@ -80,7 +88,8 @@ namespace SpotifyRecorder
             return this.BasePath == settings1.BasePath &&
                 this.FileNamePrototype == settings1.FileNamePrototype &&
                 this.FileExistMode == settings1.FileExistMode &&
-                this.RecordFormat == settings1.RecordFormat;
+                this.RecordFormat == settings1.RecordFormat &&
+                this.RecorderDeviceName == settings1.RecorderDeviceName;
         }
     }
 }
