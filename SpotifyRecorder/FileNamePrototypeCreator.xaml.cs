@@ -281,6 +281,11 @@ namespace SpotifyRecorder
             if (string.IsNullOrEmpty(album)) { album = "NoAlbum"; }
             if (string.IsNullOrEmpty(playlist)) { playlist = "NoPlaylist"; }
 
+            title = title.Replace("/", "_").Replace("\\", "_");
+            interpret = interpret.Replace("/", "_").Replace("\\", "_");
+            album = album.Replace("/", "_").Replace("\\", "_");
+            playlist = playlist.Replace("/", "_").Replace("\\", "_");
+
             filename = Regex.Replace(filename, PROTOTYPSTRING_RECORDPATH, recordPath, RegexOptions.IgnoreCase);
             filename = Regex.Replace(filename, PROTOTYPSTRING_TITLE, title, RegexOptions.IgnoreCase);
             filename = Regex.Replace(filename, PROTOTYPSTRING_INTERPRET, interpret, RegexOptions.IgnoreCase);

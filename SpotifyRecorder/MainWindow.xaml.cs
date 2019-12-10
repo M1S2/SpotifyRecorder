@@ -453,11 +453,11 @@ namespace SpotifyRecorder
                 return;
             }
 
-            if (Recorders.Count > 0 && Recorders.Select(r => r.TrackInfo.TrackID).Contains(PlayerApp.CurrentTrack.TrackID))
-            {
-                PlayerApp.ListenForEvents = true;
-                return;
-            }
+            //if (Recorders.Count > 0 && Recorders.Select(r => r.TrackInfo.TrackID).Contains(PlayerApp.CurrentTrack.TrackID))
+            //{
+            //    PlayerApp.ListenForEvents = true;
+            //    return;
+            //}
             
             Recorder tmpRecorder = new SpotifyRecorderImplementierung((RecorderSettings)RecSettings.Clone(), PlayerApp.CurrentTrack, _logHandle);
             tmpRecorder.OnRecorderPostStepsFinished += TmpRecorder_OnRecorderPostStepsFinished;

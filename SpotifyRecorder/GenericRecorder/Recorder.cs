@@ -395,66 +395,66 @@ namespace SpotifyRecorder.GenericRecorder
         /// </summary>
         public async void StopRecord()
         {
-            await Task.Run(() =>
+            try
             {
-                try
+                if (RecordState == RecordStates.STOPPED) { return; }
+
+                if (_capture != null)
                 {
-                    if (RecordState == RecordStates.STOPPED) { return; }
-
-                    if (_capture != null)
+                    try
                     {
-                        try
-                        {
-                            _capture.Stop();
-                            _capture.Dispose();
-                        }
-                        catch (Exception ex)
-                        {
-                            _logHandle.Report(new LogEventError("Error while stopping record: " + ex.Message));
-                        }
-
-                        _silenceOut.Stop();
+                        _capture.Stop();
+                        _capture.Dispose();
                     }
-                    if (_silenceOut != null) { _silenceOut.Stop(); _silenceOut.Dispose(); }
-                    if (_wavWriter != null) { _wavWriter.Dispose(); }
-                    _logHandle.Report(new LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") stopped."));
-
-                    if (System.IO.File.Exists(FileStrWAV))      //Delete too short records
+                    catch (Exception ex)
                     {
-                        TimeSpan wavLength = TimeSpan.Zero;
-
-                        try
-                        {
-                            FileInfo fileInfo = new FileInfo(FileStrWAV);
-                            if (fileInfo.Length > 44)       //"Empty" files are 44 bytes big
-                            {
-                                IWaveSource wavSource = new WaveFileReader(FileStrWAV);
-                                wavLength = wavSource.GetLength();
-                                wavSource?.Dispose();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            wavLength = TimeSpan.Zero;
-                            _logHandle.Report(new LogEventError("Error while stopping record: " + ex.Message));
-                        }
-
-                        if (TrackInfo?.Duration > TimeSpan.Zero && (wavLength < (TrackInfo?.Duration - AllowedDifferenceToTrackDuration) || wavLength > (TrackInfo?.Duration + AllowedDifferenceToTrackDuration)))
-                        {
-                            System.IO.File.Delete(FileStrWAV);
-                            DirectoryManager.DeleteEmptyFolders(RecorderRecSettings.BasePath);
-                            _logHandle.Report(new LogEventWarning("Record (\"" + TrackInfo?.TrackName + "\") deleted, because of wrong length (Length = " + wavLength.ToString() + " s, Expected Range = [" + (TrackInfo?.Duration - AllowedDifferenceToTrackDuration).ToString() + ", " + (TrackInfo?.Duration + AllowedDifferenceToTrackDuration).ToString() + "])."));
-                            RecordState = RecordStates.STOPPED;
-                            return;
-                        }
+                        _logHandle.Report(new LogEventError("Error while stopping record: " + ex.Message));
                     }
 
-                    if (!System.IO.File.Exists(FileStrWAV))
+                    _silenceOut.Stop();
+                }
+                if (_silenceOut != null) { _silenceOut.Stop(); _silenceOut.Dispose(); }
+                if (_wavWriter != null) { _wavWriter.Dispose(); }
+                _logHandle.Report(new LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") stopped."));
+
+                if (System.IO.File.Exists(FileStrWAV))      //Delete too short records
+                {
+                    TimeSpan wavLength = TimeSpan.Zero;
+
+                    try
                     {
+                        FileInfo fileInfo = new FileInfo(FileStrWAV);
+                        if (fileInfo.Length > 44)       //"Empty" files are 44 bytes big
+                        {
+                            IWaveSource wavSource = new WaveFileReader(FileStrWAV);
+                            wavLength = wavSource.GetLength();
+                            wavSource?.Dispose();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        wavLength = TimeSpan.Zero;
+                        _logHandle.Report(new LogEventError("Error while stopping record: " + ex.Message));
+                    }
+
+                    if (TrackInfo?.Duration > TimeSpan.Zero && (wavLength < (TrackInfo?.Duration - AllowedDifferenceToTrackDuration) || wavLength > (TrackInfo?.Duration + AllowedDifferenceToTrackDuration)))
+                    {
+                        System.IO.File.Delete(FileStrWAV);
+                        DirectoryManager.DeleteEmptyFolders(RecorderRecSettings.BasePath);
+                        _logHandle.Report(new LogEventWarning("Record (\"" + TrackInfo?.TrackName + "\") deleted, because of wrong length (Length = " + wavLength.ToString() + " s, Expected Range = [" + (TrackInfo?.Duration - AllowedDifferenceToTrackDuration).ToString() + ", " + (TrackInfo?.Duration + AllowedDifferenceToTrackDuration).ToString() + "])."));
                         RecordState = RecordStates.STOPPED;
                         return;
                     }
+                }
 
+                if (!System.IO.File.Exists(FileStrWAV))
+                {
+                    RecordState = RecordStates.STOPPED;
+                    return;
+                }
+
+                await Task.Run(() =>
+                {
                     if (NormalizeWAVFile(FileStrWAV) == false) { RecordState = RecordStates.STOPPED; return; }
                     _logHandle.Report(new LogEventInfo("Record (\"" + TrackInfo?.TrackName + "\") normalized."));
 
@@ -478,13 +478,13 @@ namespace SpotifyRecorder.GenericRecorder
 
                     RecordState = RecordStates.STOPPED;
                     OnRecorderPostStepsFinished?.Invoke(this, new EventArgs());
-                }
-                catch (Exception ex)
-                {
-                    _logHandle.Report(new LogEventError("Error while stopping record: " + ex.Message));
-                    RecordState = RecordStates.STOPPED;
-                }
-            });
+                });
+            }
+            catch (Exception ex)
+            {
+                _logHandle.Report(new LogEventError("Error while stopping record: " + ex.Message));
+                RecordState = RecordStates.STOPPED;
+            }
         }
 
 #endregion
