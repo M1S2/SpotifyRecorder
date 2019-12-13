@@ -1,6 +1,6 @@
 # SpotifyRecorder
 
-## [%version%] - %date%
+## [v3.3.0] - 13.12.2019 21:52
 
 - Show playlist name and multiple artists if present
 - Change active media player Issue  [#2](https://github.com/M1S2/SpotifyRecorder/issues/2) fixed
