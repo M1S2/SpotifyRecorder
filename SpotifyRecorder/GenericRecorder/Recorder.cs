@@ -419,6 +419,15 @@ namespace SpotifyRecorder.GenericRecorder
 
                 if (System.IO.File.Exists(FileStrWAV))      //Delete too short records
                 {
+                    if(WasRecordPaused && RecorderRecSettings.DeletePausedRecords)
+                    {
+                        System.IO.File.Delete(FileStrWAV);
+                        DirectoryManager.DeleteEmptyFolders(RecorderRecSettings.BasePath);
+                        _logHandle.Report(new LogEventWarning("Record (\"" + TrackInfo?.TrackName + "\") deleted, because it was paused during record and DeletePausedRecords setting is enabled."));
+                        RecordState = RecordStates.STOPPED;
+                        return;
+                    }
+
                     TimeSpan wavLength = TimeSpan.Zero;
 
                     try
@@ -441,7 +450,7 @@ namespace SpotifyRecorder.GenericRecorder
                     {
                         System.IO.File.Delete(FileStrWAV);
                         DirectoryManager.DeleteEmptyFolders(RecorderRecSettings.BasePath);
-                        _logHandle.Report(new LogEventWarning("Record (\"" + TrackInfo?.TrackName + "\") deleted, because of wrong length (Length = " + wavLength.ToString() + " s, Expected Range = [" + (TrackInfo?.Duration - AllowedDifferenceToTrackDuration).ToString() + ", " + (TrackInfo?.Duration + AllowedDifferenceToTrackDuration).ToString() + "])."));
+                        _logHandle.Report(new LogEventWarning("Record (\"" + TrackInfo?.TrackName + "\") deleted, because of wrong length (Length = " + wavLength.ToString(@"hh\:mm\:ss\.fff") + " s, Expected Range = [" + (TrackInfo?.Duration - AllowedDifferenceToTrackDuration).Value.ToString(@"hh\:mm\:ss\.fff") + ", " + (TrackInfo?.Duration + AllowedDifferenceToTrackDuration).Value.ToString(@"hh\:mm\:ss\.fff") + "])."));
                         RecordState = RecordStates.STOPPED;
                         return;
                     }

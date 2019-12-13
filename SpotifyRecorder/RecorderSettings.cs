@@ -67,6 +67,13 @@ namespace SpotifyRecorder
             set { _recorderDeviceName = value; OnPropertyChanged(); }
         }
 
+        private bool _deletePausedRecords;
+        public bool DeletePausedRecords
+        {
+            get { return _deletePausedRecords; }
+            set { _deletePausedRecords = value; OnPropertyChanged(); }
+        }
+
         //##############################################################################################################################################################################################
 
         public RecorderSettings()
@@ -76,6 +83,7 @@ namespace SpotifyRecorder
             FileExistMode = RecorderFileExistModes.SKIP;
             RecordFormat = RecordFormats.MP3;
             RecorderDeviceName = "CABLE Input (VB-Audio Virtual Cable)";
+            DeletePausedRecords = false;
         }
 
         public object Clone() => this.MemberwiseClone();
@@ -89,7 +97,8 @@ namespace SpotifyRecorder
                 this.FileNamePrototype == settings1.FileNamePrototype &&
                 this.FileExistMode == settings1.FileExistMode &&
                 this.RecordFormat == settings1.RecordFormat &&
-                this.RecorderDeviceName == settings1.RecorderDeviceName;
+                this.RecorderDeviceName == settings1.RecorderDeviceName &&
+                this.DeletePausedRecords == settings1.DeletePausedRecords;
         }
     }
 }

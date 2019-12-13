@@ -81,6 +81,7 @@
                         <RowDefinition Height="35"/>
                         <RowDefinition Height="35"/>
                         <RowDefinition Height="35"/>
+                        <RowDefinition Height="35"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="55"/>
@@ -115,6 +116,9 @@
 
                     <iconPacks:PackIconFontAwesome Grid.Row="5" Grid.Column="0" Kind="VolumeUpSolid" ToolTip="Recorder device" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
                     <ComboBox Grid.Row="5" Grid.Column="1" ToolTip="Recorder device" ItemsSource="{Binding RecorderDeviceNames}" SelectedItem="{Binding RecSettings.RecorderDeviceName, Mode=TwoWay}" VerticalAlignment="Center"/>
+
+                    <iconPacks:PackIconFontAwesome Grid.Row="6" Grid.Column="0" Kind="TrashSolid" ToolTip="Delete paused records" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                    <Controls:ToggleSwitch Grid.Row="6" Grid.Column="1" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" OnLabel="Delete paused records" OffLabel="Keep paused records" IsChecked="{Binding RecSettings.DeletePausedRecords, Mode=TwoWay}" VerticalAlignment="Center"/>
                 </Grid>
             </Controls:Flyout>
         </Controls:FlyoutsControl>

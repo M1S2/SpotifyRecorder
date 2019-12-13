@@ -5,6 +5,10 @@
 - Show playlist name and multiple artists if present
 - Change active media player Issue  [#2](https://github.com/M1S2/SpotifyRecorder/issues/2) fixed
 - Renew access token Issue [#3](https://github.com/M1S2/SpotifyRecorder/issues/3) fixed
+- GUI: Settings moved to separate Flyout
+- Recording device is now configurable
+- Option to delete paused records added
+- Several small bugfixes
 
 ## [v3.2.0] - 07.09.2019 20:19
 
