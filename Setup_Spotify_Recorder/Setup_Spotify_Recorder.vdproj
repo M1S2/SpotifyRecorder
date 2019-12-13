@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_028596C9400A14005BB0BA828EA2413B"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_0661C75B226043A6B46250ED585428AC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -52,7 +58,7 @@
         "Entry"
         {
         "MsmKey" = "8:_1D113A97FFA133AFCE399D5D9F175CEA"
-        "OwnerKey" = "8:_55D39D19EF7D49F3826551D35AD92904"
+        "OwnerKey" = "8:_C1AD66E77EE00D18443622B79F09AE9D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -99,6 +105,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_25246E2D1188CB2518B0435243625E85"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_27F137552059477B863168A09EB7F094"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -107,6 +119,18 @@
         {
         "MsmKey" = "8:_282D1E1B69574ECCA2B4EFDA6FC72F25"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3181920796A93EE79687D9AD79E5F94C"
+        "OwnerKey" = "8:_028596C9400A14005BB0BA828EA2413B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3181920796A93EE79687D9AD79E5F94C"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -148,7 +172,7 @@
         "Entry"
         {
         "MsmKey" = "8:_450B3948491A009308509BF9B3DAACD0"
-        "OwnerKey" = "8:_55D39D19EF7D49F3826551D35AD92904"
+        "OwnerKey" = "8:_C1AD66E77EE00D18443622B79F09AE9D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -191,12 +215,6 @@
         {
         "MsmKey" = "8:_55C78F8D919A4F76B3F859CC8A6DE7A5"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_55D39D19EF7D49F3826551D35AD92904"
-        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -250,7 +268,7 @@
         "Entry"
         {
         "MsmKey" = "8:_703AEEF203169FCFFFC06D9FCD73BB39"
-        "OwnerKey" = "8:_9DA76B9E5D3968AABF4DCEB1BC28594D"
+        "OwnerKey" = "8:_028596C9400A14005BB0BA828EA2413B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -293,12 +311,6 @@
         {
         "MsmKey" = "8:_8048CEB6E4FD4165A4DDEFF873EA4C5F"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9DA76B9E5D3968AABF4DCEB1BC28594D"
-        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -347,6 +359,12 @@
         {
         "MsmKey" = "8:_BFAB8077EA654E8A83485D1D07EED294"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C1AD66E77EE00D18443622B79F09AE9D"
+        "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -405,20 +423,26 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_D6B0B418575FC3F08D640ACE1B265BF8"
-        "OwnerKey" = "8:_9DA76B9E5D3968AABF4DCEB1BC28594D"
+        "MsmKey" = "8:_D9F8FF79D7433F24F9813A6EE00CB259"
+        "OwnerKey" = "8:_028596C9400A14005BB0BA828EA2413B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_D6B0B418575FC3F08D640ACE1B265BF8"
+        "MsmKey" = "8:_D9F8FF79D7433F24F9813A6EE00CB259"
+        "OwnerKey" = "8:_25246E2D1188CB2518B0435243625E85"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D9F8FF79D7433F24F9813A6EE00CB259"
         "OwnerKey" = "8:_CAEB05772C954B57A50F843ECFF74419"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_DA2F397089A06066C51F01BC5FBC8E82"
-        "OwnerKey" = "8:_9DA76B9E5D3968AABF4DCEB1BC28594D"
+        "OwnerKey" = "8:_028596C9400A14005BB0BA828EA2413B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -454,7 +478,7 @@
         "Entry"
         {
         "MsmKey" = "8:_EEDF6D9DD3AD021697786919CC0DD6DA"
-        "OwnerKey" = "8:_9DA76B9E5D3968AABF4DCEB1BC28594D"
+        "OwnerKey" = "8:_028596C9400A14005BB0BA828EA2413B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -520,13 +544,37 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_25246E2D1188CB2518B0435243625E85"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C1AD66E77EE00D18443622B79F09AE9D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_1D113A97FFA133AFCE399D5D9F175CEA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_450B3948491A009308509BF9B3DAACD0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_088A0362E251691FD14B894CDB20F757"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9DA76B9E5D3968AABF4DCEB1BC28594D"
+        "OwnerKey" = "8:_028596C9400A14005BB0BA828EA2413B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -544,7 +592,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D6B0B418575FC3F08D640ACE1B265BF8"
+        "OwnerKey" = "8:_3181920796A93EE79687D9AD79E5F94C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D9F8FF79D7433F24F9813A6EE00CB259"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -563,24 +617,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_5F7F0106AE9F95390BCA5DA25098818C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_55D39D19EF7D49F3826551D35AD92904"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1D113A97FFA133AFCE399D5D9F175CEA"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_450B3948491A009308509BF9B3DAACD0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -627,7 +663,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\Setup_SpotifyRecorder_v3.2.0.msi"
+        "OutputFilename" = "8:Debug\\Setup_SpotifyRecorder_v3.3.0.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -742,6 +778,37 @@
         }
         "File"
         {
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_028596C9400A14005BB0BA828EA2413B"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:AssemblyInfoHelper, Version=4.2.1.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_028596C9400A14005BB0BA828EA2413B"
+                    {
+                    "Name" = "8:AssemblyInfoHelper.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:AssemblyInfoHelper.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0661C75B226043A6B46250ED585428AC"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\VBCABLE_Setup.exe"
@@ -1006,6 +1073,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_25246E2D1188CB2518B0435243625E85"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Markdig.Wpf, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_25246E2D1188CB2518B0435243625E85"
+                    {
+                    "Name" = "8:Markdig.Wpf.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Markdig.Wpf.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_27F137552059477B863168A09EB7F094"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\vbaudio_cable_xp.cat"
@@ -1044,6 +1142,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3181920796A93EE79687D9AD79E5F94C"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Neo.Markdig.Xaml, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_3181920796A93EE79687D9AD79E5F94C"
+                    {
+                    "Name" = "8:Neo.Markdig.Xaml.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Neo.Markdig.Xaml.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_32C89B8E4D87447B9CF667530E487F2F"
@@ -1341,37 +1470,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_55D39D19EF7D49F3826551D35AD92904"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:LogBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_55D39D19EF7D49F3826551D35AD92904"
-                    {
-                    "Name" = "8:LogBox.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:LogBox.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5F7F0106AE9F95390BCA5DA25098818C"
             {
             "AssemblyRegister" = "3:1"
@@ -1618,37 +1716,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9DA76B9E5D3968AABF4DCEB1BC28594D"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AssemblyInfoHelper, Version=4.1.1.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_9DA76B9E5D3968AABF4DCEB1BC28594D"
-                    {
-                    "Name" = "8:AssemblyInfoHelper.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:AssemblyInfoHelper.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A19C6F0C79CB4547B8F96ABE810EE6B4"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\VBCABLE_Setup_x64.exe"
@@ -1825,6 +1892,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C1AD66E77EE00D18443622B79F09AE9D"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:LogBox, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_C1AD66E77EE00D18443622B79F09AE9D"
+                    {
+                    "Name" = "8:LogBox.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:LogBox.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FDAA6353A0B04FB99E7C68622032A153"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C22DFC0DEC634A5FAFC3D5B8161A58F9"
             {
             "SourcePath" = "8:..\\Supplies\\VBCABLE_Driver_Pack43\\vbaudio_cable_2003.cat"
@@ -1998,14 +2096,14 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D6B0B418575FC3F08D640ACE1B265BF8"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D9F8FF79D7433F24F9813A6EE00CB259"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Markdig, Version=0.15.2.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Markdig, Version=0.17.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_D6B0B418575FC3F08D640ACE1B265BF8"
+                    "_D9F8FF79D7433F24F9813A6EE00CB259"
                     {
                     "Name" = "8:Markdig.dll"
                     "Attributes" = "3:512"
@@ -2302,15 +2400,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SpotifyRecorder"
-        "ProductCode" = "8:{4E4B344F-BFA8-42BF-870B-DD4326D52E4E}"
-        "PackageCode" = "8:{D172635A-79C9-4881-A1F3-8FFF5B4024E7}"
+        "ProductCode" = "8:{0A843F97-AF93-42D5-967E-BF770F25A144}"
+        "PackageCode" = "8:{1E7AB181-7E19-4564-A68A-0DFE53B46668}"
         "UpgradeCode" = "8:{D4D50909-FF05-4D6E-B283-F2F6E3080CDE}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:3.2.0"
+        "ProductVersion" = "8:3.3.0"
         "Manufacturer" = "8:Markus Scheich"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
