@@ -424,16 +424,11 @@ namespace SpotifyRecorder
         private async void PlayerApp_OnPlayerConnectionTokenExpired(object sender, PlayerConnectionTokenExpiredEventArgs e)
         {
             _logHandle.Report(new LogEventInfo("Connection token expired (was valid for " + e.ConnectionTokenExpirationTime.TotalSeconds.ToString() + " s)."));
-            if (!IsRecorderArmed && CurrentRecorder?.RecordState != RecordStates.RECORDING && CurrentRecorder?.RecordState != RecordStates.PAUSED)
-            {
-                PlayerApp.IsConnectionTokenExpired = false;
-                bool wasMinimized = (ProcessHelper.GetProcessWindowState(PlayerApp.PlayerName).showCmd == WindowTheme.WindowPlacement.ShowWindowStates.Minimized);
-                await ((App)Application.Current).StartAndConnectToPlayer(wasMinimized);
-            }
-            else
-            {
-                // Nothing to do here. Handle the token expired event in the Track changed event (when the recorder is armed or the recorder is recording).
-            }
+            CurrentRecorder?.StopRecord();
+            
+            bool wasMinimized = (ProcessHelper.GetProcessWindowState(PlayerApp.PlayerName).showCmd == WindowTheme.WindowPlacement.ShowWindowStates.Minimized);
+            await ((App)Application.Current).StartAndConnectToPlayer(wasMinimized);
+            PlayerApp.IsConnectionTokenExpired = false;
         }
 
         //***********************************************************************************************************************************************************************************************************

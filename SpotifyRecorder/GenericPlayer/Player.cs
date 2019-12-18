@@ -61,6 +61,17 @@ namespace SpotifyRecorder.GenericPlayer
         /// </summary>
         public event EventHandler<PlayerConnectionTokenExpiredEventArgs> OnPlayerConnectionTokenExpired;
 
+        /// <summary>
+        /// Raise the OnPlayerConnectionTokenExpiredEvent
+        /// </summary>
+        public void RaiseOnPlayerConnectionTokenExpiredEvent()
+        {
+            OnPlayerConnectionTokenExpired?.Invoke(this, new PlayerConnectionTokenExpiredEventArgs()
+            {
+                ConnectionTokenExpirationTime = this.ConnectionTokenExpirationTime
+            });
+        }
+
         //***********************************************************************************************************************************************************************************************************
 
         /// <summary>
@@ -181,7 +192,6 @@ namespace SpotifyRecorder.GenericPlayer
 
         private PlayerPlaybackStatus _tmpPlaybackStatus;
         private Timer _eventTimer;
-        private Timer _tokenTimer;
 
         //***********************************************************************************************************************************************************************************************************
 
@@ -258,32 +268,6 @@ namespace SpotifyRecorder.GenericPlayer
         /// Skip to the previous track
         /// </summary>
         public abstract void PreviousTrack();
-
-        //***********************************************************************************************************************************************************************************************************
-
-        /// <summary>
-        /// Start the token timer. If the timer expires, raise the OnPlayerConnectionTokenExpired event. You have to call this function again on the next connection.
-        /// </summary>
-        public void StartTokenTimer()
-        {
-            if(ConnectionTokenExpirationTime <= TimeSpan.Zero) { return; }
-            IsConnectionTokenExpired = false;
-            _tokenTimer = new Timer() { Interval = ConnectionTokenExpirationTime.TotalMilliseconds, AutoReset = false, Enabled = false };
-            _tokenTimer.Elapsed += _tokenTimer_Elapsed;
-            _tokenTimer.Start();
-        }
-
-        /// <summary>
-        /// Check if the connection token has expired
-        /// </summary>
-        private void _tokenTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            IsConnectionTokenExpired = true;
-            OnPlayerConnectionTokenExpired?.Invoke(this, new PlayerConnectionTokenExpiredEventArgs()
-            {
-                ConnectionTokenExpirationTime = this.ConnectionTokenExpirationTime
-            });
-        }
 
         //***********************************************************************************************************************************************************************************************************
 

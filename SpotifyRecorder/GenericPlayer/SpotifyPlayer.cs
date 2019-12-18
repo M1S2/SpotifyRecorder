@@ -41,6 +41,7 @@ namespace SpotifyRecorder.GenericPlayer
 
         private SpotifyWebAPI _spotifyWeb;
         private Process _spotifyProcess;
+        private bool _wasConnectionTokenExpiredEventRaised = false;
 
         //***********************************************************************************************************************************************************************************************************
 
@@ -79,6 +80,17 @@ namespace SpotifyRecorder.GenericPlayer
         {
             if (_spotifyWeb == null) { return; }
             PlaybackContext _spotifyPlayback = _spotifyWeb.GetPlayback();
+
+            if(_spotifyPlayback.Error?.Status == 401)    // Error 401: "The access token expired"
+            {
+                IsConnectionTokenExpired = true;
+                if (_wasConnectionTokenExpiredEventRaised == false)
+                {
+                    _wasConnectionTokenExpiredEventRaised = true;
+                    RaiseOnPlayerConnectionTokenExpiredEvent();
+                }
+                return;
+            }
 
             string playlistID = "", playlistName = "";
 
@@ -203,7 +215,7 @@ namespace SpotifyRecorder.GenericPlayer
                                 {
                                     if (match.Value.Contains("access_token")) { accessToken = match.Value.Replace("#access_token=", ""); }
                                     else if (match.Value.Contains("token_type")) { tokenType = match.Value.Replace("&token_type=", ""); }
-                                    else if (match.Value.Contains("expires_in")) { ConnectionTokenExpirationTime = new TimeSpan(0,0, int.Parse(match.Value.Replace("&expires_in=", ""))); }
+                                    else if (match.Value.Contains("expires_in")) { ConnectionTokenExpirationTime = new TimeSpan(0, 0, int.Parse(match.Value.Replace("&expires_in=", ""))); }
                                 }
 
                                 _spotifyWeb = new SpotifyWebAPI() { TokenType = tokenType, AccessToken = accessToken };
@@ -237,7 +249,7 @@ namespace SpotifyRecorder.GenericPlayer
             });
 
             if (_spotifyWeb == null) { IsConnected = false; return false; }
-            else { StartTokenTimer(); IsConnected = true; return true; }
+            else { _wasConnectionTokenExpiredEventRaised = false; IsConnected = true; return true; }
         }
 
         //***********************************************************************************************************************************************************************************************************
