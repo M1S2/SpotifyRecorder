@@ -5,6 +5,8 @@
 
 This application can be used to record songs from Spotify.
 
+![SpotifyRecorder screenshot](doc/Screenshot_SpotifyRecorder.png)
+
 ## Installation
 
 1. Download the latest release from [here](https://github.com/M1S2/SpotifyRecorder/releases/latest).

@@ -68,7 +68,7 @@ namespace SpotifyRecorder.GenericPlayer
         /// </summary>
         public override bool IsPlayerApplicationRunning
         {
-            get { return Process.GetProcessesByName("spotify").Length >= 1; }
+            get { return ProcessHelper.IsProcessOpen("Spotify", true); }
         }
 
         //***********************************************************************************************************************************************************************************************************
