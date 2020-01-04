@@ -329,10 +329,8 @@ namespace SpotifyRecorder
 
             bool blockAd = PlayerApp.CurrentPlaybackStatus.IsAd && IsPlayerAdblockerEnabled;
 
-            if (blockAd || PlayerApp.IsConnectionTokenExpired)
+            if (blockAd)
             {
-                if(PlayerApp.IsConnectionTokenExpired) { PlayerApp.IsConnectionTokenExpired = false; }
-
                 CurrentRecorder?.StopRecord();
                 bool wasPlaying = PlayerApp.CurrentPlaybackStatus.IsPlaying;
                 bool wasMinimized = (ProcessHelper.GetProcessWindowState(PlayerApp.PlayerName).showCmd == WindowTheme.WindowPlacement.ShowWindowStates.Minimized);
