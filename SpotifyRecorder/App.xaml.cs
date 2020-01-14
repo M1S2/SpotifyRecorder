@@ -76,6 +76,7 @@ namespace SpotifyRecorder
 
                     main.PlayerApp.ListenForEvents = true;
                     main.PlayerApp.UpdateCurrentPlaybackStatus();
+                    await Task.Delay(1000);
                 }
                 else
                 {

@@ -268,7 +268,7 @@ namespace SpotifyRecorder
                 logBox1.LogEvent(progressValue);
             });
 
-            PlayerApp = new SpotifyPlayer(10, this);
+            PlayerApp = new SpotifyPlayer(100, this);
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -421,7 +421,7 @@ namespace SpotifyRecorder
 
         private async void PlayerApp_OnPlayerConnectionTokenExpired(object sender, PlayerConnectionTokenExpiredEventArgs e)
         {
-            _logHandle.Report(new LogEventInfo("Connection token expired (was valid for " + e.ConnectionTokenExpirationTime.TotalSeconds.ToString() + " s)."));
+            _logHandle.Report(new LogEventWarning("Connection token expired (was valid for " + e.ConnectionTokenExpirationTime.TotalSeconds.ToString() + " s)."));
             CurrentRecorder?.StopRecord();
             
             bool wasMinimized = (ProcessHelper.GetProcessWindowState(PlayerApp.PlayerName).showCmd == WindowTheme.WindowPlacement.ShowWindowStates.Minimized);

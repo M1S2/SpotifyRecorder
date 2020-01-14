@@ -282,7 +282,8 @@ namespace SpotifyRecorder.GenericPlayer
         /// https://stackoverflow.com/questions/17842612/vb-simulate-a-key-press
         /// https://stackoverflow.com/questions/7181978/special-keys-on-keyboards/7182076#7182076
         public override void TogglePlayPause()
-        {                        
+        {
+            if (_spotifyProcess == null) { _spotifyProcess = ProcessHelper.FindProcess("Spotify", true).FirstOrDefault(); }
             if (_spotifyProcess != null)
             {
                 SendMessage(_spotifyProcess.MainWindowHandle, WM_APPCOMMAND, 0, APPCOMMAND_MEDIA_PLAY_PAUSE);
@@ -297,6 +298,7 @@ namespace SpotifyRecorder.GenericPlayer
         /// see: https://stackoverflow.com/questions/1645815/how-can-i-programmatically-generate-keypress-events-in-c
         public override void ToggleMuteState()
         {
+            if (_spotifyProcess == null) { _spotifyProcess = ProcessHelper.FindProcess("Spotify", true).FirstOrDefault(); }
             if (_spotifyProcess != null)
             {
                 SendMessage(_spotifyProcess.MainWindowHandle, WM_APPCOMMAND, 0, APPCOMMAND_VOLUME_MUTE);
@@ -310,6 +312,7 @@ namespace SpotifyRecorder.GenericPlayer
         /// </summary>
         public override void NextTrack()
         {
+            if (_spotifyProcess == null) { _spotifyProcess = ProcessHelper.FindProcess("Spotify", true).FirstOrDefault(); }
             if (_spotifyProcess != null)
             {
                 SendMessage(_spotifyProcess.MainWindowHandle, WM_APPCOMMAND, 0, APPCOMMAND_MEDIA_NEXTTRACK);
@@ -323,6 +326,7 @@ namespace SpotifyRecorder.GenericPlayer
         /// </summary>
         public override void PreviousTrack()
         {
+            if (_spotifyProcess == null) { _spotifyProcess = ProcessHelper.FindProcess("Spotify", true).FirstOrDefault(); }
             if (_spotifyProcess != null)
             {
                 SendMessage(_spotifyProcess.MainWindowHandle, WM_APPCOMMAND, 0, APPCOMMAND_MEDIA_PREVIOUSTRACK);

@@ -13,7 +13,7 @@ This application can be used to record songs from Spotify.
 2. Extract the downloaded zip file.
 3. Do one of the following:
    - Call setup.exe in the bin_Setup folder to install the SpotifyRecorder. This installs the required VB-Audio cable.
-   - Alternatively to 3a. you can copy the bin folder to any location on your computer. Then you have to install and setup the VB-Audio cable by yourself.
+   - Alternatively to the step above, you can copy the bin folder to any location on your computer. Then you have to install and setup the VB-Audio cable by yourself.
 
 ## Usage
 
