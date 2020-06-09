@@ -254,6 +254,74 @@ namespace SpotifyRecorder
             }
         }
 
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        private ICommand _exportSettingsCommand;
+        public ICommand ExportSettingsCommand
+        {
+            get
+            {
+                if (_exportSettingsCommand == null)
+                {
+                    _exportSettingsCommand = new WindowTheme.RelayCommand(param =>
+                    {
+                        System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+                        saveFileDialog.Title = "Please enter the settings output file name";
+                        saveFileDialog.Filter = "Config file|*.config";
+                        saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                        saveFileDialog.RestoreDirectory = true;
+                        saveFileDialog.FileName = "SpotifyRecorder.config";
+                        if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                        {
+                            try
+                            {
+                                Serialization.SaveHelper.SaveObjectToFile<RecorderSettings>(RecSettings, saveFileDialog.FileName, false);
+                            }
+                            catch(Exception ex)
+                            {
+                                this.ShowMessageAsync("Error while exporting settings", ex.Message);
+                            }
+                        }
+                    });
+                }
+                return _exportSettingsCommand;
+            }
+        }
+
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        private ICommand _importSettingsCommand;
+        public ICommand ImportSettingsCommand
+        {
+            get
+            {
+                if (_importSettingsCommand == null)
+                {
+                    _importSettingsCommand = new WindowTheme.RelayCommand(param =>
+                    {
+                        System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+                        openFileDialog.Title = "Please choose the settings file to import";
+                        openFileDialog.Filter = "Config file|*.config";
+                        openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                        openFileDialog.RestoreDirectory = true;
+                        openFileDialog.FileName = "SpotifyRecorder.config";
+                        if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                        {
+                            try
+                            {
+                                RecSettings = Serialization.SaveHelper.LoadObjectFromFile<RecorderSettings>(openFileDialog.FileName, false);
+                            }
+                            catch (Exception ex)
+                            {
+                                this.ShowMessageAsync("Error while importing settings", ex.Message);
+                            }
+                        }
+                    });
+                }
+                return _importSettingsCommand;
+            }
+        }
+
         #endregion
 
         //##############################################################################################################################################################################################
