@@ -344,7 +344,6 @@ namespace SpotifyRecorder
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-            this.SetPlacementString(Properties.Settings.Default.MainWindowPlacement);
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -376,7 +375,6 @@ namespace SpotifyRecorder
         {
             Properties.Settings.Default.RecSettings = this.RecSettings;
             Properties.Settings.Default.IsPlayerAdblockerEnabled = this.IsPlayerAdblockerEnabled;
-            Properties.Settings.Default.MainWindowPlacement = this.GetPlacementString();
             Properties.Settings.Default.Save();
 
             if (Recorders != null)

@@ -18,6 +18,7 @@
         Loaded="MetroWindow_Loaded"
         Closing="MetroWindow_Closing"
         ResizeMode="CanResizeWithGrip"
+        SaveWindowPosition="True"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Icon="AppIcon/SpotifyRecorder_AppIcon.ico">
 
@@ -54,14 +55,14 @@
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <windowTheming:WindowThemeUserControl/>
+            <windowTheming:DarkThemeControl/>
             
             <Button Command="{Binding ConnectCommand}" ToolTip="Connect to player application">
-                <iconPacks:PackIconMaterial Width="22" Height="22" Kind="LinkVariant" Foreground="{DynamicResource IdealForegroundColorBrush}"/>
+                <iconPacks:PackIconMaterial Width="22" Height="22" Kind="LinkVariant" Foreground="{DynamicResource MahApps.Brushes.IdealForeground}"/>
             </Button>
 
             <Button Command="{Binding OpenSettingsFlyoutCommand}" ToolTip="Open settings">
-                <iconPacks:PackIconMaterial Width="22" Height="22" Kind="Settings" Foreground="{DynamicResource IdealForegroundColorBrush}"/>
+                <iconPacks:PackIconMaterial Width="22" Height="22" Kind="Cog" Foreground="{DynamicResource MahApps.Brushes.IdealForeground}"/>
             </Button>
 
             <assemblyInfoHelper:AppInfoButton EnableNewVersionNotification="True"/>
@@ -90,45 +91,45 @@
                         <ColumnDefinition Width="90"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Background="{DynamicResource AccentBaseColorBrush}" Visibility="{Binding AreRecorderSettingsChanged, Converter={StaticResource BoolVisibilityConverter}}">
+                    <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Background="{DynamicResource MahApps.Brushes.AccentBase}" Visibility="{Binding AreRecorderSettingsChanged, Converter={StaticResource BoolVisibilityConverter}}">
                         <DockPanel>
                             <Button DockPanel.Dock="Right" Margin="2" Width="150" Content="Reset to current settings" Style="{DynamicResource SquareButtonStyle}" Controls:ControlsHelper.ContentCharacterCasing="Normal" Command="{Binding ResetRecSettingsCommand}"/>
-                            <TextBlock DockPanel.Dock="Left" Padding="5" Text="Currently a recorder is running. All changes are used for the next record." Foreground="{DynamicResource IdealForegroundColorBrush}"/>
+                            <TextBlock DockPanel.Dock="Left" Padding="5" Text="Currently a recorder is running. All changes are used for the next record." Foreground="{DynamicResource MahApps.Brushes.IdealForeground}"/>
                         </DockPanel>
                     </Border>
 
-                    <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="FolderOpen" ToolTip="Base Path" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                    <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="FolderOpen" ToolTip="Base Path" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.AccentBase}"/>
                     <TextBox Grid.Row="1" Grid.Column="1" ToolTip="Recorder Base Path" Text="{Binding RecSettings.BasePath}" VerticalAlignment="Center"/>
-                    <Button Grid.Row="1" Grid.Column="2" Margin="10,2,10,2" Style="{DynamicResource SquareButtonStyle}" Command="{Binding ChooseRecorderBasePathCommand}">
+                    <Button Grid.Row="1" Grid.Column="2" Margin="10,2,10,2" Style="{DynamicResource SquareButtonStyle}" Command="{Binding ChooseRecorderBasePathCommand}" Foreground="Black">
                         <iconPacks:Modern Kind="Edit"/>
                     </Button>
 
-                    <iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="CodeTags" ToolTip="File Name Prototype" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                    <iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="CodeTags" ToolTip="File Name Prototype" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.AccentBase}"/>
                     <TextBox Grid.Row="2" Grid.Column="1" ToolTip="File Name Prototype" Text="{Binding RecSettings.FileNamePrototype, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
-                    <Button Grid.Row="2" Grid.Column="2" Margin="10,2,10,2" Style="{DynamicResource SquareButtonStyle}" Command="{Binding OpenFileNamePrototypeCommand}">
+                    <Button Grid.Row="2" Grid.Column="2" Margin="10,2,10,2" Style="{DynamicResource SquareButtonStyle}" Command="{Binding OpenFileNamePrototypeCommand}" Foreground="Black">
                         <iconPacks:Modern Kind="Edit"/>
                     </Button>
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="MP3&#10;   WAV" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}" FontSize="12" FontWeight="Black"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="MP3&#10;   WAV" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.AccentBase}" FontSize="12" FontWeight="Black"/>
                     <ComboBox Grid.Row="3" Grid.Column="1" ToolTip="Record Format" ItemsSource="{Binding Source={StaticResource valuesEnumRecorderFormats}}" SelectedItem="{Binding RecSettings.RecordFormat}" VerticalAlignment="Center"/>
 
-                    <iconPacks:PackIconMaterial Grid.Row="4" Grid.Column="0" Kind="FileQuestion" ToolTip="File Exists Mode" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                    <iconPacks:PackIconMaterial Grid.Row="4" Grid.Column="0" Kind="FileQuestion" ToolTip="File Exists Mode" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.AccentBase}"/>
                     <ComboBox Grid.Row="4" Grid.Column="1" ToolTip="File Exists Mode" ItemsSource="{Binding Source={StaticResource valuesEnumRecorderFileExistModes}}" SelectedItem="{Binding RecSettings.FileExistMode}" VerticalAlignment="Center"/>
 
-                    <iconPacks:PackIconFontAwesome Grid.Row="5" Grid.Column="0" Kind="VolumeUpSolid" ToolTip="Recorder device" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                    <iconPacks:PackIconFontAwesome Grid.Row="5" Grid.Column="0" Kind="VolumeUpSolid" ToolTip="Recorder device" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.AccentBase}"/>
                     <ComboBox Grid.Row="5" Grid.Column="1" ToolTip="Recorder device" ItemsSource="{Binding RecorderDeviceNames}" SelectedItem="{Binding RecSettings.RecorderDeviceName, Mode=TwoWay}" VerticalAlignment="Center"/>
 
-                    <iconPacks:PackIconFontAwesome Grid.Row="6" Grid.Column="0" Kind="TrashSolid" ToolTip="Delete paused records" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
-                    <Controls:ToggleSwitch Grid.Row="6" Grid.Column="1" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" OnLabel="Delete paused records" OffLabel="Keep paused records" IsChecked="{Binding RecSettings.DeletePausedRecords, Mode=TwoWay}" VerticalAlignment="Center"/>
+                    <iconPacks:PackIconFontAwesome Grid.Row="6" Grid.Column="0" Kind="TrashSolid" ToolTip="Delete paused records" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.AccentBase}"/>
+                    <Controls:ToggleSwitch Grid.Row="6" Grid.Column="1" OnContent="Delete paused records" OffContent="Keep paused records" IsOn="{Binding RecSettings.DeletePausedRecords, Mode=TwoWay}" VerticalAlignment="Center"/>
 
                     <StackPanel Grid.Row="7" Grid.Column="1" Height="30" VerticalAlignment="Bottom" Orientation="Horizontal">
-                        <Button Margin="0,0,5,0" Style="{DynamicResource SquareButtonStyle}" Command="{Binding ExportSettingsCommand}" Controls:ControlsHelper.ContentCharacterCasing="Normal">
+                        <Button Margin="0,0,5,0" Style="{DynamicResource SquareButtonStyle}" Command="{Binding ExportSettingsCommand}" Foreground="Black" Controls:ControlsHelper.ContentCharacterCasing="Normal">
                             <StackPanel Orientation="Horizontal">
                                 <iconPacks:PackIconMaterial Kind="Export" VerticalAlignment="Center"/>
                                 <TextBlock Margin="3,0,0,0" Text="Export settings" FontSize="14" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Margin="5,0,0,0" Style="{DynamicResource SquareButtonStyle}" Command="{Binding ImportSettingsCommand}" Controls:ControlsHelper.ContentCharacterCasing="Normal" >
+                        <Button Margin="5,0,0,0" Style="{DynamicResource SquareButtonStyle}" Command="{Binding ImportSettingsCommand}" Foreground="Black" Controls:ControlsHelper.ContentCharacterCasing="Normal" >
                             <StackPanel Orientation="Horizontal">
                                 <iconPacks:PackIconMaterial Kind="Import" VerticalAlignment="Center"/>
                                 <TextBlock Margin="3,0,0,0" Text="Import settings" FontSize="14" VerticalAlignment="Center"/>
@@ -151,7 +152,7 @@
 
         <ScrollViewer Grid.Row="0" Margin="5" VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical">
-                <Border Margin="5" BorderBrush="{DynamicResource AccentBaseColorBrush}" BorderThickness="1" CornerRadius="5">
+                <Border Margin="5" BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}" BorderThickness="1" CornerRadius="5">
                     <Grid Margin="5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="35"/>
@@ -163,7 +164,7 @@
                             <ColumnDefinition Width="90"/>
                         </Grid.ColumnDefinitions>
 
-                        <ToggleButton Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Width="70" Height="70" VerticalAlignment="Top" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" IsChecked="{Binding IsRecorderArmed, Mode=TwoWay}">
+                        <ToggleButton Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Width="70" Height="70" VerticalAlignment="Top" Style="{DynamicResource MahApps.Styles.ToggleButton.Circle}" IsChecked="{Binding IsRecorderArmed, Mode=TwoWay}">
                             <Image Height="Auto" Width="Auto" Margin="10">
                                 <Image.Source>
                                     <DrawingImage Drawing="{Binding IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}, Mode=OneWay, FallbackValue=False, TargetNullValue=False, Converter={StaticResource IsArmedIconConverter}}"/>
@@ -171,10 +172,10 @@
                             </Image>
                         </ToggleButton>
 
-                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="0" Kind="Reload" ToolTip="Player adblocker" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
-                        <Controls:ToggleSwitch Grid.Row="0" Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" OnLabel="Adblocker active" OffLabel="Adblocker inactive" IsChecked="{Binding IsPlayerAdblockerEnabled}"/>
-                        
-                        <ItemsControl Grid.Row="1" Grid.Column="1" Margin="0,5,0,5" ItemsSource="{Binding Recorders}" BorderThickness="1" BorderBrush="{DynamicResource AccentBaseColorBrush}" AlternationCount="10" Visibility="{Binding CurrentRecorder, Converter={StaticResource NullVisibilityConverter}}">
+                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="0" Kind="Reload" ToolTip="Player adblocker" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.AccentBase}"/>
+                        <Controls:ToggleSwitch Grid.Row="0" Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" OnContent="Adblocker active" OffContent="Adblocker inactive" IsOn="{Binding IsPlayerAdblockerEnabled}"/>
+
+                        <ItemsControl Grid.Row="1" Grid.Column="1" Margin="0,5,0,5" ItemsSource="{Binding Recorders}" BorderThickness="1" BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}" AlternationCount="10" Visibility="{Binding CurrentRecorder, Converter={StaticResource NullVisibilityConverter}}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Vertical"/>
@@ -197,15 +198,15 @@
                                         </Grid.ColumnDefinitions>
 
                                         <!-- see: https://stackoverflow.com/questions/22378456/how-to-get-the-index-of-the-current-itemscontrol-item -->
-                                        <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Text="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource Mode=TemplatedParent}, StringFormat={}#{0}, Converter={StaticResource AddConverter}, ConverterParameter=1}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}" FontSize="25"/>
+                                        <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Text="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource Mode=TemplatedParent}, StringFormat={}#{0}, Converter={StaticResource AddConverter}, ConverterParameter=1}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.AccentBase}" FontSize="25"/>
 
                                         <Image Grid.Row="0" Grid.Column="1" Height="25" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Recorder Status">
                                             <Image.Source>
                                                 <DrawingImage Drawing="{Binding RecordState, Mode=OneWay, Converter={StaticResource RecorderStateIconConverter}}"/>
                                             </Image.Source>
                                         </Image>
-                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding RecordState}" ToolTip="Recorder Status" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource GrayBrush3}" FontSize="14"/>
-                                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="2" Kind="Music" Height="Auto" Width="Auto" Margin="2,2,10,2" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource GrayBrush3}"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding RecordState}" ToolTip="Recorder Status" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.Gray3}" FontSize="14"/>
+                                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="2" Kind="Music" Height="Auto" Width="Auto" Margin="2,2,10,2" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.Gray3}"/>
                                         <TextBlock Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" FontSize="16">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0} ({1})">
@@ -214,9 +215,9 @@
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
-                                        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding RecordFilepathWithoutExtension}" VerticalAlignment="Center" FontSize="14" ToolTip="File Path" Foreground="{DynamicResource GrayBrush3}"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding RecordFilepathWithoutExtension}" VerticalAlignment="Center" FontSize="14" ToolTip="File Path" Foreground="{DynamicResource MahApps.Brushes.Gray3}"/>
 
-                                        <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" Foreground="{DynamicResource GrayBrush3}">
+                                        <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" Foreground="{DynamicResource MahApps.Brushes.Gray3}">
                                             <Separator.Visibility>
                                                 <MultiBinding Converter="{StaticResource IndexVisibilityConverter}">
                                                     <Binding Path="Recorders" ElementName="mainWindow"/>
@@ -233,8 +234,8 @@
                 </Border>
 
                 <!-- *************************************************************************************************************************************************************************** -->
-                
-                <Border Margin="5" BorderBrush="{DynamicResource AccentBaseColorBrush}" BorderThickness="1" CornerRadius="5">
+
+                <Border Margin="5" BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}" BorderThickness="1" CornerRadius="5">
                     <Grid Margin="5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="35"/>
@@ -250,25 +251,25 @@
                             <ColumnDefinition Width="120"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="3" Text="Ad is playing" FontSize="50" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource GrayBrush3}" Visibility="{Binding PlayerApp.CurrentPlaybackStatus.IsAd, FallbackValue=Collapsed, Converter={StaticResource BoolVisibilityConverter}}"/>
+                        <TextBlock Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="3" Text="Ad is playing" FontSize="50" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.Gray3}" Visibility="{Binding PlayerApp.CurrentPlaybackStatus.IsAd, FallbackValue=Collapsed, Converter={StaticResource BoolVisibilityConverter}}"/>
 
-                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="0" Kind="Music" ToolTip="Track" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="0" Kind="Music" ToolTip="Track" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.AccentBase}"/>
                         <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Track" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.TrackName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
 
-                        <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Account" ToolTip="Artist" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                        <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Account" ToolTip="Artist" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.AccentBase}"/>
                         <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Artist" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.CombinedArtistsString}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                        
-                        <iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="Album" ToolTip="Album" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+
+                        <iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="Album" ToolTip="Album" Height="Auto" Width="Auto" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.AccentBase}"/>
                         <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Album" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.AlbumName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
 
-                        <iconPacks:PackIconMaterial Grid.Row="3" Grid.Column="0" Kind="PlaylistPlay" ToolTip="Playlist" Height="35" Width="35" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBaseColorBrush}" Visibility="{Binding PlayerApp.CurrentPlaybackStatus.Playlist, Converter={StaticResource NullVisibilityConverter}}"/>
+                        <iconPacks:PackIconMaterial Grid.Row="3" Grid.Column="0" Kind="PlaylistPlay" ToolTip="Playlist" Height="35" Width="35" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.AccentBase}" Visibility="{Binding PlayerApp.CurrentPlaybackStatus.Playlist, Converter={StaticResource NullVisibilityConverter}}"/>
                         <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Playlist" Text="{Binding PlayerApp.CurrentPlaybackStatus.Playlist.PlaylistName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Visibility="{Binding PlayerApp.CurrentPlaybackStatus.Playlist, Converter={StaticResource NullVisibilityConverter}}"/>
 
                         <Rectangle Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Width="{Binding ElementName=albumImage, Path=ActualWidth}" Height="{Binding ElementName=albumImage, Path=ActualHeight}" Fill="White"/>
                         <Image x:Name="albumImage" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" ToolTip="Album Image" Source="{Binding PlayerApp.CurrentPlaybackStatus.Track.Album.Images[0], Converter={StaticResource BitmapImageSourceConverter}}"/>
                         
                         <DockPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4">
-                            <Button Width="50" Command="{Binding PlayPauseCommand}" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
+                            <Button Width="50" Command="{Binding PlayPauseCommand}" Style="{StaticResource MahApps.Styles.Button.Circle}">
                                 <Image Height="Auto" Width="Auto" Margin="10">
                                     <Image.Source>
                                         <DrawingImage Drawing="{Binding PlayerApp.CurrentPlaybackStatus.IsPlaying, Mode=OneWay, FallbackValue=False, TargetNullValue=False, Converter={StaticResource IsPlayingIconConverter}}"/>
@@ -277,7 +278,7 @@
                             </Button>
                             <TextBlock DockPanel.Dock="Left" Margin="5" ToolTip="Current track time" Text="{Binding PlayerApp.CurrentPlaybackStatus.Progress, StringFormat=mm\\:ss}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                             <TextBlock DockPanel.Dock="Right" Margin="5" ToolTip="Total track time" Text="{Binding PlayerApp.CurrentPlaybackStatus.Track.Duration, StringFormat=mm\\:ss}" VerticalAlignment="Center"/>
-                            <Controls:MetroProgressBar Margin="5" ToolTip="Current track time" Value="{Binding PlayerApp.CurrentPlaybackStatus.Progress.Ticks, Mode=OneWay}" Maximum="{Binding PlayerApp.CurrentPlaybackStatus.Track.Duration.Ticks, Mode=OneWay}" BorderBrush="{DynamicResource AccentBaseColorBrush}" BorderThickness="1" Foreground="{DynamicResource AccentBaseColorBrush}"/>
+                            <Controls:MetroProgressBar Margin="5" ToolTip="Current track time" Value="{Binding PlayerApp.CurrentPlaybackStatus.Progress.Ticks, Mode=OneWay}" Maximum="{Binding PlayerApp.CurrentPlaybackStatus.Track.Duration.Ticks, Mode=OneWay}" BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}" BorderThickness="1" Foreground="{DynamicResource MahApps.Brushes.AccentBase}"/>
                         </DockPanel>
                     </Grid>
                 </Border>
@@ -301,7 +302,7 @@
 
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal" Visibility="{Binding PlayerApp.IsConnectionTokenExpired, FallbackValue=Hidden, TargetNullValue=Hidden, Converter={StaticResource BoolVisibilityConverter}}">
-                    <iconPacks:PackIconModern Margin="10,0,10,0" VerticalAlignment="Center" Kind="TimerAlert" Foreground="{DynamicResource IdealForegroundColorBrush}"/>
+                    <iconPacks:PackIconModern Margin="10,0,10,0" VerticalAlignment="Center" Kind="TimerAlert" Foreground="{DynamicResource MahApps.Brushes.IdealForeground}"/>
                     <TextBlock Text="Connection Token Expired. Will be renewed automatically." FontSize="14"/>
                 </StackPanel>
             </StatusBarItem>

@@ -9,12 +9,12 @@
         mc:Ignorable="d"
         Title="SplashScreen" Height="350" Width="600"
         ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource AccentBaseColorBrush}" BorderThickness="2" BorderBrush="{DynamicResource AccentColorBrush}">
+        Background="{DynamicResource MahApps.Brushes.AccentBase}" BorderThickness="2" BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}">
     <Grid>
         <Image VerticalAlignment="Top" HorizontalAlignment="Center" Margin="30" Height="90" Source="AppIcon/SpotifyRecorder_AppIcon.ico"/>
-        <TextBlock Text="{Binding Source={x:Static assemblyInfo:AssemblyInfoHelperClass.AssemblyProduct}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource IdealForegroundColorBrush}" FontSize="65"/>
-        <Controls:ProgressRing VerticalAlignment="Bottom" Margin="40" IsEnabled="True" Foreground="{DynamicResource IdealForegroundColorBrush}"/>
-        <TextBlock Margin="10" Text="{Binding StatusString}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Foreground="{DynamicResource IdealForegroundColorBrush}" FontSize="20"/>
-        <TextBlock Margin="10" Text="{Binding Source={x:Static assemblyInfo:AssemblyInfoHelperClass.AssemblyVersion}}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Foreground="{DynamicResource IdealForegroundColorBrush}" FontSize="20"/>
+        <TextBlock Text="{Binding Source={x:Static assemblyInfo:AssemblyInfoHelperClass.AssemblyProduct}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource MahApps.Brushes.IdealForeground}" FontSize="65"/>
+        <Controls:ProgressRing VerticalAlignment="Bottom" Margin="40" IsEnabled="True" Foreground="{DynamicResource MahApps.Brushes.IdealForeground}"/>
+        <TextBlock Margin="10" Text="{Binding StatusString}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Foreground="{DynamicResource MahApps.Brushes.IdealForeground}" FontSize="20"/>
+        <TextBlock Margin="10" Text="{Binding Source={x:Static assemblyInfo:AssemblyInfoHelperClass.AssemblyVersion}}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Foreground="{DynamicResource MahApps.Brushes.IdealForeground}" FontSize="20"/>
     </Grid>
 </Window>

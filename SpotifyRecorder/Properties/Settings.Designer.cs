@@ -45,41 +45,5 @@ namespace SpotifyRecorder.Properties {
                 this["IsPlayerAdblockerEnabled"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\"Dark\"")]
-        public string AppTheme {
-            get {
-                return ((string)(this["AppTheme"]));
-            }
-            set {
-                this["AppTheme"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\"Emerald\"")]
-        public string AppAccent {
-            get {
-                return ((string)(this["AppAccent"]));
-            }
-            set {
-                this["AppAccent"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string MainWindowPlacement {
-            get {
-                return ((string)(this["MainWindowPlacement"]));
-            }
-            set {
-                this["MainWindowPlacement"] = value;
-            }
-        }
     }
 }
