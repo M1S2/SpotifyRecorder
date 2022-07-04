@@ -9,12 +9,9 @@ using System.Windows;
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("SpotifyRecorder")]
 [assembly: AssemblyDescription("This application can be used to record songs from Spotify.")]
-[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Markus Scheich")]
 [assembly: AssemblyProduct("SpotifyRecorder")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 [assembly: AssemblyInfoHelper.GitHub.GitHubRepo("https://github.com/M1S2/SpotifyRecorder")]
 
 // Durch Festlegen von ComVisible auf FALSE werden die Typen in dieser Assembly
