@@ -49,20 +49,27 @@ namespace SpotifyRecorder
         /// <returns>true -> starting successful; false -> starting not successful</returns>
         public async static Task<bool> StartProcess(string processPath, string processArguments = "", ProcessWindowStyle windowStyle = ProcessWindowStyle.Normal)
         {
-            Process process = null;
-            await Task.Run(() =>
+            try
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo()
+                Process process = null;
+                await Task.Run(() =>
                 {
-                    FileName = processPath,
-                    Arguments = processArguments,
-                    WindowStyle = windowStyle
-                };
+                    ProcessStartInfo startInfo = new ProcessStartInfo()
+                    {
+                        FileName = processPath,
+                        Arguments = processArguments,
+                        WindowStyle = windowStyle
+                    };
 
-                process = Process.Start(startInfo);
-                
-            });
-            return (process != null);
+                    process = Process.Start(startInfo);
+
+                });
+                return (process != null);
+            }
+            catch(Exception)
+            {
+                return false;
+            }
         }
 
         //***********************************************************************************************************************************************************************************************************

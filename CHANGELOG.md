@@ -2,6 +2,12 @@
 
 ## [%version%] - %date%
 
+- Fixed bug when trying to start Spotify installed from Microsoft Store (caused crashing) [#5](https://github.com/M1S2/SpotifyRecorder/issues/5)
+- Bump Newtonsoft.Json (fixing security issue)
+- Recorder setting can be exported to config file and imported
+- Update AssemblyInfoHelper
+- Update LogBox
+- Renew access token improved [#3](https://github.com/M1S2/SpotifyRecorder/issues/3) (not using a timer anymore, catch error to see if token was expired)
 
 ## [v3.3.0] - 13.12.2019 21:52
 

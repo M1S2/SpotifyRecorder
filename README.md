@@ -2,6 +2,7 @@
 
 [![GitHub Release Version](https://img.shields.io/github/v/release/M1S2/SpotifyRecorder)](https://github.com/M1S2/SpotifyRecorder/releases/latest)
 [![GitHub License](https://img.shields.io/github/license/M1S2/SpotifyRecorder)](LICENSE.md)
+![Status](https://img.shields.io/badge/status-not%20maintained%20anymore-red)
 
 This application can be used to record songs from Spotify.
 

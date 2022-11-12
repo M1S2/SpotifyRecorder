@@ -84,6 +84,10 @@ namespace SpotifyRecorder
                     if (splash != null) { splash.StatusString = "Connection failed"; }
                 }
             }
+            else
+            {
+                main._logHandle.Report(new LogEventWarning("Failed to start player application."));
+            }
         }
     }
 }

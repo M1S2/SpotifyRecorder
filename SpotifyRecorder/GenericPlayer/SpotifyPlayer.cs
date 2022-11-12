@@ -128,7 +128,14 @@ namespace SpotifyRecorder.GenericPlayer
             if (!IsPlayerApplicationRunning)
             {
 #warning Try to open Spotify maximized
-                startResult = await ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", (minimized ? "--minimized" : ""), (minimized ? ProcessWindowStyle.Normal : ProcessWindowStyle.Maximized));     //Start spotify in C:\Users\%user%\AppData\Roaming\Spotify
+                // Try to start Spotify installed from downloaded installer (installed in C:\Users\%user%\AppData\Roaming\Spotify)
+                startResult = await ProcessHelper.StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Spotify\Spotify.exe", (minimized ? "--minimized" : ""), (minimized ? ProcessWindowStyle.Normal : ProcessWindowStyle.Maximized));
+
+                if (!startResult)
+                {
+                    // Try to start Spotify installed from Microsoft store (installed in C:\Program Files\WindowsApps folder)
+                    startResult = await ProcessHelper.StartProcess("explorer", @"shell:appsfolder\SpotifyAB.SpotifyMusic_zpdnekdrzrea0!Spotify");
+                }
                 await Task.Delay(2000);        //Wait some time before connecting to spotify
             }
 
