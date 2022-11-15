@@ -1,6 +1,6 @@
 # SpotifyRecorder
 
-## [%version%] - %date%
+## [v3.4.0] - 15.11.2022 19:23
 
 - Fixed bug when trying to start Spotify installed from Microsoft Store (caused crashing) [#5](https://github.com/M1S2/SpotifyRecorder/issues/5)
 - Bump Newtonsoft.Json (fixing security issue)
