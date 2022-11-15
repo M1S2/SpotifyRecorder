@@ -11,7 +11,7 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Controls:MetroWindow.Resources>
-        <Style TargetType="Button" BasedOn="{DynamicResource SquareButtonStyle}"/>
+        <Style TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button.Square}"/>
     </Controls:MetroWindow.Resources>
 
     <Grid Margin="10">
